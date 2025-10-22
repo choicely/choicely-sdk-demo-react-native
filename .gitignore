@@ -31,7 +31,8 @@ out/
 # Gradle files
 .gradle/
 build/
-gradle/
+gradle/*
+!gradle/wrapper
 app/dev
 app/prod
 
