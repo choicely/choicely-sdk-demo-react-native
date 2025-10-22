@@ -1,0 +1,101 @@
+buildscript {
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "com.android.application"
+    id 'org.jetbrains.kotlin.android'
+    id "com.facebook.react"
+}
+react {
+    nodeExecutableAndArgs.set([gradle.ext.nodeBinary])   // ← reuse the one value
+    // Needed to enable Autolinking - https://github.com/react-native-community/cli/blob/master/docs/autolinking.md
+    autolinkLibrariesWithApp()
+    entryFile.set(file("../../index.js"))       // or "index.ts" if that’s your entry
+}
+android {
+    namespace 'com.choicely.sdk.rn'
+    compileSdk = (rootProject.ext.compileSdkVersion as Integer)
+    defaultConfig {
+        applicationId namespace
+        targetSdk = compileSdk
+        minSdk = 24
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+        }
+    }
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField "boolean", "USE_METRO", "false"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            buildConfigField "boolean", "USE_METRO", "true"
+        }
+        offline {
+            initWith(buildTypes.debug)
+            matchingFallbacks = ['debug', 'debugOptimized', 'release']
+            buildConfigField "boolean", "USE_METRO", "false"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation "com.facebook.react:react-android:0.82.0"
+    implementation "com.facebook.react:hermes-android:0.82.0"
+
+    // Import the BOM
+    implementation(platform("com.choicely.sdk:bom:1.0.5"))
+    implementation "com.choicely.sdk:android-core"
+}
+afterEvaluate {
+    android.applicationVariants.configureEach { variant ->
+        if (variant.buildType.name in ["release", "offline"]) {
+            def vName = variant.name.capitalize()
+            tasks.named("merge${vName}Assets").configure {
+                dependsOn("createBundle${vName}JsAndAssets")
+            }
+        }
+    }
+}
+tasks.register("adbReverseMetro", Exec) {
+    def metroPort = rootProject.ext.reactNativeDevServerPort
+    doFirst { println "[dev] adb reverse tcp:${metroPort} -> tcp:${metroPort}" }
+    commandLine android.adbExecutable, "reverse", "tcp:${metroPort}", "tcp:${metroPort}"
+    ignoreExitValue = true
+}
+tasks.register("prepareDevRuntime") { t ->
+    t.dependsOn("adbReverseMetro")
+}
+def assembleRx = ~/(?i).*assemble.*(Debug|DebugOptimized)$/
+tasks.configureEach { t ->
+    if (t.name ==~ assembleRx) {
+        t.dependsOn("prepareDevRuntime")
+    }
+}

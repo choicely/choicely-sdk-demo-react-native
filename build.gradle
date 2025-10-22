@@ -1,0 +1,13 @@
+def ANDROID = gradle.includedBuild("android")
+
+[
+        "clean",
+        "assembleDebug",
+        "assembleOffline",
+        "assembleRelease",
+].each { t ->
+    tasks.register(t) {
+        group = "android"
+        dependsOn ANDROID.task(":app:${t}")
+    }
+}

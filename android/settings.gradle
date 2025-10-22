@@ -1,0 +1,150 @@
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+    }
+    def runCmd = { List<String> cmd, File dir ->
+        def pb = new ProcessBuilder(cmd).directory(dir)
+        pb.inheritIO()
+        def p = pb.start()
+        def code = p.waitFor()
+        if (code != 0) throw new GradleException("Failed to ${cmd.toListString()} (exit ${code})")
+    }
+    def isWindows = System.getProperty("os.name").toLowerCase().contains("win")
+    def repoRoot = settingsDir.toPath().resolve("..").normalize().toFile()
+    def rnPluginPath = "node_modules/@react-native/gradle-plugin"
+    def rnPlugin = new File(repoRoot, rnPluginPath)
+    println "[RN] Verifying React Native Gradle plugin at ${rnPlugin}"
+    if (!rnPlugin.exists()) {
+        println "[RN] Running npm install (this may take a minute)…"
+        if (isWindows) {
+            runCmd(["cmd", "/c", "npm", "install", "--no-audit", "--no-fund"], repoRoot)
+        } else {
+            runCmd(["bash", "-lc", "npm install --no-audit --no-fund"], repoRoot)
+        }
+    }
+    // Configures the React Native Gradle Settings plugin used for autolinking
+    includeBuild("../$rnPluginPath")
+}
+plugins {
+    id("com.facebook.react.settings")
+}
+// ---- ENV LOADER (default.env -> .env -> real env wins) ----
+def repoRoot = settingsDir.toPath().resolve("..").normalize().toFile()
+
+def parseEnv = { File f ->
+    if (!f.exists()) return [:]
+    def map = [:]
+    f.getText('UTF-8').readLines().each { line ->
+        def s = line.trim()
+        if (!s || s.startsWith('#')) return
+        if (s.startsWith('export ')) s = s.substring(7).trim()
+        def i = s.indexOf('=')
+        if (i < 0) return
+        def k = s.substring(0, i).trim()
+        def v = s.substring(i + 1).trim()
+        if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.substring(1, v.length() - 1)
+        }
+        v = v.replace('\\n', '\n').replace('\\r', '\r')
+        if (k) map[k] = v
+    }
+    return map
+}
+
+def defaultsEnv = parseEnv(new File(repoRoot, 'default.env'))
+def localEnv    = parseEnv(new File(repoRoot, '.env'))
+def mergedEnv   = new LinkedHashMap(defaultsEnv)
+mergedEnv.putAll(localEnv)
+
+// precedence: default.env -> .env -> REAL env
+def rctFromFiles = mergedEnv['RCT_METRO_PORT']
+def rctFromReal  = System.getenv('RCT_METRO_PORT')
+def rctPortStr   = (rctFromReal ?: rctFromFiles)
+
+if (!rctPortStr) {
+    throw new GradleException('RCT_METRO_PORT is not set. Define it in `.env` or `default.env` (parent dir), or export it.')
+}
+try {
+    def n = Integer.parseInt(rctPortStr)
+    if (n < 1 || n > 65535) throw new NumberFormatException("out of range")
+} catch (NumberFormatException ignored) {
+    throw new GradleException("RCT_METRO_PORT is invalid: \"${rctPortStr}\". Must be an integer 1–65535.")
+}
+
+// expose to all projects (no defaults here, just the validated value)
+gradle.beforeProject { p ->
+    p.ext.reactNativeDevServerPort = rctPortStr
+}
+
+// --- Node detector ---
+def findOnPath = {
+    def isWin = System.getProperty("os.name").toLowerCase().contains("win")
+    def cmd = isWin ? ["cmd", "/c", "where", "node"] : ["bash", "-lc", "command -v node || which node"]
+    try {
+        def p = new ProcessBuilder(cmd).redirectErrorStream(true).start()
+        def out = p.inputStream.getText("UTF-8").readLines().find { it?.trim() }?.trim()
+        p.waitFor() == 0 ? out : null
+    } catch (ignore) {
+        null
+    }
+}
+def guessCommon = {
+    def h = System.getProperty("user.home")
+    ["${h}/.asdf/shims/node",
+     "${h}/.asdf/installs/nodejs/current/bin/node",
+     "${h}/.volta/bin/node",
+     "${h}/.nvm/versions/node/current/bin/node",
+     "${h}/.local/share/fnm/current/bin/node",
+     "/opt/homebrew/bin/node", "/usr/local/bin/node", "/usr/bin/node", "/bin/node",
+     "C:/Program Files/nodejs/node.exe", "C:/Program Files (x86)/nodejs/node.exe"
+    ].find { it && new File(it).canExecute() }
+}
+
+// priority: -PnodeExecutable > NODE_BINARY > PATH > guesses
+def nodeFromProp = providers.gradleProperty("nodeExecutable").orNull
+def nodeFromEnv = System.getenv("NODE_BINARY")
+gradle.ext.nodeBinary = [nodeFromProp, nodeFromEnv, findOnPath(), guessCommon()]
+        .find { it } ?: { throw new GradleException("Node not found. Set -PnodeExecutable or NODE_BINARY.") }()
+
+def setupRNAutoLinking = { ->
+    def nodeBin = gradle.ext.nodeBinary
+    if (nodeBin == null) {
+        throw new GradleException("Set NODE_BINARY in gradle.properties to your Node path")
+    }
+    // The “react-native” CLI shim installed in node_modules
+    def rnCli = new File(repoRoot, "node_modules/.bin/react-native")
+    if (!rnCli.exists()) {
+        throw new GradleException("react-native CLI not found at ${rnCli}. Run npm/yarn install first.")
+    }
+    extensions.configure(com.facebook.react.ReactSettingsExtension) {
+        ex ->
+            ex.autolinkLibrariesFromCommand(
+                    [nodeBin, rnCli.absolutePath, "config"], // <— no npx, no shell
+            )
+    }
+    includeBuild("../node_modules/@react-native/gradle-plugin")
+    println "[RN] React Native configured in settings.gradle"
+}
+setupRNAutoLinking()
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+rootProject.name = rootDir.parentFile?.name
+include ':app'

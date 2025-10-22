@@ -1,0 +1,33 @@
+pluginManagement {
+    repositories { gradlePluginPortal(); google(); mavenCentral() }
+}
+dependencyResolutionManagement {
+    repositories { google(); mavenCentral() }
+}
+def ensureAndroidLocalProps() {
+    def lp = file("android/local.properties")
+    if (lp.exists()) return
+    def env = System.getenv()
+    def os = System.getProperty("os.name").toLowerCase()
+    def home = System.getProperty("user.home")
+
+    def candidates = [
+            env.ANDROID_SDK_ROOT,
+            env.ANDROID_HOME,
+            os.contains("mac") ? "${home}/Library/Android/sdk" :
+                    os.contains("win") ? ((env.LOCALAPPDATA ?: "${env.USERPROFILE}\\AppData\\Local") + "\\Android\\Sdk") :
+                            "${home}/Android/Sdk"
+    ].findAll { it }
+    def sdkDir = candidates.find { new File(it).exists() }
+    if (sdkDir) {
+        lp.parentFile.mkdirs()
+        lp.text = "sdk.dir=" + new File(sdkDir).absolutePath.replace("\\", "\\\\") + System.lineSeparator()
+        println "[settings] Wrote android/local.properties (sdk.dir=${sdkDir})"
+    } else {
+        println "[settings] WARNING: Android SDK not found. Set ANDROID_SDK_ROOT or open android/ once to let Studio create local.properties."
+    }
+}
+
+ensureAndroidLocalProps()
+rootProject.name = "repo-root"
+includeBuild("android")
