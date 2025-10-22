@@ -5,6 +5,9 @@ def ANDROID = gradle.includedBuild("android")
         "assembleDebug",
         "assembleOffline",
         "assembleRelease",
+        "installDebug",
+        "installOffline",
+        "installRelease",
 ].each { t ->
     tasks.register(t) {
         group = "android"
