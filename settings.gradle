@@ -1,9 +1,10 @@
 pluginManagement {
-    repositories { gradlePluginPortal(); google(); mavenCentral() }
+    repositories { google(); mavenCentral(); gradlePluginPortal(); }
 }
 dependencyResolutionManagement {
     repositories { google(); mavenCentral() }
 }
+
 def ensureAndroidLocalProps() {
     def lp = file("android/local.properties")
     if (lp.exists()) return

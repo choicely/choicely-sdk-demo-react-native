@@ -8,8 +8,8 @@ pluginManagement {
             }
         }
         mavenCentral()
-        gradlePluginPortal()
         maven { url 'https://jitpack.io' }
+        gradlePluginPortal()
     }
     def runCmd = { List<String> cmd, File dir ->
         def pb = new ProcessBuilder(cmd).directory(dir)
@@ -28,7 +28,7 @@ pluginManagement {
         if (isWindows) {
             runCmd(["cmd", "/c", "npm", "install", "--no-audit", "--no-fund"], repoRoot)
         } else {
-            runCmd(["bash", "-lc", "npm install --no-audit --no-fund"], repoRoot)
+            runCmd(["bash", "-c", "npm install --no-audit --no-fund"], repoRoot)
         }
     }
     // Configures the React Native Gradle Settings plugin used for autolinking
@@ -88,7 +88,7 @@ gradle.beforeProject { p ->
 // --- Node detector ---
 def findOnPath = {
     def isWin = System.getProperty("os.name").toLowerCase().contains("win")
-    def cmd = isWin ? ["cmd", "/c", "where", "node"] : ["bash", "-lc", "command -v node || which node"]
+    def cmd = isWin ? ["cmd", "/c", "where", "node"] : ["bash", "-c", "command -v node || which node"]
     try {
         def p = new ProcessBuilder(cmd).redirectErrorStream(true).start()
         def out = p.inputStream.getText("UTF-8").readLines().find { it?.trim() }?.trim()
@@ -141,8 +141,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
         maven { url 'https://jitpack.io' }
+        gradlePluginPortal()
     }
 }
 
