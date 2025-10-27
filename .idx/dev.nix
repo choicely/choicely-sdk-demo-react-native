@@ -4,7 +4,7 @@
   # Which nixpkgs channel to use.
   channel = "stable-25.05";
   # Use https://search.nixos.org/packages to find packages
-  packages = [ pkgs.bash pkgs.nodejs_20 pkgs.jdk17 pkgs.gradle pkgs.ccache ];
+  packages = [ pkgs.bash pkgs.nodejs_20 pkgs.jdk17 pkgs.gradle ];
   # Sets environment variables in the workspace
   env = { };
   idx = {
@@ -17,11 +17,6 @@
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
-        install-and-prebuild = ''
-        '';
-      };
-      # Runs when a workspace restarted
-      onStart = {
         bash-setup = ''
         set -eo pipefail
         cd $HOME
@@ -31,6 +26,8 @@
         BASHRC
         exit
         '';
+      # Runs when a workspace restarted
+      onStart = {
         npm-start = ''
         set -eo pipefail
         echo -e "\033[1;33mStarting Metro development server...\033[0m"
