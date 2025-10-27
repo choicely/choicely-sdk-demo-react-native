@@ -29,6 +29,12 @@
         npm-install = ''
         set -eo pipefail
         npm install
+        exit
+        '';
+        remove-junk = ''
+        set -eo pipefail
+        rm -rf flutter myapp
+        exit
         '';
       };
       # Runs when a workspace restarted
