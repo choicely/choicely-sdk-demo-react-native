@@ -4,7 +4,7 @@
   # Which nixpkgs channel to use.
   channel = "stable-25.05";
   # Use https://search.nixos.org/packages to find packages
-  packages = [ pkgs.bash pkgs.nodejs_20 pkgs.jdk17 pkgs.gradle ];
+  packages = [ pkgs.bash pkgs.nodejs_20 pkgs.jdk17 pkgs.gradle_8 ];
   # Sets environment variables in the workspace
   env = { };
   idx = {
@@ -25,6 +25,10 @@
         __vsc_prompt_cmd_original() { :; }
         BASHRC
         exit
+        '';
+        npm-install = ''
+        set -eo pipefail
+        npm install
         '';
       };
       # Runs when a workspace restarted
