@@ -26,6 +26,7 @@
         BASHRC
         exit
         '';
+      };
       # Runs when a workspace restarted
       onStart = {
         npm-start = ''
