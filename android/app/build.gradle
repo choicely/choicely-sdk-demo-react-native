@@ -25,7 +25,10 @@ android {
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+            def injected = (project.findProperty("android.injected.build.abi")
+                    ?: project.findProperty("android.injected.abis")) as String
+            abiFilters = injected ? injected.split(",").collect { it.trim() } : ["arm64-v8a"]
+            // abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
         }
     }
     buildTypes {
@@ -72,7 +75,7 @@ dependencies {
     implementation "com.facebook.react:hermes-android:0.82.0"
 
     // Import the BOM
-    implementation(platform("com.choicely.sdk:bom:1.0.5"))
+    implementation(platform("com.choicely.sdk:bom:1.1.0"))
     implementation "com.choicely.sdk:android-core"
 }
 afterEvaluate {
@@ -85,11 +88,38 @@ afterEvaluate {
         }
     }
 }
-tasks.register("adbReverseMetro", Exec) {
-    def metroPort = rootProject.ext.reactNativeDevServerPort
-    doFirst { println "[dev] adb reverse tcp:${metroPort} -> tcp:${metroPort}" }
-    commandLine android.adbExecutable, "reverse", "tcp:${metroPort}", "tcp:${metroPort}"
-    ignoreExitValue = true
+// Reverses Metro (and optional extra ports) for ALL connected devices/emulators
+tasks.register("adbReverseMetro") {
+    doLast {
+        def adb = android.adbExecutable
+        def metroPort = rootProject.ext.reactNativeDevServerPort
+        // add more ports if you want:
+        def ports = [metroPort].unique()
+        def buf = new ByteArrayOutputStream()
+        exec {
+            commandLine adb, "devices"
+            standardOutput = buf
+            ignoreExitValue true
+        }
+        def lines = buf.toString("UTF-8").readLines()
+        def serials = lines.findAll { it && !it.startsWith("List of devices")
+                && !it.contains("offline") && !it.contains("unauthorized")
+                && it.split().size() >= 2 && it.split()[1].startsWith("device") }
+                .collect { it.split()[0] }
+        if (serials.isEmpty()) {
+            println "[dev] no connected devices/emulators"
+            return
+        }
+        serials.each { s ->
+            ports.each { p ->
+                println "[dev] adb -s ${s} reverse tcp:${p} -> tcp:${p}"
+                exec {
+                    commandLine adb, "-s", s, "reverse", "tcp:${p}", "tcp:${p}"
+                    ignoreExitValue true
+                }
+            }
+        }
+    }
 }
 tasks.register("prepareDevRuntime") { t ->
     t.dependsOn("adbReverseMetro")

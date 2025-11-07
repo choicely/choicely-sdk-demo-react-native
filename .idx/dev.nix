@@ -64,6 +64,7 @@
         chmod a+x gradlew && \
         ./gradlew :android:app:installDebug -PreactNativeArchitectures=x86_64 --stacktrace
         adb -s emulator-5554 shell monkey -p com.choicely.sdk.rn.debug -c android.intent.category.LAUNCHER 1
+        exit
         '';
       };
     };
