@@ -26,6 +26,13 @@
         BASHRC
         exit
         '';
+        create-env = ''
+        cat > .env <<'EOF'
+        GEMINI_API_KEY=""
+        WEB_HOST_METRO="redirect.test.choicely.link/8932-${WEB_HOST}"
+
+        EOF
+        '';
         remove-junk = ''
         set -eo pipefail
         rm -rf flutter myapp

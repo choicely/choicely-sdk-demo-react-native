@@ -13,10 +13,6 @@
     # Git repository
     rm -rf "$out/.git" "$out/idx-template".{nix,json}
     cd "$out"
-    cat > .env <<'EOF'
-    GEMINI_API_KEY=""
-    WEB_HOST_METRO="redirect.test.choicely.link/8932-${WEB_HOST}"
-    EOF
     # Install npm dependencies
     npm install --no-audit --progress=false
     '';
