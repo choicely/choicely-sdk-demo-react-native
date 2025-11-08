@@ -1,6 +1,7 @@
 {
   "name": "Choicely SDK React Native",
   "description": "Embed React Native components within a Choicely app",
+  "icon": "https://raw.githubusercontent.com/choicely/choicely-sdk-demo-react-native/refs/heads/main/.idx/icon.png",
   "params": [
     {
       "id": "app_key",

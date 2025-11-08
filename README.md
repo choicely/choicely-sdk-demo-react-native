@@ -95,6 +95,10 @@ visit: [Choicely Mobile SDK Documentation](https://studio.choicely.com/docs/sdk)
 
 ## Notes
 
+### Firebase Studio
+
+[![Try in Firebase Studio](https://cdn.firebasestudio.dev/btn/try_dark_32@2x.png)](https://studio.firebase.google.com/new?template=https%3A%2F%2Fgithub.com%2Fchoicely%2Fchoicely-sdk-demo-react-native)
+
 ### Not using React Native?
 
 Please refer to the official fully native SDK example
