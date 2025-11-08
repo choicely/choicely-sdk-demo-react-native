@@ -1,5 +1,9 @@
 {
   "workbench.colorCustomizations": {
+    "extensions.ignoreRecommendations": true,
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+    "workbench.tips.enabled": false,
     "focusBorder": "#37ff95",
     "foreground": "#d9e6e0",
     "editor.background": "#0b0f0e",
