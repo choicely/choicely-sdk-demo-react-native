@@ -1,13 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    def cliArchs     = project.findProperty("reactNativeArchitectures")?.toString()
+    def cliArchs = project.findProperty("reactNativeArchitectures")?.toString()
     def injectedAbis = (project.findProperty("android.injected.build.abi")
             ?: project.findProperty("android.injected.abis"))?.toString()
     // precedence: CLI > (debug-like && injected) > default
     project.ext.reactNativeArchitectures = (cliArchs ?: injectedAbis ?: "arm64-v8a")
     println "React Native architectures: " + project.ext.reactNativeArchitectures
     ext {
+        minSdkVersion = 24
         compileSdkVersion = 36
+        targetSdkVersion = compileSdkVersion
         kotlin_version = '2.2.20'
         kotlinVersion = kotlin_version
     }
@@ -25,4 +27,27 @@ plugins {
     id "com.android.application" version "8.13.0" apply false
     id "com.facebook.react" version "0.82.0" apply false
     id "org.jetbrains.kotlin.android" version "$kotlin_version" apply false
+}
+subprojects { subproj ->
+    subproj.pluginManager.withPlugin("com.android.library") {
+        def androidExt = subproj.extensions.findByName("android")
+        if (androidExt) {
+            if (androidExt.hasProperty("compileSdk")) {
+                androidExt.compileSdk = (rootProject.ext.compileSdkVersion as int)
+            }
+            if (androidExt.metaClass.respondsTo(androidExt, "compileSdkVersion", Integer)) {
+                androidExt.compileSdkVersion(rootProject.ext.compileSdkVersion as int)
+            }
+            if (androidExt.defaultConfig?.hasProperty("minSdk")) {
+                androidExt.defaultConfig.minSdk = (rootProject.ext.minSdkVersion as int)
+            } else if (androidExt.defaultConfig?.metaClass?.respondsTo(androidExt.defaultConfig, "minSdkVersion", Integer)) {
+                androidExt.defaultConfig.minSdkVersion(rootProject.ext.minSdkVersion as int)
+            }
+            if (androidExt.defaultConfig?.hasProperty("targetSdk")) {
+                androidExt.defaultConfig.targetSdk = (rootProject.ext.targetSdkVersion as int)
+            } else if (androidExt.defaultConfig?.metaClass?.respondsTo(androidExt.defaultConfig, "targetSdkVersion", Integer)) {
+                androidExt.defaultConfig.targetSdkVersion(rootProject.ext.targetSdkVersion as int)
+            }
+        }
+    }
 }
