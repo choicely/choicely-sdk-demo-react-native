@@ -1,6 +1,9 @@
 package com.choicely.sdk.rn;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -228,6 +231,9 @@ public class MyApplication extends Application implements ReactApplication {
      * Editing tips: If you introduce other native SDKs, keep initialization lightweight and idempotent.
      * Heavy or network-bound work should be deferred to a background initializer.
      */
+
+    private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -245,6 +251,15 @@ public class MyApplication extends Application implements ReactApplication {
         // 4) Opt into React Native's New Architecture when the build flag is enabled.
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
             DefaultNewArchitectureEntryPoint.load();
+        }
+
+        final SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final String host = getString(R.string.debug_rn_host);
+        if (TextUtils.getTrimmedLength(host) > 0) {
+            prefs.edit()
+                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
+                    .apply();
         }
     }
 }
