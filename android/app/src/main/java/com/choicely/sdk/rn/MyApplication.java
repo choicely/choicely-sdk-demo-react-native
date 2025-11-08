@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.choicely.sdk.ChoicelySDK;
 import com.choicely.sdk.rn.factory.MyContentFactory;
 import com.choicely.sdk.rn.factory.MySplashFactory;
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactHost;
 import com.facebook.react.ReactNativeHost;
@@ -16,11 +17,8 @@ import com.facebook.react.bridge.JSExceptionHandler;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactHost;
 import com.facebook.react.defaults.DefaultReactNativeHost;
-import com.facebook.react.shell.MainReactPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,21 +68,16 @@ public class MyApplication extends Application implements ReactApplication {
         }
 
         /**
-         * Declares the list of React packages (native modules) available to JS.
+         * Provides the list of {@link ReactPackage} instances used by the app.
          * <p>
-         * Extend this list to register custom packages for your app. Keep ordering stable to
-         * ensure deterministic module initialization.
+         * By default this uses {@link PackageList} to pull in all autolinked packages. Override
+         * to add custom packages that cannot be autolinked.
          *
-         * @return immutable list of {@link ReactPackage} instances.
+         * @return list of packages to register with RN.
          */
-        @NonNull
         @Override
         public List<ReactPackage> getPackages() {
-            return Arrays.asList(
-                    // Core RN package; add your custom packages after this.
-                    new MainReactPackage(),
-                    new AsyncStoragePackage()
-            );
+            return new PackageList(this).getPackages(); // pulls in all autolinked packages
         }
 
         /**

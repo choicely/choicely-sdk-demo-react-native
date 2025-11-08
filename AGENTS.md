@@ -28,7 +28,8 @@ You create clear, concise, documented, and readable JavaScript code.
   dependencies.
 - Do not add dependencies that require native code changes unless explicitly asked.
 - Use the .jsx file extension for React Native component files.
-- Split the code into logical packages or components where applicable to enhance readability and maintainability.
+- Split the code into logical packages or components where applicable to enhance readability and
+  maintainability.
 
 # Overall guidelines
 
@@ -45,5 +46,8 @@ You create clear, concise, documented, and readable JavaScript code.
 - All React Native components live in the 'src/components' folder.
 - All React Native components are registered via AppRegistry in 'index.js'.
 - All React Native dependencies are listed in 'package.json' at the project root.
+- The Choicely SDK native host app already contains toolbar on all screens, so
+  React Native components do not need to implement their own toolbar except when the toolbar
+  provides functionality such as back button or title change.
 - Docs on the Choicely SDK can be found at https://docs.choicely.com
 - More project related information can be found in 'README.md' at the project root.
