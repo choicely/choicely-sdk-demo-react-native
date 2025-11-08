@@ -1,5 +1,8 @@
 {
   "workbench.colorCustomizations": {
+    "IDX.agenticWorkspace": true,
+    "IDX.aI.enableCodebaseIndexing": true,
+    "IDX.aI.enableInlineCompletion": true,
     "extensions.ignoreRecommendations": true,
     "extensions.autoCheckUpdates": false,
     "extensions.autoUpdate": false,
