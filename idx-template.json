@@ -1,0 +1,13 @@
+{
+  "name": "Choicely SDK React Native",
+  "description": "Embed React Native components within a Choicely app",
+  "params": [
+    {
+      "id": "app_key",
+      "name": "App Key",
+      "type": "text",
+      "default": "Y2hvaWNlbHktZXUvYXBwcy9mY3Zud1hpUGVDemFFcGNVSzBreA",
+      "required": true
+    }
+  ]
+}
