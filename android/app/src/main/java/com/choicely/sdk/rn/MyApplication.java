@@ -17,6 +17,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactHost;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.react.shell.MainReactPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +82,8 @@ public class MyApplication extends Application implements ReactApplication {
         public List<ReactPackage> getPackages() {
             return Arrays.asList(
                     // Core RN package; add your custom packages after this.
-                    new MainReactPackage()
+                    new MainReactPackage(),
+                    new AsyncStoragePackage()
             );
         }
 
