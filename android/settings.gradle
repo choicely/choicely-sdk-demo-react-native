@@ -39,7 +39,6 @@ plugins {
 }
 // ---- ENV LOADER (default.env -> .env -> real env wins) ----
 def repoRoot = settingsDir.toPath().resolve("..").normalize().toFile()
-
 def parseEnv = { File f ->
     if (!f.exists()) return [:]
     def map = [:]
@@ -59,7 +58,6 @@ def parseEnv = { File f ->
     }
     return map
 }
-
 def defaultsEnv = parseEnv(new File(repoRoot, 'default.env'))
 def localEnv    = parseEnv(new File(repoRoot, '.env'))
 def mergedEnv   = new LinkedHashMap(defaultsEnv)
@@ -108,7 +106,6 @@ def guessCommon = {
      "C:/Program Files/nodejs/node.exe", "C:/Program Files (x86)/nodejs/node.exe"
     ].find { it && new File(it).canExecute() }
 }
-
 // priority: -PnodeExecutable > NODE_BINARY > PATH > guesses
 def nodeFromProp = providers.gradleProperty("nodeExecutable").orNull
 def nodeFromEnv = System.getenv("NODE_BINARY")

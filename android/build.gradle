@@ -1,5 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    def cliArchs     = project.findProperty("reactNativeArchitectures")?.toString()
+    def injectedAbis = (project.findProperty("android.injected.build.abi")
+            ?: project.findProperty("android.injected.abis"))?.toString()
+    // precedence: CLI > (debug-like && injected) > default
+    project.ext.reactNativeArchitectures = (cliArchs ?: injectedAbis ?: "arm64-v8a")
+    println "React Native architectures: " + project.ext.reactNativeArchitectures
     ext {
         compileSdkVersion = 36
         kotlin_version = '2.2.20'
