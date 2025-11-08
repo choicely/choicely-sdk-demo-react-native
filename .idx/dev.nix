@@ -4,14 +4,19 @@
   # Which nixpkgs channel to use.
   channel = "stable-25.05";
   # Use https://search.nixos.org/packages to find packages
-  packages = [ pkgs.bash pkgs.nodejs_20 pkgs.jdk17 pkgs.gradle_8 ];
+  packages = [
+  pkgs.bash
+  pkgs.nodejs_20
+  pkgs.jdk17
+#  pkgs.gradle_8
+  ];
   # Sets environment variables in the workspace
   env = { };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
-      "vscjava.vscode-java-pack"
-      "fwcd.kotlin"
+#      "vscjava.vscode-java-pack"
+#      "fwcd.kotlin"
       "msjsdiag.vscode-react-native"
     ];
     workspace = {
