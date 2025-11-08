@@ -35,7 +35,7 @@
       "**/android/**/generated/**": true,
       "**/android/**/.transforms/**": true,
       "**/ios/build/**": true,
-      "**/ios/DerivedData/**": true,
+      "**/ios/DerivedData/**": true
     },
     "files.exclude": {
       "**/.DS_Store": true,
@@ -68,7 +68,10 @@
     "react-native.showUserTips": false,
     "java.autobuild.enabled": false,
     "java.project.importOnFirstTimeStartup": "disabled",
+    "java.configuration.updateBuildConfiguration": "interactive",
     "java.import.gradle.enabled": false,
+    "java.import.maven.enabled": false,
+    "task.autoDetect": "off",
     "gradle.autoDetect": "off",
     "gradle.nestedProjects": false,
     "gradle.debug": false,
@@ -80,6 +83,7 @@
     "java.debug.settings.enableRunDebugCodeLens": false,
     "java.debug.settings.forceBuildBeforeLaunch": false,
     "java.debug.settings.hotCodeReplace": "never",
+    "workbench.remoteIndicator.showExtensionRecommendations": false,
     "editor.fontSize": 12,
     "focusBorder": "#37ff95",
     "foreground": "#d9e6e0",
