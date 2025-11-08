@@ -26,11 +26,6 @@
         BASHRC
         exit
         '';
-        npm-install = ''
-        set -eo pipefail
-        npm install
-        exit
-        '';
         remove-junk = ''
         set -eo pipefail
         rm -rf flutter myapp

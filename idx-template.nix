@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   # Shell script that produces the final environment
   bootstrap = ''
+    set -eo pipefail
     # Copy the folder containing the `idx-template` files to the final
     # project folder for the new workspace. ${./.} inserts the directory
     # of the checked-out Git folder containing this template.
@@ -10,5 +11,6 @@
     # Remove the template files themselves and any connection to the template's
     # Git repository
     rm -rf "$out/.git" "$out/idx-template".{nix,json}
+    npm install
   '';
 }
