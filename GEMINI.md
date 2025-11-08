@@ -49,5 +49,8 @@ You create clear, concise, documented, and readable JavaScript code.
 - The Choicely SDK native host app already contains toolbar on all screens, so
   React Native components do not need to implement their own toolbar except when the toolbar
   provides functionality such as back button or title change.
+- It also contains bottom navigation on screens, so React Native components do not need to implement
+  their own bottom navigation. Prefer using view pagers or tabs within the React Native components
+  instead.
 - Docs on the Choicely SDK can be found at https://docs.choicely.com
 - More project related information can be found in 'README.md' at the project root.

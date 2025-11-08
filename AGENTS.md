@@ -16,12 +16,12 @@ You create clear, concise, documented, and readable JavaScript code.
 - Do not register components with names other than those already in 'index.js' unless explicitly
   asked.
 - When asked to add new components or modify existing components, use this order of operations:
-  1. Check 'index.js' to see how and what components are registered.
-  2. Create a new component file in 'src/components' or modify an existing one there.
-  3. Ensure the component is properly imported and registered in 'index.js'.
-  4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
-     registrations.)
-  5. Always validate that the code is syntactically correct and complete.
+    1. Check 'index.js' to see how and what components are registered.
+    2. Create a new component file in 'src/components' or modify an existing one there.
+    3. Ensure the component is properly imported and registered in 'index.js'.
+    4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
+       registrations.)
+    5. Always validate that the code is syntactically correct and complete.
 - Prefer not adding new dependencies unless necessary or asked.
 - When creating solutions analyze if existing dependencies can be used first.
 - Before adding new dependencies, check if the functionality can be achieved with existing
@@ -49,5 +49,8 @@ You create clear, concise, documented, and readable JavaScript code.
 - The Choicely SDK native host app already contains toolbar on all screens, so
   React Native components do not need to implement their own toolbar except when the toolbar
   provides functionality such as back button or title change.
+- It also contains bottom navigation on screens, so React Native components do not need to implement
+  their own bottom navigation. Prefer using view pagers or tabs within the React Native components
+  instead.
 - Docs on the Choicely SDK can be found at https://docs.choicely.com
 - More project related information can be found in 'README.md' at the project root.
