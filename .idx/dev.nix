@@ -27,9 +27,11 @@
         exit
         '';
         create-env = ''
-        cat > .env <<'EOF'
+        # Fail fast if WEB_HOST isn't set
+        : "''${WEB_HOST:?WEB_HOST is required}"
+        cat > .env <<EOF
         GEMINI_API_KEY=""
-        WEB_HOST_METRO="redirect.test.choicely.link/8932-${WEB_HOST}"
+        WEB_HOST_METRO="redirect.test.choicely.link/8932-''${WEB_HOST}"
 
         EOF
         '';
