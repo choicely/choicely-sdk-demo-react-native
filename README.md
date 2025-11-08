@@ -5,7 +5,7 @@ Welcome! This project provides sample application for
 explore cross-platform app development.
 
 This is an example setup demonstrating how to use the Choicely SDK and React Native together by
-embedding React Native components within a Choicely app.
+embedding React Native components within a native Choicely app.
 
 ## Features
 
