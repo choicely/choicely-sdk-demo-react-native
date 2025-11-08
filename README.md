@@ -97,7 +97,7 @@ visit: [Choicely Mobile SDK Documentation](https://studio.choicely.com/docs/sdk)
 
 ### Firebase Studio
 
-<a href="https://studio.firebase.google.com/new?template=https%3A%2F%2Fgithub.com%2Fchoicely%2Fchoicely-sdk-demo-react-native&name=choicely-rn">
+<a href="https://studio.firebase.google.com/new?template=https%3A%2F%2Fgithub.com%2Fchoicely%2Fchoicely-sdk-demo-react-native&name=choicely-rn" target="_blank" rel="noopener noreferrer">
   <picture>
     <source
       media="(prefers-color-scheme: dark)"
