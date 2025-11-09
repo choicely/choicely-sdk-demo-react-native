@@ -2,26 +2,36 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const appDirectory = path.resolve(__dirname, '.');
+const appDirectory = path.resolve(__dirname, '..');
+
+const babelConfig = require('./babel.config');
+
+const indexHtmlPath = path.resolve(appDirectory, 'index.html');
+const indexJsPath = path.resolve(appDirectory, 'index.web.js');
 
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
   include: [
-    path.resolve(appDirectory, 'index.web.js'),
+    indexJsPath,
     path.resolve(appDirectory, 'src'),
     path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
+  ],
+  exclude: [
+      {
+        and: [
+          path.resolve(appDirectory, 'node_modules'),
+          path.resolve(appDirectory, 'android'),
+          path.resolve(appDirectory, 'ios'),
+        ],
+        not: [],
+      },
   ],
   use: {
     loader: 'babel-loader',
     options: {
       cacheDirectory: true,
       presets: ['module:@react-native/babel-preset'],
-      plugins: [
-        // optional — webpack alias already maps RN -> RNW, but this doesn’t hurt
-        'react-native-web',
-        '@babel/plugin-proposal-export-namespace-from',
-        '@babel/plugin-transform-modules-commonjs',
-      ],
+      plugins: ['react-native-web', ...(babelConfig.plugins || [])],
     },
   },
 };
@@ -37,8 +47,9 @@ const ttfLoaderConfiguration = {
 };
 
 module.exports = {
-  entry: { app: path.join(appDirectory, 'index.web.js') },
+  entry: { app: indexJsPath },
   output: {
+    clean: true,
     path: path.resolve(appDirectory, 'dist'),
     filename: 'app.bundle.js',
   },
@@ -49,6 +60,9 @@ module.exports = {
     ],
     alias: {
       'react-native$': 'react-native-web',
+      '../Utilities/Platform': 'react-native-web/dist/exports/Platform',
+      '../../Utilities/Platform': 'react-native-web/dist/exports/Platform',
+      './Platform': 'react-native-web/dist/exports/Platform'
     },
   },
   module: {
@@ -59,7 +73,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: path.join(__dirname, 'index.html') }),
+    new HtmlWebpackPlugin({ template: indexHtmlPath }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({ __DEV__: JSON.stringify(true) }),
   ],

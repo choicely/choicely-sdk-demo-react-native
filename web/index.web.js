@@ -1,7 +1,7 @@
 import { AppRegistry } from 'react-native';
 import { View, Text, Button, Pressable } from 'react-native';
 import React from 'react';
-import { components as exportedComponents, defaultComponentName, registerComponents } from './index.js';
+import { components as exportedComponents, defaultComponentName, registerComponents } from '../index.js';
 
 registerComponents()
 
