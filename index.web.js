@@ -27,10 +27,9 @@ function WebRoot({ components = {}, initialComponent }) {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* top toolbar with background for contrast */}
       <View
         style={{
-          backgroundColor: '#0f0f0f',  // toolbar bg only
+          backgroundColor: '#0f0f0f',
           borderBottomWidth: 1,
           borderColor: '#232323',
           paddingHorizontal: 12,
@@ -67,8 +66,6 @@ function WebRoot({ components = {}, initialComponent }) {
           );
         })}
       </View>
-
-      {/* render area — NO background/styles applied to your components */}
       <View>
         {Active ? <Active /> : <Text>Component "{String(active)}" not found</Text>}
       </View>
