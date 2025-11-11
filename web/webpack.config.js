@@ -6,8 +6,8 @@ const appDirectory = path.resolve(__dirname, '..');
 
 const babelConfig = require('./babel.config');
 
-const indexHtmlPath = path.resolve(appDirectory, 'index.html');
-const indexJsPath = path.resolve(appDirectory, 'index.web.js');
+const indexHtmlPath = path.resolve(appDirectory, 'web/index.html');
+const indexJsPath = path.resolve(appDirectory, 'web/index.web.js');
 
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
