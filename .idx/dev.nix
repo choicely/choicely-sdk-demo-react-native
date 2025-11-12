@@ -52,33 +52,33 @@
         echo -e "\033[1;33mStarting Metro development server...\033[0m"
         npm start
         '';
-        android-emulator = ''
-        set -eo pipefail
-        echo -e "\033[1;33mWaiting for Android emulator to be ready...\033[0m"
-        # Wait for the device connection command to finish
-        adb -s emulator-5554 wait-for-device
-        echo -e "\033[1;33mOptimizing Android emulator...\033[0m"
-        adb -s emulator-5554 shell settings put global window_animation_scale 0
-        adb -s emulator-5554 shell settings put global transition_animation_scale 0
-        adb -s emulator-5554 shell settings put global animator_duration_scale 0
-        adb -s emulator-5554 shell settings put secure location_mode 0
-        exit
-        '';
-        android-build = ''
-        set -eo pipefail
-        rm -rf ./android/app/build
-        rm -rf ./android/.gradle
-        rm -rf ./.gradle
-        chmod a+x gradlew && \
-        ./gradlew :android:app:installDebug -PreactNativeArchitectures=x86_64 --stacktrace
-        adb -s emulator-5554 shell monkey -p com.choicely.sdk.rn.debug -c android.intent.category.LAUNCHER 1
-        exit
-        '';
+#        android-emulator = ''
+#        set -eo pipefail
+#        echo -e "\033[1;33mWaiting for Android emulator to be ready...\033[0m"
+#        # Wait for the device connection command to finish
+#        adb -s emulator-5554 wait-for-device
+#        echo -e "\033[1;33mOptimizing Android emulator...\033[0m"
+#        adb -s emulator-5554 shell settings put global window_animation_scale 0
+#        adb -s emulator-5554 shell settings put global transition_animation_scale 0
+#        adb -s emulator-5554 shell settings put global animator_duration_scale 0
+#        adb -s emulator-5554 shell settings put secure location_mode 0
+#        exit
+#        '';
+#        android-build = ''
+#        set -eo pipefail
+#        rm -rf ./android/app/build
+#        rm -rf ./android/.gradle
+#        rm -rf ./.gradle
+#        chmod a+x gradlew && \
+#        ./gradlew :android:app:installDebug -PreactNativeArchitectures=x86_64 --stacktrace
+#        adb -s emulator-5554 shell monkey -p com.choicely.sdk.rn.debug -c android.intent.category.LAUNCHER 1
+#        exit
+#        '';
       };
     };
     # Enable previews and customize configuration
     previews = {
-      enable = true;
+      enable = false;
       previews = {
         android = {
           # noop
