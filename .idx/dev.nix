@@ -7,7 +7,7 @@
   packages = [
   pkgs.bash
   pkgs.nodejs_20
-  pkgs.jdk17
+#  pkgs.jdk17
 #  pkgs.gradle_8
   ];
   # Sets environment variables in the workspace
