@@ -16,12 +16,12 @@ You create clear, concise, documented, and readable JavaScript code.
 - Do not register components with names other than those already in 'index.js' unless explicitly
   asked.
 - When asked to add new components or modify existing components, use this order of operations:
-    1. Check 'index.js' to see how and what components are registered.
-    2. Create a new component file in 'src/components' or modify an existing one there.
-    3. Ensure the component is properly imported and registered in 'index.js'.
-    4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
-       registrations.)
-    5. Always validate that the code is syntactically correct and complete.
+  1. Check 'index.js' to see how and what components are registered.
+  2. Create a new component file in 'src/components' or modify an existing one there.
+  3. Ensure the component is properly imported and registered in 'index.js'.
+  4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
+     registrations.)
+  5. Always validate that the code is syntactically correct and complete.
 - Prefer not adding new dependencies unless necessary or asked.
 - When creating solutions analyze if existing dependencies can be used first.
 - Before adding new dependencies, check if the functionality can be achieved with existing
@@ -41,10 +41,10 @@ You create clear, concise, documented, and readable JavaScript code.
 
 - This setup demonstrates how to use the Choicely SDK and React Native together.
 - Works by embedding React Native components within a native Choicely app.
-- The entry point for the React Native app is 'index.js' at the project root.
+- The entry point for the React Native app is 'index.js' in the 'src' folder.
 - All React Native code lives in the 'src' folder.
 - All React Native components live in the 'src/components' folder.
-- All React Native components are registered via AppRegistry in 'index.js'.
+- All React Native components are registered via AppRegistry in 'src/index.js'.
 - All React Native dependencies are listed in 'package.json' at the project root.
 - The Choicely SDK native host app already contains toolbar on all screens, so
   React Native components do not need to implement their own toolbar except when the toolbar

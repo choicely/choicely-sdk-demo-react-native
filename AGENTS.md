@@ -41,10 +41,10 @@ You create clear, concise, documented, and readable JavaScript code.
 
 - This setup demonstrates how to use the Choicely SDK and React Native together.
 - Works by embedding React Native components within a native Choicely app.
-- The entry point for the React Native app is 'index.js' at the project root.
+- The entry point for the React Native app is 'index.js' in the 'src' folder.
 - All React Native code lives in the 'src' folder.
 - All React Native components live in the 'src/components' folder.
-- All React Native components are registered via AppRegistry in 'index.js'.
+- All React Native components are registered via AppRegistry in 'src/index.js'.
 - All React Native dependencies are listed in 'package.json' at the project root.
 - The Choicely SDK native host app already contains toolbar on all screens, so
   React Native components do not need to implement their own toolbar except when the toolbar

@@ -30,10 +30,10 @@ project are:
 
 * `package.json`: This file contains the project's dependencies and scripts. It lists the React
   Native and other JavaScript libraries that are used in the project.
-* `index.js`: This is the entry point for the React Native application. It registers the two React
+* `src/index.js`: This is the entry point for the React Native application. It registers the two React
   Native components that are used in the application: `Hello` and `Counter`.
 * `src/components/`: This directory contains the React Native components. To add more components, create new
-  files in this directory and then import and register them in `index.js`.
+  files in this directory and then import and register them in `src/index.js`.
 
 ## Android
 

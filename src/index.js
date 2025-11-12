@@ -1,6 +1,6 @@
 import { AppRegistry } from 'react-native';
-import TicTacToe from './src/components/Hello';
-import Counter from './src/components/Counter';
+import TicTacToe from './components/Hello';
+import Counter from './components/Counter';
 
 const defaultComponentName = 'component_1';
 

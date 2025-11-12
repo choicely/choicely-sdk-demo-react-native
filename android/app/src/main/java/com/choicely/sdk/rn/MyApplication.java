@@ -92,7 +92,7 @@ public class MyApplication extends Application implements ReactApplication {
         @NonNull
         @Override
         public String getJSMainModuleName() {
-            return "index";
+            return "src/index";
         }
 
         /**
