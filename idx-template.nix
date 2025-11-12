@@ -14,6 +14,6 @@
     rm -rf "$out/.git" "$out/idx-template".{nix,json}
     cd "$out"
     # Install npm dependencies
-    npm install --no-audit --progress=false
+    npm install --no-audit --no-fund --progress=false
     '';
 }

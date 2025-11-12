@@ -1,4 +1,4 @@
 <resources>
     <string name="choicely_app_key">Y2hvaWNlbHktZXUvYXBwcy9mY3Zud1hpUGVDemFFcGNVSzBreA</string>
-    <string name="debug_rn_host">localhost:8932</string>
+    <string name="debug_rn_host"></string>
 </resources>

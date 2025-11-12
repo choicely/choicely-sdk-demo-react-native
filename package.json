@@ -3,10 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "web": "webpack-dev-server --config ./web/webpack.config.js --mode development --port 8933"
+    "start": "concurrently -k -s first -n metro,proxy \"react-native start\" \"node scripts/proxy.js\"",
+    "web": "webpack-dev-server --config ./web/webpack.config.js --mode development --port 8938"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -35,7 +33,9 @@
     "@react-native/metro-config": "0.82.0",
     "babel-loader": "^9.1.3",
     "babel-plugin-react-native-web": "^0.21.2",
+    "concurrently": "^9.2.1",
     "html-webpack-plugin": "^5.6.0",
+    "http-proxy": "^1.18.1",
     "react-dom": "19.1.1",
     "react-native-web": "^0.21.2",
     "react-test-renderer": "19.1.0",

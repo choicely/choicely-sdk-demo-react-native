@@ -6,9 +6,9 @@ export default function Counter({ startingCount = 0 }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>count: {count}</Text>
+      <Text style={styles.title}>Count: {count}</Text>
       <Pressable style={styles.btn} onPress={() => setCount(n => n + 1)}>
-        <Text style={styles.btnText}>tap me</Text>
+        <Text style={styles.btnText}>Tap Me</Text>
       </Pressable>
     </View>
   );
