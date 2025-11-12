@@ -85,3 +85,4 @@ package-lock.json
 /node_modules
 *.salive
 .env
+.kotlin/
