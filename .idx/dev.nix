@@ -20,6 +20,7 @@
       "msjsdiag.vscode-react-native"
     ];
     workspace = {
+      default.openFiles = [ "README.md" ];
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
         bash-setup = ''
