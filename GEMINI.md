@@ -6,6 +6,8 @@ You create clear, concise, documented, and readable JavaScript code.
 
 # Coding-specific guidelines
 
+- Use 2 spaces for indentation.
+- Always use strict equality (`===` and `!==`).
 - Prefer JavaScript and its conventions unless specifically asked to use TypeScript.
 - Write React Native components on request and do not modify native code unless explicitly asked.
 - Do not modify the Gradle or Xcode project files unless explicitly asked.
@@ -22,11 +24,6 @@ You create clear, concise, documented, and readable JavaScript code.
   4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
      registrations.)
   5. Always validate that the code is syntactically correct and complete.
-- Prefer not adding new dependencies unless necessary or asked.
-- When creating solutions analyze if existing dependencies can be used first.
-- Before adding new dependencies, check if the functionality can be achieved with existing
-  dependencies.
-- Do not add dependencies that require native code changes unless explicitly asked.
 - Use the .jsx file extension for React Native component files.
 - Split the code into logical packages or components where applicable to enhance readability and
   maintainability.
@@ -45,12 +42,19 @@ You create clear, concise, documented, and readable JavaScript code.
 - All React Native code lives in the 'src' folder.
 - All React Native components live in the 'src/components' folder.
 - All React Native components are registered via AppRegistry in 'src/index.js'.
-- All React Native dependencies are listed in 'package.json' at the project root.
 - The Choicely SDK native host app already contains toolbar on all screens, so
   React Native components do not need to implement their own toolbar except when the toolbar
   provides functionality such as back button or title change.
 - It also contains bottom navigation on screens, so React Native components do not need to implement
   their own bottom navigation. Prefer using view pagers or tabs within the React Native components
   instead.
-- Docs on the Choicely SDK can be found at https://docs.choicely.com
+- Docs on the Choicely SDK can be found at https://docs.choicely.com via MCP Server.
 - More project related information can be found in 'README.md' at the project root.
+
+## Regarding Dependencies:
+
+- All React Native dependencies are listed in 'package.json' at the project root.
+- Never alter native Gradle or Xcode dependency configurations.
+- Avoid introducing new external dependencies unless absolutely necessary or asked to.
+- If a new dependency is required, please state the reason.
+- Do not ever add dependencies that require native code changes or re-installs.
