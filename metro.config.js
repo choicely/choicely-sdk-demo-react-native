@@ -1,7 +1,7 @@
 console.log('Loading metro.config.js...');
 const path = require('path');
 const { getDefaultConfig } = require('@react-native/metro-config');
-const { getPorts } = require('./scripts/ports');
+const { getPorts } = require('./dev/ports');
 
 module.exports = (async () => {
   const { metroPort } = getPorts(__dirname);

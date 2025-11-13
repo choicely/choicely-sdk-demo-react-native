@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   # Shell script that produces the final environment
-    packages = [ pkgs.nodejs_20 ];
-    bootstrap = ''
+  packages = [ pkgs.nodejs_20 ];
+  bootstrap = ''
     set -eo pipefail
     # Copy the folder containing the `idx-template` files to the final
     # project folder for the new workspace. ${./.} inserts the directory
@@ -15,5 +15,5 @@
     cd "$out"
     # Install npm dependencies
     npm install --no-audit --no-fund --progress=false
-    '';
+  '';
 }
