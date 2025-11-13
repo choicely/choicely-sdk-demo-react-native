@@ -33,11 +33,15 @@
           exit
         '';
         create-env = ''
+          set -a
+          [ -f default.env ] && source default.env
+          [ -f .env ] && source .env
+          set +a
           # Fail fast if WEB_HOST isn't set
           : "''${WEB_HOST:?WEB_HOST is required}"
           cat > .env <<EOF
           GEMINI_API_KEY=""
-          WEB_HOST_METRO="redirect.test.choicely.link/8932-''${WEB_HOST}"
+          HOST_WEB_METRO="redirect.test.choicely.link/''${RCT_METRO_PORT}-''${WEB_HOST}"
           EOF
           exit
         '';
@@ -74,11 +78,11 @@
             fi
             sleep 0.25
           done
-          TUNNEL_METRO_HOST="$(grep 'your url is:' "$TMP_LOG" | head -n1 | awk '{print $NF}')"
-          export TUNNEL_METRO_HOST
+          HOST_TUNNEL_METRO="$(grep 'your url is:' "$TMP_LOG" | head -n1 | awk '{print $NF}')"
+          export HOST_TUNNEL_METRO
           # append to .env (creates it if it doesn't exist)
-          printf 'TUNNEL_METRO_HOST=%s\n' "$TUNNEL_METRO_HOST" >> .env
-          echo "[tunnel] URL: $TUNNEL_METRO_HOST"
+          printf 'HOST_TUNNEL_METRO=%s\n' "$HOST_TUNNEL_METRO" >> .env
+          echo "[tunnel] URL: $HOST_TUNNEL_METRO"
           # keep localtunnel attached so Ctrl+C stops it
           wait "$LT_PID"
         '';

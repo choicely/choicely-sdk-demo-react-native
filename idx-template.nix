@@ -13,6 +13,10 @@
     # Git repository
     rm -rf "$out/.git" "$out/idx-template".{nix,json}
     cd "$out"
+    set -a
+    [ -f default.env ] && source default.env
+    [ -f .env ] && source .env
+    set +a
     # Install npm dependencies
     npm install --no-audit --no-fund --progress=false
   '';
