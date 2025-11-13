@@ -25,11 +25,21 @@
         default.openFiles = [ "README.md" ];
         bash-setup = ''
           set -eo pipefail
-          cd $HOME
-          cat > ~/.bashrc <<'BASHRC'
+          PROJECT_DIR="$PWD"
+          pushd "$HOME"
+          cat > ~/.bashrc <<BASHRC
           unset PROMPT_COMMAND
           __vsc_prompt_cmd_original() { :; }
+          # auto-export env vars from the original project dir
+          if [ -d "$PROJECT_DIR" ]; then
+            set -a
+            [ -f "$PROJECT_DIR/default.env" ] && . "$PROJECT_DIR/default.env"
+            [ -f "$PROJECT_DIR/.env" ] && . "$PROJECT_DIR/.env"
+            set +a
+          fi
+          export PROJECT_DIR="$PROJECT_DIR"
           BASHRC
+          popd
           exit
         '';
         create-env = ''
@@ -60,10 +70,6 @@
         '';
         tunnel-metro = ''
           set -eo pipefail
-          set -a
-          [ -f default.env ] && source default.env
-          [ -f .env ] && source .env
-          set +a
           PORT="''${RCT_METRO_PORT}"
           TMP_LOG="$(mktemp)"
           echo "[tunnel] starting localtunnel on port $PORT..."
