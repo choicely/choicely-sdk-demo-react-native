@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "concurrently -k -s first -n metro,proxy \"react-native start\" \"node scripts/proxy.js\"",
+    "start": "concurrently -k -s first -n metro,proxy \"react-native start\" \"node dev/proxy.js\"",
     "web": "webpack-dev-server --config ./web/webpack.config.js --mode development --port 8938"
   },
   "dependencies": {
