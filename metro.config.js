@@ -5,7 +5,6 @@ const { getPorts } = require('./dev/ports');
 
 module.exports = (async () => {
   const { metroPort } = getPorts(__dirname);
-
   const config = await getDefaultConfig(__dirname);
   config.server = {
     ...config.server,

@@ -7,6 +7,7 @@
   packages = [
     pkgs.bash
     pkgs.nodejs_20
+    pkgs.cloudflared
     #  pkgs.jdk17
   ];
   services.docker.enable = true;
@@ -22,7 +23,7 @@
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
       onCreate = {
-        default.openFiles = [ "README.md" ];
+        default.openFiles = [ ];
         bash-setup = ''
           set -eo pipefail
           PROJECT_DIR="$PWD"
@@ -40,6 +41,7 @@
           export PROJECT_DIR="$PROJECT_DIR"
           BASHRC
           popd
+          chmod -R a+x scripts/
           exit
         '';
         create-env = ''
@@ -68,29 +70,11 @@
           echo -e "\033[1;33mStarting Metro development server...\033[0m"
           npm start
         '';
+        cache-bundle = ''
+          ./scripts/wait_bundle.sh "http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server"
+        '';
         tunnel-metro = ''
-          set -eo pipefail
-          PORT="''${RCT_METRO_PORT}"
-          TMP_LOG="$(mktemp)"
-          echo "[tunnel] starting localtunnel on port $PORT..."
-          npx localtunnel --port "$PORT" >"$TMP_LOG" 2>&1 &
-          LT_PID=$!
-          echo "[tunnel] waiting for loca.lt URL..."
-          while ! grep -q 'your url is:' "$TMP_LOG"; do
-            if ! kill -0 "$LT_PID" 2>/dev/null; then
-              echo "[tunnel] localtunnel exited before printing URL" >&2
-              cat "$TMP_LOG" >&2 || true
-              exit 1
-            fi
-            sleep 0.25
-          done
-          HOST_TUNNEL_METRO="$(grep 'your url is:' "$TMP_LOG" | head -n1 | awk '{print $NF}')"
-          export HOST_TUNNEL_METRO
-          # append to .env (creates it if it doesn't exist)
-          printf 'HOST_TUNNEL_METRO=%s\n' "$HOST_TUNNEL_METRO" >> .env
-          echo "[tunnel] URL: $HOST_TUNNEL_METRO"
-          # keep localtunnel attached so Ctrl+C stops it
-          wait "$LT_PID"
+          ./scripts/open_tunnel.sh "''${RCT_METRO_PORT}" HOST_TUNNEL_METRO
         '';
         #        android-emulator = ''
         #        set -eo pipefail
