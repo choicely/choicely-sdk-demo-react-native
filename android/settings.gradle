@@ -80,6 +80,7 @@ try {
 
 // expose to all projects (no defaults here, just the validated value)
 gradle.beforeProject { p ->
+    p.ext.choicelyAppKey = mergedEnv['CHOICELY_APP_KEY'] ?: System.getenv('CHOICELY_APP_KEY')
     p.ext.reactNativeDevServerPort = rctPortStr
 }
 
