@@ -41,7 +41,7 @@
           export PROJECT_DIR="$PROJECT_DIR"
           BASHRC
           popd
-          chmod -R a+x scripts/
+          chmod -R a+x scripts
           exit
         '';
         create-env = ''
@@ -68,10 +68,9 @@
         npm-start = ''
           set -eo pipefail
           echo -e "\033[1;33mStarting Metro development server...\033[0m"
-          npm start
-        '';
-        cache-bundle = ''
-          ./scripts/wait_bundle.sh "http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server"
+          npx concurrently --kill-others-on-fail -s first -n rn,wait_bundle \
+            "npm start" \
+            "./scripts/wait_bundle.sh 'http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server'"
         '';
         tunnel-metro = ''
           ./scripts/open_tunnel.sh "''${RCT_METRO_PORT}" HOST_TUNNEL_METRO

@@ -3,6 +3,11 @@ set -euo pipefail
 
 URL="$1"
 
+if [ -z "$1" ]; then
+  echo "Usage: $0 URL"
+  exit 1
+fi
+
 echo "[wait-bundle] Waiting for 200 from:"
 echo "  $URL"
 
