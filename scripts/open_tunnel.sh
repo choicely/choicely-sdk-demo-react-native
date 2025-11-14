@@ -17,26 +17,30 @@ case "$VAR_NAME" in
 esac
 
 TMP_LOG="$(mktemp)"
-echo "[tunnel] starting localtunnel on port $PORT..."
-npx localtunnel --port "$PORT" >"$TMP_LOG" 2>&1 &
-LT_PID=$!
+echo "[tunnel] starting cloudflared on port $PORT..."
+cloudflared tunnel --url "http://localhost:${PORT}" --no-autoupdate >"$TMP_LOG" 2>&1 &
+CF_PID=$!
 
-echo "[tunnel] waiting for loca.lt URL..."
-while ! grep -q 'your url is:' "$TMP_LOG"; do
-  if ! kill -0 "$LT_PID" 2>/dev/null; then
-    echo "[tunnel] localtunnel exited before printing URL" >&2
+echo "[tunnel] waiting for cloudflared URL..."
+
+TUNNEL_URL=""
+while :; do
+  if ! kill -0 "$CF_PID" 2>/dev/null; then
+    echo "[tunnel] cloudflared exited before printing URL" >&2
     cat "$TMP_LOG" >&2 || true
     exit 1
+  fi
+  TUNNEL_URL="$(grep -o 'https://[^ ]*trycloudflare.com' "$TMP_LOG" | head -n1 || true)"
+  if [ -n "$TUNNEL_URL" ]; then
+    break
   fi
   sleep 0.25
 done
 
-TUNNEL_URL="$(grep 'your url is:' "$TMP_LOG" | head -n1 | awk '{print $NF}')"
-
 export "$VAR_NAME=$TUNNEL_URL"
-# append to .env (creates it if it doesn't exist)
-printf '%s=%s\n' "$VAR_NAME" "$TUNNEL_URL" >> .env
+printf '%s="%s"\n' "$VAR_NAME" "$TUNNEL_URL" >> .env
+
 echo "[tunnel] URL ($VAR_NAME): $TUNNEL_URL"
 
-# keep localtunnel attached so Ctrl+C stops it
-wait "$LT_PID"
+# Keep cloudflared attached so Ctrl+C will kill it
+wait "$CF_PID"
