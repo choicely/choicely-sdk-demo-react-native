@@ -7,11 +7,11 @@ fi
 
 PORT="$1"
 
-PIDS=$(lsof -ti :$PORT)
+PIDS=$(lsof -ti :"$PORT")
 
 if [ -z "$PIDS" ]; then
   echo "No process found using port $PORT"
 else
   echo "Killing processes on port $PORT: $PIDS"
-  kill -9 $PIDS
+  kill -9 "$PIDS"
 fi
