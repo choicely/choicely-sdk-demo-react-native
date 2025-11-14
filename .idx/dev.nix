@@ -51,7 +51,7 @@
           set +a
           # Fail fast if WEB_HOST isn't set
           : "''${WEB_HOST:?WEB_HOST is required}"
-          cat > .env <<EOF
+          cat >> .env <<EOF
           GEMINI_API_KEY=""
           HOST_WEB_METRO="redirect.test.choicely.link/''${RCT_METRO_PORT}-''${WEB_HOST}"
           EOF
