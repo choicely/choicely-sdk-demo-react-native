@@ -8,7 +8,7 @@
     pkgs.bash
     pkgs.nodejs_20
     pkgs.cloudflared
-    #  pkgs.jdk17
+    pkgs.jdk17
   ];
   services.docker.enable = true;
   # Sets environment variables in the workspace
