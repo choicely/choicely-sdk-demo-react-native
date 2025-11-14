@@ -13,7 +13,7 @@
     # Git repository
     rm -rf "$out/.git" "$out/idx-template".{nix,json}
     cd "$out"
-    printf '%s=%s\n' "CHOICELY_APP_KEY" "${app_key}" >> .env
+    printf '%s=%s\n' "CHOICELY_APP_KEY" "${app_key}" >> default.env
     printf '%s=%s\n' "CHOICELY_API_KEY" "${api_key}" >> .env
     set -a
     [ -f default.env ] && source default.env
