@@ -7,7 +7,6 @@ fi
 
 PORT="$1"
 
-# Find all PIDs using the port
 PIDS=$(lsof -ti :$PORT)
 
 if [ -z "$PIDS" ]; then

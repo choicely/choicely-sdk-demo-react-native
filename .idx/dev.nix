@@ -70,7 +70,7 @@
           echo -e "\033[1;33mStarting Metro development server...\033[0m"
           npx concurrently --kill-others-on-fail -s first -n rn,wait_bundle \
             "npm start" \
-            "./scripts/wait_bundle.sh 'http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server'"
+            "./scripts/http_retry_until.sh 'http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server' 200"
         '';
         tunnel-metro = ''
           ./scripts/open_tunnel.sh "''${RCT_METRO_PORT}" HOST_TUNNEL_METRO
