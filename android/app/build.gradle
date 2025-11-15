@@ -32,6 +32,10 @@ android {
         if (appKey?.toString()?.trim()) {
             resValue "string", "choicely_app_key", appKey.toString()
         }
+        def appName = rootProject.ext.has('choicelyAppName') ? rootProject.ext.choicelyAppName : null
+        if (appName?.toString()?.trim()) {
+            resValue "string", "app_name", appName.toString()
+        }
     }
     buildTypes {
         release {
