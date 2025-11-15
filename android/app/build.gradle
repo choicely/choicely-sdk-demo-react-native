@@ -28,13 +28,13 @@ android {
             abiFilters = rootProject.ext.reactNativeArchitectures.split(",").collect { it.trim() }
             // abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
         }
-        def appKey = rootProject.ext.has('choicelyAppKey') ? rootProject.ext.choicelyAppKey : null
-        if (appKey?.toString()?.trim()) {
-            resValue "string", "choicely_app_key", appKey.toString()
-        }
         def appName = rootProject.ext.has('choicelyAppName') ? rootProject.ext.choicelyAppName : null
         if (appName?.toString()?.trim()) {
             resValue "string", "app_name", appName.toString()
+        }
+        def appKey = rootProject.ext.has('choicelyAppKey') ? rootProject.ext.choicelyAppKey : null
+        if (appKey?.toString()?.trim()) {
+            resValue "string", "choicely_app_key", appKey.toString()
         }
     }
     buildTypes {
