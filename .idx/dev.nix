@@ -41,7 +41,7 @@
           fi
           export PROJECT_DIR="$PROJECT_DIR"
           export ANDROID_SDK_ROOT="/home/$USER/.androidsdkroot"
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          export ANDROID_HOME="/home/$USER/.androidsdkroot"
           chmod -R a+x $PROJECT_DIR/scripts
           BASHRC
           popd
@@ -56,9 +56,6 @@
           : "''${WEB_HOST:?WEB_HOST is required}"
           cat >> .env <<EOF
           GEMINI_API_KEY=""
-          EOF
-          cat >> android/local.properties <<EOF
-          sdk.dir=/home/$USER/.androidsdkroot
           EOF
           exit
         '';

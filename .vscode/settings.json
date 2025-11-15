@@ -164,5 +164,6 @@
   "workbench.editor.enablePreview": true,
   "workbench.remoteIndicator.showExtensionRecommendations": false,
   "workbench.startupEditor": "none",
-  "workbench.tips.enabled": false
+  "workbench.tips.enabled": false,
+  "code-runner.runInTerminal": true
 }

@@ -1,4 +1,4 @@
-{ pkgs, app_key, api_key, ... }: {
+{ pkgs, name, app_key, api_key, ... }: {
   # Shell script that produces the final environment
   packages = [ pkgs.nodejs_20 ];
   bootstrap = ''
@@ -13,6 +13,7 @@
     # Git repository
     rm -rf "$out/.git" "$out/idx-template".{nix,json}
     cd "$out"
+    printf '%s="%s"\n' "CHOICELY_APP_NAME" "${name}" >> default.env
     printf '%s=%s\n' "CHOICELY_APP_KEY" "${app_key}" >> default.env
     printf '%s=%s\n' "CHOICELY_API_KEY" "${api_key}" >> .env
     set -a
