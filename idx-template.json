@@ -6,13 +6,6 @@
   "icon": "https://raw.githubusercontent.com/choicely/choicely-sdk-demo-react-native/refs/heads/main/.idx/icon.png",
   "params": [
     {
-      "id": "name",
-      "name": "Name your app",
-      "type": "text",
-      "default": "choicely-rn",
-      "required": true
-    },
-    {
       "id": "app_key",
       "name": "Choicely App Key",
       "type": "text",
