@@ -19,6 +19,7 @@
       #      "vscjava.vscode-java-pack"
       #      "fwcd.kotlin"
       "msjsdiag.vscode-react-native"
+      "formulahendry.code-runner"
     ];
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
@@ -39,9 +40,9 @@
             set +a
           fi
           export PROJECT_DIR="$PROJECT_DIR"
+          chmod -R a+x $PROJECT_DIR/scripts
           BASHRC
           popd
-          chmod -R a+x scripts
           exit
         '';
         create-env = ''
@@ -53,18 +54,15 @@
           : "''${WEB_HOST:?WEB_HOST is required}"
           cat >> .env <<EOF
           GEMINI_API_KEY=""
-          HOST_WEB_METRO="redirect.test.choicely.link/''${RCT_METRO_PORT}-''${WEB_HOST}"
           EOF
-          exit
-        '';
-        remove-junk = ''
-          set -eo pipefail
-          rm -rf flutter myapp
           exit
         '';
       };
       # Runs when a workspace restarted
       onStart = {
+        update-app-key = ''
+          ./scripts/update_app_key.sh
+        '';
         npm-start = ''
           set -eo pipefail
           echo -e "\033[1;33mStarting Metro development server...\033[0m"

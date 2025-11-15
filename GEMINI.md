@@ -15,14 +15,15 @@ You create clear, concise, documented, and readable React Native JavaScript code
 - It also contains bottom navigation on screens, so React Native components do not need to implement
   their own bottom navigation. Prefer using view pagers or tabs within the React Native components
   instead.
-- Docs on the Choicely SDK can be found at https://docs.choicely.com via MCP Server.
+- All Choicely related documentation can be found at https://docs.choicely.com via MCP the Server.
+- context7 MCP server can be used to find up-to-date React Native and other documentation.
 - More project related information can be found in 'README.md' at the project root.
 
 ## Project Structure
 ### Code to be modified by you
 - `/src`: React Native code root folder
-  - `/index.js`: Entry point for the React Native app to register components via AppRegistry
-  - `/components`: React Native components
+    - `/index.js`: Entry point for the React Native app to register components via AppRegistry
+    - `/components`: React Native components
 ### Code to avoid modifying unless explicitly asked or fixing issues
 - `/web`: React Native Web code (do not modify unless explicitly asked)
 ### Code not to be modified by you
@@ -48,12 +49,12 @@ You create clear, concise, documented, and readable React Native JavaScript code
 - Do not register components with names other than those already in 'index.js' unless explicitly
   asked.
 - When asked to add new components or modify existing components, use this order of operations:
-  1. Check 'index.js' to see how and what components are registered.
-  2. Create a new component file in 'src/components' or modify an existing one there.
-  3. Ensure the component is properly imported and registered in 'index.js'.
-  4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
-     registrations.)
-  5. Always validate that the code is syntactically correct and complete.
+    1. Check 'index.js' to see how and what components are registered.
+    2. Create a new component file in 'src/components' or modify an existing one there.
+    3. Ensure the component is properly imported and registered in 'index.js'.
+    4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
+       registrations.)
+    5. Always validate that the code is syntactically correct and complete.
 - Use the .jsx file extension for React Native component files.
 - Split the code into logical packages or components where applicable to enhance readability and
   maintainability.

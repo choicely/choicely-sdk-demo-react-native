@@ -37,10 +37,13 @@ while :; do
   sleep 0.25
 done
 
-export "$VAR_NAME=$TUNNEL_URL"
-printf '%s="%s"\n' "$VAR_NAME" "$TUNNEL_URL" >> .env
+STRIPPED_URL="${TUNNEL_URL#http://}"
+STRIPPED_URL="${STRIPPED_URL#https://}"
 
-echo "[tunnel] URL ($VAR_NAME): $TUNNEL_URL"
+export "$VAR_NAME=$STRIPPED_URL"
+printf '%s="%s"\n' "$VAR_NAME" "$STRIPPED_URL" >> .env
+
+echo "[tunnel] URL ($VAR_NAME): $STRIPPED_URL"
 
 # Keep cloudflared attached so Ctrl+C will kill it
 wait "$CF_PID"

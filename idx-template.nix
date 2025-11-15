@@ -19,6 +19,8 @@
     [ -f default.env ] && source default.env
     [ -f .env ] && source .env
     set +a
+    chmod -R a+x scripts
+    ./scripts/update_app_key.sh
     # Install npm dependencies
     npm install --no-audit --no-fund --progress=false
   '';
