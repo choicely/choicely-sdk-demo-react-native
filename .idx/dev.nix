@@ -10,7 +10,7 @@
     pkgs.cloudflared
     pkgs.jdk17
   ];
-  services.docker.enable = true;
+  services.docker.enable = false;
   # Sets environment variables in the workspace
   env = { };
   idx = {
@@ -40,6 +40,8 @@
             set +a
           fi
           export PROJECT_DIR="$PROJECT_DIR"
+          export ANDROID_SDK_ROOT="/home/$USER/.androidsdkroot"
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
           chmod -R a+x $PROJECT_DIR/scripts
           BASHRC
           popd
@@ -55,12 +57,15 @@
           cat >> .env <<EOF
           GEMINI_API_KEY=""
           EOF
+          cat >> android/local.properties <<EOF
+          sdk.dir=/home/$USER/.androidsdkroot
+          EOF
           exit
         '';
       };
       # Runs when a workspace restarted
       onStart = {
-        update-app-key = ''
+        choicely-config-update = ''
           ./scripts/update_app_key.sh
         '';
         npm-start = ''
@@ -85,7 +90,7 @@
         #        adb -s emulator-5554 shell settings put secure location_mode 0
         #        exit
         #        '';
-        #        android-build = ''
+        #        android-install = ''
         #        set -eo pipefail
         #        rm -rf ./android/app/build
         #        rm -rf ./android/.gradle
