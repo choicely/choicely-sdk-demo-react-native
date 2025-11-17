@@ -41,9 +41,9 @@ android {
         debug {
             v2SigningEnabled true
             storeFile file("./signing/debug.jks")
-            storePassword "vpbwITfiME"
-            keyAlias "keystore-debug"
-            keyPassword "8iEWwwOMVS"
+            storePassword rootProject.ext.has('apkStorePass') ? rootProject.ext.apkStorePass : null
+            keyAlias rootProject.ext.has('apkKeyAlias') ? rootProject.ext.apkKeyAlias : null
+            keyPassword rootProject.ext.has('apkKeyPass') ? rootProject.ext.apkKeyPass : null
         }
     }
     buildTypes {

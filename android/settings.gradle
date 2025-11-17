@@ -82,6 +82,10 @@ try {
 gradle.beforeProject { p ->
     p.ext.choicelyAppName = mergedEnv['CHOICELY_APP_NAME'] ?: System.getenv('CHOICELY_APP_NAME')
     p.ext.choicelyAppKey = mergedEnv['CHOICELY_APP_KEY'] ?: System.getenv('CHOICELY_APP_KEY')
+    p.ext.apkKeyStore = mergedEnv['APK_KEYSTORE'] ?: System.getenv('APK_KEYSTORE')
+    p.ext.apkStorePass = mergedEnv['APK_STORE_PASS'] ?: System.getenv('APK_STORE_PASS')
+    p.ext.apkKeyAlias = mergedEnv['APK_KEY_ALIAS'] ?: System.getenv('APK_KEY_ALIAS')
+    p.ext.apkKeyPass = mergedEnv['APK_KEY_PASS'] ?: System.getenv('APK_KEY_PASS')
     p.ext.reactNativeDevServerPort = rctPortStr
 }
 
