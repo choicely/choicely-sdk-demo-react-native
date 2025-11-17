@@ -86,3 +86,4 @@ package-lock.json
 *.salive
 .env
 .kotlin/
+/tmp/
