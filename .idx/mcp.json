@@ -1,10 +1,20 @@
 {
   "mcpServers": {
     "choicely-docs": {
-      "url": "https://docs.choicely.com/mcp"
+      "url": "https://docs.choicely.com/mcp",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      }
     },
     "context7": {
-      "url": "https://mcp.context7.com/mcp"
+      "url": "https://mcp.context7.com/mcp",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      }
     }
   }
 }

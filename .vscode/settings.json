@@ -8,6 +8,10 @@
   "IDX.aI.actionsInChatRedirectAidaRequestToGemini": false,
   "IDX.aI.actionsInChatDefault": true,
   "IDX.aI.enablePreviewCommands": true,
+  "IDX.aI.actionsInChatAlwaysAllowTools": true,
+  "IDX.aI.shouldDefaultToAutoApplyMode": true,
+  "geminicodeassist.agentYoloMode": true,
+  "update.showReleaseNotes": false,
   "[markdown]": {
     "editor.wordWrap": "on"
   },
