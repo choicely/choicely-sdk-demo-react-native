@@ -37,6 +37,15 @@ android {
             resValue "string", "choicely_app_key", appKey.toString()
         }
     }
+    signingConfigs {
+        debug {
+            v2SigningEnabled true
+            storeFile file("./signing/debug.jks")
+            storePassword "vpbwITfiME"
+            keyAlias "keystore-debug"
+            keyPassword "8iEWwwOMVS"
+        }
+    }
     buildTypes {
         release {
             debuggable false
@@ -46,6 +55,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            signingConfig signingConfigs.debug
             debuggable true
             minifyEnabled false
             shrinkResources false
