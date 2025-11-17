@@ -42,7 +42,7 @@
           export PROJECT_DIR="$PROJECT_DIR"
           export ANDROID_SDK_ROOT="/home/$USER/.androidsdkroot"
           export ANDROID_HOME="/home/$USER/.androidsdkroot"
-          export PATH="/home/$USER/.androidsdkroot/build-tools/36.0.0:$PATH"
+          export PATH="/home/$USER/.androidsdkroot/build-tools/36.0.0:/home/$USER/.androidsdkroot/platform-tools:$PATH"
           chmod -R a+x $PROJECT_DIR/scripts
           BASHRC
           popd

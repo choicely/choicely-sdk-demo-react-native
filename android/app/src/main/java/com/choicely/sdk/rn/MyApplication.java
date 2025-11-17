@@ -21,6 +21,14 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactHost;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -232,6 +240,7 @@ public class MyApplication extends Application implements ReactApplication {
      * Heavy or network-bound work should be deferred to a background initializer.
      */
 
+    private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
     private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
 
     @Override
@@ -241,8 +250,9 @@ public class MyApplication extends Application implements ReactApplication {
         // 1) Native loader for RN/Skia/JNI-backed libs.
         SoLoaderHelper.INSTANCE.initSoLoader(this);
 
-        // 2) Core Choicely SDK bootstrapping with app key from choicely_config.xml.
-        ChoicelySDK.init(this, getResources().getString(R.string.choicely_app_key));
+        // 2) Core Choicely SDK bootstrapping with app key.
+        final String appKey = loadChoicelyAppKeyFromAssets();
+        ChoicelySDK.init(this, appKey);
 
         // 3) Register custom factories to override default content + splash behavior.
         ChoicelySDK.factory().setContentFactory(new MyContentFactory());
@@ -261,5 +271,24 @@ public class MyApplication extends Application implements ReactApplication {
                     .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
                     .apply();
         }
+    }
+
+    private String loadChoicelyAppKeyFromAssets() {
+        try (InputStream is = getAssets().open(CHOICELY_CONFIG_FILE);
+             final BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            final StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            final JSONObject json = new JSONObject(sb.toString());
+            final String appKey = json.getString("choicely_app_key");
+            if (TextUtils.getTrimmedLength(appKey) > 0) {
+                return appKey;
+            }
+        } catch (IOException | JSONException e) {
+        }
+        return getResources().getString(R.string.choicely_app_key);
     }
 }
