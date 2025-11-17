@@ -9,6 +9,7 @@
     pkgs.nodejs_20
     pkgs.cloudflared
     pkgs.jdk17
+    pkgs.qrencode
   ];
   services.docker.enable = false;
   # Sets environment variables in the workspace
