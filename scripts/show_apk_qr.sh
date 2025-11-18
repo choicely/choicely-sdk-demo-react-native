@@ -25,7 +25,8 @@ echo "APK_HOST: $APK_HOST"
 printf '%s="%s"\n' "APK_HOST" "$APK_HOST" >> .env
 
 QR_CODE_PATH=./out/qr-download-apk.png
-./scripts/utils/make_qr.sh "https://$APK_HOST/app-debug.apk" "$QR_CODE_PATH"
+#./scripts/utils/make_qr.sh "https://$APK_HOST/app-debug.apk" "$QR_CODE_PATH"
+./scripts/utils/make_qr.sh "http://127.0.0.1:$PORT/patched.apk" "$QR_CODE_PATH"
 #code -r -g "$QR_CODE_PATH"
 
 cleanup() {

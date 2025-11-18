@@ -28,6 +28,8 @@ trap cleanup INT TERM QUIT EXIT TSTP
 
 echo "[tunnel] starting cloudflared on port $PORT..." >&2
 
+TUNNEL_URL="https://www.choicely.com"
+
 #CMD=(cloudflared tunnel --url "http://localhost:${PORT}" --no-autoupdate --pidfile "$PID_FILE")
 #
 ## Start cloudflared in background
@@ -51,6 +53,5 @@ echo "[tunnel] starting cloudflared on port $PORT..." >&2
 #  sleep 0.25
 #done
 
-TUNNEL_URL="https://example.com"
 echo "[tunnel] cloudflared URL: $TUNNEL_URL" >&2
 printf '%q' "$TUNNEL_URL"
