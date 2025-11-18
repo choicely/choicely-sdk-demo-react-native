@@ -62,20 +62,26 @@ tmp_cfg="$(mktemp)"
 jq --arg key "$NEW_CHOICELY_APP_KEY" '.choicely_app_key = $key' "$CONFIG_PATH" > "$tmp_cfg"
 mv "$tmp_cfg" "$CONFIG_PATH"
 
-# 3) Repack to unsigned APK
-echo "[patch] Repacking unsigned APK..."
-# we are currently in $WORKDIR/extracted
+# 3) Repack to unsigned APK (libs + resources.arsc uncompressed)
+echo "[patch] Repacking unsigned APK (libs + resources.arsc uncompressed)..."
 UNSIGNED_APK_NAME="$WORKDIR/unsigned.apk"
-# we are currently in $WORKDIR/extracted
-if [ -d lib ]; then
-  # 3a) Add native libs uncompressed
-  zip -r -0 "$UNSIGNED_APK_NAME" lib > /dev/null
-  # 3b) Add the rest with normal compression, excluding lib/ (already added)
-  zip -r "$UNSIGNED_APK_NAME" . -x "lib/*" > /dev/null
-else
-  # No native libs, just zip everything normally
-  zip -r "$UNSIGNED_APK_NAME" . > /dev/null
+rm -f "$UNSIGNED_APK_NAME"
+
+# We are currently in $WORKDIR/extracted
+
+# 3a) Add resources.arsc uncompressed if present
+if [ -f resources.arsc ]; then
+  zip -0 "$UNSIGNED_APK_NAME" resources.arsc > /dev/null
 fi
+
+# 3b) Add native libs uncompressed if present
+if [ -d lib ]; then
+  zip -r -0 "$UNSIGNED_APK_NAME" lib > /dev/null
+fi
+
+# 3c) Add everything else with normal compression,
+#     excluding lib/ and resources.arsc (already added)
+zip -r "$UNSIGNED_APK_NAME" . -x "lib/*" "resources.arsc" > /dev/null
 
 # 4) Align the APK (required for a proper installable package)
 echo "[patch] Running zipalign..."
