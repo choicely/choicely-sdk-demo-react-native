@@ -85,3 +85,4 @@ package-lock.json
 .env
 .kotlin/
 tmp/
+*.pid
