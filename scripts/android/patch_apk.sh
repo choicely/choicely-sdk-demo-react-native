@@ -32,6 +32,10 @@ else
   cp "$BASE_APK" "$WORKDIR/$TEMP_APK_NAME"
 fi
 
+zipalign -c -p 4 "$WORKDIR/$TEMP_APK_NAME" > /dev/null
+apksigner verify --print-certs "$WORKDIR/$TEMP_APK_NAME" > /dev/null
+aapt dump badging "$WORKDIR/$TEMP_APK_NAME" | head -n 10 > /dev/null
+
 if [[ "$BASE_APK" =~ ^https?:// ]]; then
   apk_dir="$(pwd)"
 else
@@ -59,7 +63,7 @@ if [ ! -f "$CONFIG_PATH" ]; then
   exit 1
 fi
 
-echo "[patch] Patching $CONFIG_PATH with new choicely_app_key value..."
+echo "[patch] Patching APK..."
 
 tmp_cfg="$(mktemp)"
 jq --arg key "$NEW_CHOICELY_APP_KEY" '.choicely_app_key = $key' "$CONFIG_PATH" > "$tmp_cfg"
@@ -95,9 +99,6 @@ apksigner sign \
 
 echo "[patch] Done. Output APK: $OUT_APK_FULL"
 
-zipalign -c -p 4 "$WORKDIR/$TEMP_APK_NAME"
-zipalign -c -p 4 "$OUT_APK_FULL"
-apksigner verify --print-certs "$WORKDIR/$TEMP_APK_NAME"
-apksigner verify --print-certs "$OUT_APK_FULL"
-aapt dump badging "$WORKDIR/$TEMP_APK_NAME" | head -n 10
-aapt dump badging "$OUT_APK_FULL" | head -n 10
+zipalign -c -p 4 "$OUT_APK_FULL" > /dev/null
+apksigner verify --print-certs "$OUT_APK_FULL" > /dev/null
+aapt dump badging "$OUT_APK_FULL" | head -n 10 > /dev/null
