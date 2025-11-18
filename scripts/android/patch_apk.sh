@@ -93,8 +93,7 @@ apksigner sign \
   --min-sdk-version 24 \
   --v1-signing-enabled true \
   --v2-signing-enabled true \
-  --alignment-preserved \
-  --lib-page-alignment 4096 \
+  --lib-page-alignment 16384 \
   "$ALIGNED_APK_NAME"
 
 echo "[patch] Done. Output APK: $OUT_APK"
