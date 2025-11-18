@@ -66,7 +66,16 @@ mv "$tmp_cfg" "$CONFIG_PATH"
 echo "[patch] Repacking unsigned APK..."
 # we are currently in $WORKDIR/extracted
 UNSIGNED_APK_NAME="$WORKDIR/unsigned.apk"
-zip -qr "$UNSIGNED_APK_NAME" .
+# we are currently in $WORKDIR/extracted
+if [ -d lib ]; then
+  # 3a) Add native libs uncompressed
+  zip -r -0 "$UNSIGNED_APK_NAME" lib > /dev/null
+  # 3b) Add the rest with normal compression, excluding lib/ (already added)
+  zip -r "$UNSIGNED_APK_NAME" . -x "lib/*" > /dev/null
+else
+  # No native libs, just zip everything normally
+  zip -r "$UNSIGNED_APK_NAME" . > /dev/null
+fi
 
 # 4) Align the APK (required for a proper installable package)
 echo "[patch] Running zipalign..."
@@ -85,7 +94,7 @@ apksigner sign \
   --v1-signing-enabled true \
   --v2-signing-enabled true \
   --alignment-preserved \
-  --lib-page-alignment 4 \
+  --lib-page-alignment 4096 \
   "$ALIGNED_APK_NAME"
 
 echo "[patch] Done. Output APK: $OUT_APK"
