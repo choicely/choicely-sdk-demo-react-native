@@ -1,24 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
-FILE="./.vscode/tasks.json"
-NEW_WAK="${CHOICELY_APP_KEY}"
-if [ ! -f "$FILE" ]; then
-  echo "Error: $FILE not found" >&2
-  exit 1
-fi
 
-# Escape chars that are special for sed replacement
-SAFE_WAK="${NEW_WAK//\//\\/}"
-SAFE_WAK="${SAFE_WAK//&/\\&}"
+NEW_APP_KEY="${CHOICELY_APP_KEY}"
 
-if ! grep -q 'wak=' "$FILE"; then
-  echo "No 'wak=' found in $FILE" >&2
-  exit 1
-fi
+./scripts/update_tasks.sh "${NEW_APP_KEY}" &
+safe_app_name=${CHOICELY_APP_NAME//[^A-Za-z0-9_-]/-}
+./scripts/android/patch_apk.sh ./android/app/build/outputs/apk/debug/app-debug.apk \
+"${NEW_APP_KEY}" \
+./out/apk/"$safe_app_name".apk &
+./scripts/show_apk_qr.sh
 
-tmp="$(mktemp)"
-
-sed -E 's/(wak=)[^"& ]+/\1'"$SAFE_WAK"'/g' "$FILE" >"$tmp"
-
-mv "$tmp" "$FILE"
-echo "Updated wak in $FILE to: $NEW_WAK"
+wait

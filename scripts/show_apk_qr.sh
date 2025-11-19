@@ -12,7 +12,7 @@ fi
 APK_PATH=./android/app/build/outputs/apk/debug
 ./scripts/utils/open_web_server.sh "$APK_PATH" "$PORT" &
 
-APK_HOST=$(./scripts/utils/open_tunnel.sh "$PORT" "APK_HOST")
+APK_HOST=$(./scripts/utils/open_tunnel.sh "$PORT")
 APK_HOST="${APK_HOST#http://}"
 APK_HOST="${APK_HOST#https://}"
 
@@ -25,8 +25,9 @@ echo "APK_HOST: $APK_HOST"
 printf '%s="%s"\n' "APK_HOST" "$APK_HOST" >> .env
 
 QR_CODE_PATH=./out/qr-download-apk.png
-#./scripts/utils/make_qr.sh "https://$APK_HOST/app-debug.apk" "$QR_CODE_PATH"
-./scripts/utils/make_qr.sh "http://127.0.0.1:$PORT/patched.apk" "$QR_CODE_PATH"
+safe_app_name=${CHOICELY_APP_NAME//[^A-Za-z0-9_-]/-}
+#./scripts/utils/make_qr.sh "https://$APK_HOST/$safe_app_name.apk" "$QR_CODE_PATH"
+./scripts/utils/make_qr.sh "http://127.0.0.1:$PORT/$safe_app_name.apk" "$QR_CODE_PATH"
 #code -r -g "$QR_CODE_PATH"
 
 cleanup() {
