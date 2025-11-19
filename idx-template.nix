@@ -21,8 +21,9 @@
     [ -f .env ] && source .env
     set +a
     chmod -R a+x scripts
-    ./scripts/update_app_key.sh
+    ./scripts/update_tasks.sh "$CHOICELY_APP_KEY" &
     # Install npm dependencies
     npm install --no-audit --no-fund --progress=false
+    wait
   '';
 }
