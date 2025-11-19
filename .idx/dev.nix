@@ -10,6 +10,7 @@
     pkgs.cloudflared
     pkgs.jdk17
     pkgs.qrencode
+    pkgs.zip
   ];
   services.docker.enable = false;
   # Sets environment variables in the workspace
@@ -59,7 +60,6 @@
           cat >> .env <<EOF
           GEMINI_API_KEY=""
           EOF
-          code -r -g ./res/qr-choicely-studio-app.png
           exit
         '';
       };
