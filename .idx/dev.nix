@@ -59,6 +59,7 @@
           cat >> .env <<EOF
           GEMINI_API_KEY=""
           EOF
+          code -r -g ./res/qr-choicely-studio-app.png
           exit
         '';
       };
@@ -66,7 +67,6 @@
       onStart = {
         choicely-config-update = ''
           ./scripts/update_app_key.sh
-          code -r -g ./res/qr-choicely-studio-app.png
         '';
         npm-start = ''
           set -eo pipefail
