@@ -22,6 +22,7 @@ android {
         applicationId namespace
         targetSdk = compileSdk
         minSdk = (rootProject.ext.minSdkVersion as Integer)
+        buildToolsVersion = rootProject.ext.buildToolsVersion
         versionCode 1
         versionName "1.0"
         ndk {
