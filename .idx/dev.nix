@@ -34,6 +34,7 @@
           cat > ~/.bashrc <<BASHRC
           unset PROMPT_COMMAND
           __vsc_prompt_cmd_original() { :; }
+          unset -f command_not_found_handle 2>/dev/null || true
           # auto-export env vars from the original project dir
           if [ -d "$PROJECT_DIR" ]; then
             set -a
