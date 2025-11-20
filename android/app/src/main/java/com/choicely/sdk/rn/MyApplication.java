@@ -247,33 +247,33 @@ public class MyApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
 
-        // 1) Native loader for RN/Skia/JNI-backed libs.
+        // Native loader for RN/Skia/JNI-backed libs.
         SoLoaderHelper.INSTANCE.initSoLoader(this);
 
-        // 2) Core Choicely SDK bootstrapping with app key.
-        final String appKey = loadChoicelyAppKeyFromAssets();
+        // Core Choicely SDK bootstrapping with app key.
+        final String appKey = loadConfigFromAssets("choicely_app_key", R.string.choicely_app_key);
         ChoicelySDK.init(this, appKey);
 
-        // 3) Register custom factories to override default content + splash behavior.
+        // Register custom factories to override default content + splash behavior.
         ChoicelySDK.factory().setContentFactory(new MyContentFactory());
         ChoicelySDK.factory().setSplashFactory(new MySplashFactory());
 
-        // 4) Opt into React Native's New Architecture when the build flag is enabled.
+        // Opt into React Native's New Architecture when the build flag is enabled.
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
             DefaultNewArchitectureEntryPoint.load();
         }
 
         final SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String host = getString(R.string.debug_rn_host);
-        if (TextUtils.getTrimmedLength(host) > 0) {
+        final String rnHost = loadConfigFromAssets("debug_rn_host", R.string.debug_rn_host);
+        if (TextUtils.getTrimmedLength(rnHost) > 0) {
             prefs.edit()
-                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
+                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, rnHost)
                     .apply();
         }
     }
 
-    private String loadChoicelyAppKeyFromAssets() {
+    private String loadConfigFromAssets(@NonNull String assetKey, int defaultResId) {
         try (InputStream is = getAssets().open(CHOICELY_CONFIG_FILE);
              final BufferedReader reader = new BufferedReader(
                      new InputStreamReader(is, StandardCharsets.UTF_8))) {
@@ -283,12 +283,12 @@ public class MyApplication extends Application implements ReactApplication {
                 sb.append(line);
             }
             final JSONObject json = new JSONObject(sb.toString());
-            final String appKey = json.getString("choicely_app_key");
+            final String appKey = json.getString(assetKey);
             if (TextUtils.getTrimmedLength(appKey) > 0) {
                 return appKey;
             }
         } catch (IOException | JSONException e) {
         }
-        return getResources().getString(R.string.choicely_app_key);
+        return getResources().getString(defaultResId);
     }
 }

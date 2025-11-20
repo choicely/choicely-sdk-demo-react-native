@@ -76,9 +76,10 @@
             "npm start" \
             "./scripts/utils/http_retry_until.sh 'http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server' 200"
         '';
-#        tunnel-metro = ''
-#          ./scripts/utils/open_tunnel.sh "''${RCT_METRO_PORT}" HOST_TUNNEL_METRO
-#        '';
+        tunnel-metro = ''
+          HOST_TUNNEL_METRO=$(./scripts/utils/open_tunnel.sh "$RCT_METRO_PORT")
+          printf '%s="%s"\n' "HOST_TUNNEL_METRO" "$HOST_TUNNEL_METRO" >> .env
+        '';
         #        android-emulator = ''
         #        set -eo pipefail
         #        echo -e "\033[1;33mWaiting for Android emulator to be ready...\033[0m"

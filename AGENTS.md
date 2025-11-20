@@ -61,7 +61,8 @@ After updating the app key run `./scripts/update_app_key.sh`
     3. Ensure the component is properly imported and registered in 'index.js'.
     4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
        registrations.)
-    5. Always validate that the code is syntactically correct and complete.
+    5. Always validate that the code is syntactically correct by reading the files after your edits.
+    6. Also validate all imports you add.
 - Use the .jsx file extension for React Native component files.
 - Split the code into logical packages or components where applicable to enhance readability and
   maintainability.

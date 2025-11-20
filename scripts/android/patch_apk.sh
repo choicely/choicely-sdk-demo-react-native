@@ -67,7 +67,11 @@ fi
 echo "[patch] Patching APK..."
 
 tmp_cfg="$(mktemp)"
-jq --arg key "$NEW_CHOICELY_APP_KEY" '.choicely_app_key = $key' "$CONFIG_PATH" > "$tmp_cfg"
+jq \
+  --arg key "$NEW_CHOICELY_APP_KEY" \
+  --arg host "$HOST_TUNNEL_METRO" \
+  '.choicely_app_key = $key | .debug_rn_host = $host' \
+  "$CONFIG_PATH" > "$tmp_cfg"
 mv "$tmp_cfg" "$CONFIG_PATH"
 
 UNSIGNED_APK_NAME="$WORKDIR/unsigned.apk"
