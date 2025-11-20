@@ -1,11 +1,11 @@
 import { AppRegistry } from 'react-native';
-import TicTacToe from './components/Hello';
+import Hello from './components/Hello';
 import Counter from './components/Counter';
 
 const defaultComponentName = 'component_1';
 
 export const components = {
-  [defaultComponentName]: TicTacToe,
+  [defaultComponentName]: Hello,
   component_2: Counter,
 };
 
