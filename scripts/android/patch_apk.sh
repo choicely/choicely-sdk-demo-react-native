@@ -34,7 +34,8 @@ fi
 
 zipalign -c -p 4 "$WORKDIR/$TEMP_APK_NAME" > /dev/null
 apksigner verify --print-certs "$WORKDIR/$TEMP_APK_NAME" > /dev/null
-aapt dump badging "$WORKDIR/$TEMP_APK_NAME" | head -n 10 > /dev/null
+# Fails in Firebase Studio???
+# aapt dump badging "$WORKDIR/$TEMP_APK_NAME" | head -n 10 > /dev/null
 
 if [[ "$BASE_APK" =~ ^https?:// ]]; then
   apk_dir="$(pwd)"
