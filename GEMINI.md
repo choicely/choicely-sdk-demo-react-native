@@ -55,6 +55,7 @@ After updating the app key run `./scripts/update_app_key.sh &` (detached).
   information from the user, ask for it before proceeding.
 - Do not register components with names other than those already in 'index.js' unless explicitly
   asked.
+- Component Modification: When asked to replace or modify a component, only alter the code and registration for that specific component. Leave all other components and their registrations in index.js untouched unless explicitly instructed otherwise.
 - User might call components with the following alternative names as well: screens, widgets, etc.
 - When asked to add new components or modify existing components, use this order of operations:
     1. Check 'index.js' to see how and what components are registered.
