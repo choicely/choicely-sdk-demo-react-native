@@ -14,7 +14,7 @@ function getPorts(rootDir) {
   if (!assertPortRange(proxyPort, 2, 65535)) {
     throw new Error(`RCT_METRO_PORT invalid: "${raw}". Must be an integer between 2 and 65535.`);
   }
-  const metroPort = proxyPort - 1;
+  const metroPort = proxyPort;
   if (!assertPortRange(metroPort)) {
     throw new Error(`Derived Metro port invalid: ${metroPort}`);
   }
