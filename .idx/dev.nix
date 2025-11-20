@@ -67,7 +67,7 @@
       # Runs when a workspace restarted
       onStart = {
         choicely-config-update = ''
-          ./scripts/update_app_key.sh
+          ./scripts/update_metro_host.sh
         '';
         npm-start = ''
           set -eo pipefail
@@ -75,10 +75,6 @@
           npx concurrently --kill-others-on-fail -s first -n rn,wait_bundle \
             "npm start" \
             "./scripts/utils/http_retry_until.sh 'http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server' 200"
-        '';
-        tunnel-metro = ''
-          HOST_TUNNEL_METRO=$(./scripts/utils/open_tunnel.sh "$RCT_METRO_PORT")
-          printf '%s="%s"\n' "HOST_TUNNEL_METRO" "$HOST_TUNNEL_METRO" >> .env
         '';
         #        android-emulator = ''
         #        set -eo pipefail
