@@ -55,14 +55,17 @@ After updating the app key run `./scripts/update_app_key.sh &` (detached).
   information from the user, ask for it before proceeding.
 - Do not register components with names other than those already in 'index.js' unless explicitly
   asked.
+- User might call components with the following alternative names as well: screens, widgets, etc.
 - When asked to add new components or modify existing components, use this order of operations:
     1. Check 'index.js' to see how and what components are registered.
     2. Create a new component file in 'src/components' or modify an existing one there.
     3. Ensure the component is properly imported and registered in 'index.js'.
-    4. Only then remove components that were replaced, if applicable. (Avoids broken imports and
+    4. Only alter component registrations that were replaced with the new one.
+    5. Leave other components and their registrations as they was.
+    6. Only then remove component files that were replaced, if applicable. (Avoids broken imports and
        registrations.)
-    5. Always validate that the code is syntactically correct by reading the files after your edits.
-    6. Also validate all imports you add.
+    7. Always validate that the code is syntactically correct by reading the files after your edits.
+    8. Also validate all imports you add.
 - Use the .jsx file extension for React Native component files.
 - Split the code into logical packages or components where applicable to enhance readability and
   maintainability.
