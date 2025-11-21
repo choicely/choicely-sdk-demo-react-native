@@ -1,6 +1,6 @@
 import React from 'react'
 import {AppRegistry} from 'react-native'
-import {SafeAreaProvider} from 'react-native-safe-area-context'
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
 import Hello from './components/Hello'
 import Counter from './components/Counter'
@@ -15,7 +15,9 @@ function wrapWithSafeAreaProvider(Component) {
   return function WrappedWithSafeAreaProvider(props) {
     return (
       <SafeAreaProvider>
-        <Component {...props} />
+        <SafeAreaView style={{flex: 1}}>
+          <Component {...props} />
+        </SafeAreaView>
       </SafeAreaProvider>
     )
   }
