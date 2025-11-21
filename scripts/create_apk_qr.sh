@@ -31,7 +31,7 @@ safe_app_name=${lower_name//[^a-z0-9_-]/-}
 #./scripts/utils/make_qr.sh "http://127.0.0.1:$PORT/$safe_app_name.apk" "$QR_CODE_PATH"
 
 cleanup() {
-  trap - INT TERM QUIT EXIT TSTP
+  trap - INT TERM QUIT TSTP
   echo "Cleaning up..."
   local pidfile="./tmp/cloudflared-${PORT}.pid"
   if [ -f "$pidfile" ]; then
@@ -45,4 +45,4 @@ cleanup() {
     fi
   fi
 }
-trap cleanup INT TERM QUIT EXIT TSTP
+trap cleanup INT TERM QUIT TSTP

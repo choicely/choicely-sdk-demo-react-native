@@ -14,3 +14,7 @@ export QR_CODE_PATH=./out/qr-download-apk.png
 ./scripts/create_apk_qr.sh
 wait
 code -r -g "$QR_CODE_PATH" >/dev/null 2>&1 || true
+
+while :; do
+  sleep 1
+done
