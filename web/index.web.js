@@ -1,5 +1,4 @@
-import { AppRegistry } from 'react-native';
-import { View, Text, Pressable } from 'react-native';
+import { AppRegistry, View, Text, Pressable } from 'react-native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
@@ -8,7 +7,17 @@ import {
   registerComponents,
 } from '../src/index.js';
 
-registerComponents();
+registerComponents({ useSafeAreaProvider: false });
+
+// Ensure the web page takes the full viewport height
+const rootTag = document.getElementById('root');
+
+if (document && document.documentElement && rootTag) {
+  document.documentElement.style.height = '100%';
+  document.body.style.height = '100%';
+  document.body.style.margin = '0';
+  rootTag.style.height = '100%';
+}
 
 function WebRootInner({ components = {}, initialComponent }) {
   const HIGHLIGHT = '#37ff95';
@@ -82,7 +91,7 @@ function WebRootInner({ components = {}, initialComponent }) {
           );
         })}
       </View>
-      <View>
+      <View style={{ flex: 1 }}>
         {Active ? (
           <Active />
         ) : (
@@ -95,8 +104,10 @@ function WebRootInner({ components = {}, initialComponent }) {
 
 function WebRoot(props) {
   return (
-    <SafeAreaProvider>
-      <WebRootInner {...props} />
+    <SafeAreaProvider style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <WebRootInner {...props} />
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -106,7 +117,7 @@ const WEB_APP_NAME = 'web_root';
 AppRegistry.registerComponent(WEB_APP_NAME, () => WebRoot);
 
 AppRegistry.runApplication(WEB_APP_NAME, {
-  rootTag: document.getElementById('root'),
+  rootTag,
   initialProps: {
     components: exportedComponents,
     initialComponent: defaultComponentName,
