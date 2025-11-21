@@ -73,12 +73,16 @@ After updating the app key run `./scripts/update_app_key.sh &` (detached).
 
 ### Safe area handling for React Native components
 
-- When creating or modifying **root-level** React Native components (screens/widgets that are registered in `src/index.js` and rendered directly by the Choicely host app or the React Native Web root), always:
-    - Import `SafeAreaView` from `'react-native-safe-area-context'` (not from `'react-native'`).
-    - Wrap the component’s top-level JSX in this `SafeAreaView`.
-    - Give the `SafeAreaView` a base style of at least `{ flex: 1 }`, and then nest additional `View` components inside it as needed for layout.
-- Do **not** use `SafeAreaView` from `'react-native'`.
-- For smaller, non-root leaf components, only use `SafeAreaView` if the user explicitly asks for it or when it is clearly required by safe-area layout constraints.
+- Root-level safe area handling is centralized in `src/index.js`:
+    - Each registered component is, by default, wrapped with a `SafeAreaProvider` and a `SafeAreaView` (with `flex: 1`) via `wrapWithSafeAreaProvider`.
+    - This wrapping can be disabled by calling `registerComponents({ useSafeAreaProvider: false })` (for example, in the React Native Web root where there is already a `SafeAreaProvider`).
+- When creating or modifying **root-level** React Native components (screens/widgets that are registered in `src/index.js`):
+    - Do **not** add another `SafeAreaProvider` or `SafeAreaView` around the component unless explicitly requested or there is a very specific nested safe-area need.
+    - Use normal layout containers (for example, `View` with `flex: 1`) as the component’s top-level wrapper and assume that a single `SafeAreaView` is already provided by the root wrapper.
+- When a nested safe area is genuinely required (for example a scrollable sub-section that must respect insets independently):
+    - Import `SafeAreaView` from `'react-native-safe-area-context'` and use it *inside* the component where needed.
+    - Never use `SafeAreaView` from `'react-native'`.
+- Do not add additional `SafeAreaProvider` instances inside individual components. Assume that the provider is configured at the root level via `index.js` and, on web, via the web root entry file, unless the user explicitly asks to change this setup.
 
 ## Regarding Dependencies:
 
