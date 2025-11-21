@@ -2,6 +2,7 @@
   # Shell script that produces the final environment
   packages = [
       pkgs.curl
+      pkgs.gzip
       pkgs.gnutar
       pkgs.nodejs_20
   ];
