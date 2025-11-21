@@ -17,20 +17,18 @@ HOST_TUNNEL_APK="${HOST_TUNNEL_APK#http://}"
 HOST_TUNNEL_APK="${HOST_TUNNEL_APK#https://}"
 
 if [ -z "${HOST_TUNNEL_APK:-}" ]; then
-  echo "[show_apk_qr] ERROR: HOST_TUNNEL_APK was not set by open_tunnel.sh" >&2
+  echo "[create_apk_qr] ERROR: HOST_TUNNEL_APK was not set by open_tunnel.sh" >&2
   exit 1
 fi
 
 echo "HOST_TUNNEL_APK: $HOST_TUNNEL_APK"
 printf '%s="%s"\n' "HOST_TUNNEL_APK" "$HOST_TUNNEL_APK" >> .env
 
-QR_CODE_PATH=./out/qr-download-apk.png
 raw_name=${CHOICELY_APP_NAME:-}
 lower_name=$(printf '%s\n' "$raw_name" | tr '[:upper:]' '[:lower:]')
 safe_app_name=${lower_name//[^a-z0-9_-]/-}
 ./scripts/utils/make_qr.sh "https://$HOST_TUNNEL_APK/$safe_app_name.apk" "$QR_CODE_PATH"
 #./scripts/utils/make_qr.sh "http://127.0.0.1:$PORT/$safe_app_name.apk" "$QR_CODE_PATH"
-code -r -g "$QR_CODE_PATH" >/dev/null 2>&1 || true
 
 cleanup() {
   trap - INT TERM QUIT EXIT TSTP
@@ -48,5 +46,3 @@ cleanup() {
   fi
 }
 trap cleanup INT TERM QUIT EXIT TSTP
-
-wait

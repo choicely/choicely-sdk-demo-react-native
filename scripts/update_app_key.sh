@@ -10,6 +10,7 @@ safe_app_name=${lower_name//[^a-z0-9_-]/-}
 ./scripts/android/patch_apk.sh "https://github.com/choicely/choicely-sdk-demo-react-native/releases/download/debug/choicely-rn.apk" \
 "${NEW_APP_KEY}" \
 ./out/apk/"$safe_app_name".apk &
-./scripts/show_apk_qr.sh
-
+export QR_CODE_PATH=./out/qr-download-apk.png
+./scripts/create_apk_qr.sh
 wait
+code -r -g "$QR_CODE_PATH" >/dev/null 2>&1 || true
