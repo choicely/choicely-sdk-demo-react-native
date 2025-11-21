@@ -26,7 +26,7 @@ if (document && document.documentElement && rootTag) {
   rootTag.style.flexDirection = 'column';
 }
 
-function WebRootInner({ components = {}, initialComponent }) {
+function WebRoot({ components = {}, initialComponent }) {
   const HIGHLIGHT = '#37ff95';
 
   const names = Object.keys(components);
@@ -38,96 +38,92 @@ function WebRootInner({ components = {}, initialComponent }) {
   const [active, setActive] = React.useState(initial);
   const Active = active ? components[active] : undefined;
 
-  if (names.length === 0) {
+  // No components exported case
+  if (names.length === 0 || true) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>No components exported from index.js</Text>
-      </View>
+      <SafeAreaProvider style={{ flex: 1 }}>
+        <SafeAreaView style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center', }}>
+            <Text>No components exported from index.js</Text>
+        </SafeAreaView>
+      </SafeAreaProvider>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Top bar */}
-      <View
-        style={{
-          backgroundColor: '#0f0f0f',
-          borderBottomWidth: 1,
-          borderColor: '#232323',
-          paddingHorizontal: 12,
-          paddingVertical: 8,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-        }}
-      >
-        {names.map((name) => {
-          const selected = name === active;
-          return (
-            <Pressable
-              key={name}
-              onPress={() => setActive(name)}
-              style={({ pressed }) => [
-                {
-                  paddingVertical: 6,
-                  paddingHorizontal: 12,
-                  borderRadius: 999,
-                  borderWidth: 1,
-                  marginRight: 8,
-                  marginBottom: 8,
-                },
-                selected
-                  ? {
-                      borderColor: HIGHLIGHT,
-                      backgroundColor: 'rgba(55, 255, 149, 0.14)',
-                    }
-                  : {
-                      borderColor: '#2a2a2a',
-                      backgroundColor: pressed ? '#1a1a1a' : 'transparent',
-                    },
-              ]}
-            >
-              <Text
-                style={{
-                  color: selected ? HIGHLIGHT : '#e5e5e5',
-                  fontWeight: selected ? '600' : '500',
-                }}
+    <SafeAreaProvider style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        {/* Top bar */}
+        <View
+          style={{
+            backgroundColor: '#0f0f0f',
+            borderBottomWidth: 1,
+            borderColor: '#232323',
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+          }}
+        >
+          {names.map((name) => {
+            const selected = name === active;
+            return (
+              <Pressable
+                key={name}
+                onPress={() => setActive(name)}
+                style={({ pressed }) => [
+                  {
+                    paddingVertical: 6,
+                    paddingHorizontal: 12,
+                    borderRadius: 999,
+                    borderWidth: 1,
+                    marginRight: 8,
+                    marginBottom: 8,
+                  },
+                  selected
+                    ? {
+                        borderColor: HIGHLIGHT,
+                        backgroundColor: 'rgba(55, 255, 149, 0.14)',
+                      }
+                    : {
+                        borderColor: '#2a2a2a',
+                        backgroundColor: pressed ? '#1a1a1a' : 'transparent',
+                      },
+                ]}
               >
-                {name}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
+                <Text
+                  style={{
+                    color: selected ? HIGHLIGHT : '#e5e5e5',
+                    fontWeight: selected ? '600' : '500',
+                  }}
+                >
+                  {name}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
 
-      {/* Full-screen app area */}
-      <View style={{ flex: 1 }}>
-        {Active ? (
-          <SafeAreaView style={{ flex: 1 }}>
+        {/* Full-screen app area */}
+        <View style={{ flex: 1 }}>
+          {Active ? (
             <Active />
-          </SafeAreaView>
-        ) : (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text>Component "{String(active)}" not found</Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
-}
-
-function WebRoot(props) {
-  return (
-    <SafeAreaProvider>
-      <View style={{ flex: 1 }}>
-        <WebRootInner {...props} />
-      </View>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text>Component "{String(active)}" not found</Text>
+            </View>
+          )}
+        </View>
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
