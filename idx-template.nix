@@ -1,6 +1,9 @@
 { pkgs, app_key, api_key, ... }: {
   # Shell script that produces the final environment
-  packages = [ pkgs.nodejs_20 ];
+  packages = [
+      pkgs.curl
+      pkgs.nodejs_20
+  ];
   bootstrap = ''
     set -eo pipefail
     # Copy the folder containing the `idx-template` files to the final
@@ -22,7 +25,7 @@
     chmod -R a+x scripts
     ./scripts/update_tasks.sh "$CHOICELY_APP_KEY" &
     # Install npm dependencies
-    curl -L "https://github.com/choicely/choicely-sdk-demo-react-native/releases/download/debug/node_modules-linux-x86_64-node20.tar.gz" | tar -xzf -
+    curl -L "https://github.com/choicely/choicely-sdk-demo-react-native/releases/download/debug/node_modules-linux-x86_64-node20.tar.gz" | /usr/bin/tar -xzf -
     npm rebuild
     wait
   '';
