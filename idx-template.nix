@@ -2,6 +2,7 @@
   # Shell script that produces the final environment
   packages = [
       pkgs.curl
+      pkgs.gnutar
       pkgs.nodejs_20
   ];
   bootstrap = ''
@@ -25,7 +26,7 @@
     chmod -R a+x scripts
     ./scripts/update_tasks.sh "$CHOICELY_APP_KEY" &
     # Install npm dependencies
-    curl -L "https://github.com/choicely/choicely-sdk-demo-react-native/releases/download/debug/node_modules-linux-x86_64-node20.tar.gz" | /usr/bin/tar -xzf -
+    curl -L "https://github.com/choicely/choicely-sdk-demo-react-native/releases/download/debug/node_modules-linux-x86_64-node20.tar.gz" | tar -xzf -
     npm rebuild
     wait
   '';
