@@ -1,6 +1,9 @@
 import { AppRegistry, View, Text, Pressable } from 'react-native';
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 import {
   components as exportedComponents,
   defaultComponentName,
@@ -9,14 +12,18 @@ import {
 
 registerComponents({ useSafeAreaProvider: false });
 
-// Ensure the web page takes the full viewport height
 const rootTag = document.getElementById('root');
 
+// Make the page fill the viewport and let #root be a flex container
 if (document && document.documentElement && rootTag) {
   document.documentElement.style.height = '100%';
+
   document.body.style.height = '100%';
   document.body.style.margin = '0';
+
   rootTag.style.height = '100%';
+  rootTag.style.display = 'flex';
+  rootTag.style.flexDirection = 'column';
 }
 
 function WebRootInner({ components = {}, initialComponent }) {
@@ -41,6 +48,7 @@ function WebRootInner({ components = {}, initialComponent }) {
 
   return (
     <View style={{ flex: 1 }}>
+      {/* Top bar */}
       <View
         style={{
           backgroundColor: '#0f0f0f',
@@ -71,7 +79,7 @@ function WebRootInner({ components = {}, initialComponent }) {
                 selected
                   ? {
                       borderColor: HIGHLIGHT,
-                      backgroundColor: 'rgba(55,255,149,0.14)',
+                      backgroundColor: 'rgba(55, 255, 149, 0.14)',
                     }
                   : {
                       borderColor: '#2a2a2a',
@@ -91,11 +99,23 @@ function WebRootInner({ components = {}, initialComponent }) {
           );
         })}
       </View>
+
+      {/* Full-screen app area */}
       <View style={{ flex: 1 }}>
         {Active ? (
-          <Active />
+          <SafeAreaView style={{ flex: 1 }}>
+            <Active />
+          </SafeAreaView>
         ) : (
-          <Text>Component "{String(active)}" not found</Text>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text>Component "{String(active)}" not found</Text>
+          </View>
         )}
       </View>
     </View>
@@ -104,7 +124,7 @@ function WebRootInner({ components = {}, initialComponent }) {
 
 function WebRoot(props) {
   return (
-    <SafeAreaProvider style={{ flex: 1 }}>
+    <SafeAreaProvider>
       <View style={{ flex: 1 }}>
         <WebRootInner {...props} />
       </View>
