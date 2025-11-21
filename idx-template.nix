@@ -22,7 +22,9 @@
     chmod -R a+x scripts
     ./scripts/update_tasks.sh "$CHOICELY_APP_KEY" &
     # Install npm dependencies
-    npm install --no-audit --no-fund --progress=false
+    curl -L "https://github.com/choicely/choicely-sdk-demo-react-native/releases/download/debug/node_modules-linux-x86_64-node20.tar.gz" | tar -xzf -
+    npm rebuild
     wait
   '';
+  # Full install: npm install --no-audit --no-fund --progress=false
 }
