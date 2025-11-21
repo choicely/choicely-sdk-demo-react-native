@@ -1,11 +1,16 @@
 import { AppRegistry } from 'react-native';
-import { View, Text, Button, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import React from 'react';
-import { components as exportedComponents, defaultComponentName, registerComponents } from '../src/index.js';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  components as exportedComponents,
+  defaultComponentName,
+  registerComponents,
+} from '../src/index.js';
 
-registerComponents()
+registerComponents();
 
-function WebRoot({ components = {}, initialComponent }) {
+function WebRootInner({ components = {}, initialComponent }) {
   const HIGHLIGHT = '#37ff95';
 
   const names = Object.keys(components);
@@ -55,11 +60,22 @@ function WebRoot({ components = {}, initialComponent }) {
                   marginBottom: 8,
                 },
                 selected
-                  ? { borderColor: HIGHLIGHT, backgroundColor: 'rgba(55,255,149,0.14)' }
-                  : { borderColor: '#2a2a2a', backgroundColor: pressed ? '#1a1a1a' : 'transparent' },
+                  ? {
+                      borderColor: HIGHLIGHT,
+                      backgroundColor: 'rgba(55,255,149,0.14)',
+                    }
+                  : {
+                      borderColor: '#2a2a2a',
+                      backgroundColor: pressed ? '#1a1a1a' : 'transparent',
+                    },
               ]}
             >
-              <Text style={{ color: selected ? HIGHLIGHT : '#e5e5e5', fontWeight: selected ? '600' : '500' }}>
+              <Text
+                style={{
+                  color: selected ? HIGHLIGHT : '#e5e5e5',
+                  fontWeight: selected ? '600' : '500',
+                }}
+              >
                 {name}
               </Text>
             </Pressable>
@@ -67,13 +83,26 @@ function WebRoot({ components = {}, initialComponent }) {
         })}
       </View>
       <View>
-        {Active ? <Active /> : <Text>Component "{String(active)}" not found</Text>}
+        {Active ? (
+          <Active />
+        ) : (
+          <Text>Component "{String(active)}" not found</Text>
+        )}
       </View>
     </View>
   );
 }
 
+function WebRoot(props) {
+  return (
+    <SafeAreaProvider>
+      <WebRootInner {...props} />
+    </SafeAreaProvider>
+  );
+}
+
 const WEB_APP_NAME = 'web_root';
+
 AppRegistry.registerComponent(WEB_APP_NAME, () => WebRoot);
 
 AppRegistry.runApplication(WEB_APP_NAME, {
