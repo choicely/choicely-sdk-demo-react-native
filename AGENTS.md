@@ -71,6 +71,15 @@ After updating the app key run `./scripts/update_app_key.sh &` (detached).
 - Split the code into logical packages or components where applicable to enhance readability and
   maintainability.
 
+### Safe area handling for React Native components
+
+- When creating or modifying **root-level** React Native components (screens/widgets that are registered in `src/index.js` and rendered directly by the Choicely host app or the React Native Web root), always:
+    - Import `SafeAreaView` from `'react-native-safe-area-context'` (not from `'react-native'`).
+    - Wrap the component’s top-level JSX in this `SafeAreaView`.
+    - Give the `SafeAreaView` a base style of at least `{ flex: 1 }`, and then nest additional `View` components inside it as needed for layout.
+- Do **not** use `SafeAreaView` from `'react-native'`.
+- For smaller, non-root leaf components, only use `SafeAreaView` if the user explicitly asks for it or when it is clearly required by safe-area layout constraints.
+
 ## Regarding Dependencies:
 
 - All React Native dependencies are listed in 'package.json' at the project root.
