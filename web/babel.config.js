@@ -4,4 +4,4 @@ module.exports = {
     '@babel/plugin-proposal-export-namespace-from',
     '@babel/plugin-transform-modules-commonjs',
   ],
-};
+}

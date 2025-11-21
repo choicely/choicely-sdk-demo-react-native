@@ -1,13 +1,13 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const appDirectory = path.resolve(__dirname, '..');
+const appDirectory = path.resolve(__dirname, '..')
 
-const babelConfig = require('./babel.config');
+const babelConfig = require('./babel.config')
 
-const indexHtmlPath = path.resolve(appDirectory, 'web/index.html');
-const indexJsPath = path.resolve(appDirectory, 'web/index.web.js');
+const indexHtmlPath = path.resolve(appDirectory, 'web/index.html')
+const indexJsPath = path.resolve(appDirectory, 'web/index.web.js')
 
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
@@ -17,14 +17,14 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
   ],
   exclude: [
-      {
-        and: [
-          path.resolve(appDirectory, 'node_modules'),
-          path.resolve(appDirectory, 'android'),
-          path.resolve(appDirectory, 'ios'),
-        ],
-        not: [],
-      },
+    {
+      and: [
+        path.resolve(appDirectory, 'node_modules'),
+        path.resolve(appDirectory, 'android'),
+        path.resolve(appDirectory, 'ios'),
+      ],
+      not: [],
+    },
   ],
   use: {
     loader: 'babel-loader',
@@ -34,20 +34,20 @@ const babelLoaderConfiguration = {
       plugins: ['react-native-web', ...(babelConfig.plugins || [])],
     },
   },
-};
+}
 
 const imageLoaderConfiguration = {
   test: /\.(gif|jpe?g|png|svg)$/i,
   type: 'asset', // webpack 5-friendly; replaces url-loader/file-loader
-};
+}
 
 const ttfLoaderConfiguration = {
   test: /\.ttf$/i,
   type: 'asset/resource',
-};
+}
 
 module.exports = {
-  entry: { app: indexJsPath },
+  entry: {app: indexJsPath},
   output: {
     clean: true,
     path: path.resolve(appDirectory, 'dist'),
@@ -62,7 +62,7 @@ module.exports = {
       'react-native$': 'react-native-web',
       '../Utilities/Platform': 'react-native-web/dist/exports/Platform',
       '../../Utilities/Platform': 'react-native-web/dist/exports/Platform',
-      './Platform': 'react-native-web/dist/exports/Platform'
+      './Platform': 'react-native-web/dist/exports/Platform',
     },
   },
   module: {
@@ -73,14 +73,14 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: indexHtmlPath }),
+    new HtmlWebpackPlugin({template: indexHtmlPath}),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({ __DEV__: JSON.stringify(true) }),
+    new webpack.DefinePlugin({__DEV__: JSON.stringify(true)}),
   ],
   devServer: {
     open: true,
     hot: true,
     compress: true,
-    allowedHosts: "all",
+    allowedHosts: 'all',
   },
-};
+}

@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 export default function Hello() {
   return (
@@ -9,7 +9,7 @@ export default function Hello() {
         <Text style={styles.text}>Hello from React Native!</Text>
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
   },
-});
+})

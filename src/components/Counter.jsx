@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useState} from 'react'
+import {View, Text, Pressable, StyleSheet} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
-type CounterProps = {
-  startingCount?: number;
-};
 
-export default function Counter({ startingCount = 0 }: CounterProps) {
-  const [count, setCount] = useState(startingCount);
+export default function Counter({startingCount = 0}) {
+  const [count, setCount] = useState(startingCount)
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -18,7 +15,7 @@ export default function Counter({ startingCount = 0 }: CounterProps) {
         </Pressable>
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -44,4 +41,4 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 16,
   },
-});
+})
