@@ -72,7 +72,7 @@
         npm-start = ''
           set -eo pipefail
           echo -e "\033[1;33mStarting Metro development server...\033[0m"
-          ./scripts/utils/http_retry_until.sh 'http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server' 200 &
+          ./scripts/utils/http_retry_until.sh "http://localhost:''${RCT_METRO_PORT}/src/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.choicely.sdk.rn.debug&modulesOnly=false&runModule=true&excludeSource=true&sourcePaths=url-server" 200 &
           npm start
           wait
         '';
