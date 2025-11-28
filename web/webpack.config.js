@@ -6,6 +6,7 @@ const appDirectory = path.resolve(__dirname, '..')
 
 const babelConfig = require('./babel.config')
 
+const {getPorts} = require('../dev/ports')
 const indexHtmlPath = path.resolve(appDirectory, 'web/index.html')
 const indexJsPath = path.resolve(appDirectory, 'web/index.web.js')
 
@@ -46,6 +47,7 @@ const ttfLoaderConfiguration = {
   type: 'asset/resource',
 }
 
+const {webPort} = getPorts(path.resolve(__dirname, '..'))
 module.exports = {
   entry: {app: indexJsPath},
   output: {
@@ -78,6 +80,7 @@ module.exports = {
     new webpack.DefinePlugin({__DEV__: JSON.stringify(true)}),
   ],
   devServer: {
+    port: webPort,
     open: true,
     hot: true,
     compress: true,

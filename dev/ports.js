@@ -18,7 +18,15 @@ function getPorts(rootDir) {
   if (!assertPortRange(metroPort)) {
     throw new Error(`Derived Metro port invalid: ${metroPort}`)
   }
-  return {proxyPort, metroPort}
+  const rawWebPort = process.env.WEB_PORT
+  if (rawWebPort === undefined) {
+    throw new Error('WEB_PORT is not set. Define it in `.env`, `default.env`, or export it.')
+  }
+  const webPort = Number(rawWebPort)
+  if (!assertPortRange(webPort)) {
+    throw new Error(`WEB_PORT invalid: "${rawWebPort}". Must be an integer between 1 and 65535.`)
+  }
+  return {proxyPort, metroPort, webPort}
 }
 
 module.exports = {getPorts, assertPortRange}
