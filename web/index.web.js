@@ -34,22 +34,38 @@ if (typeof window !== 'undefined') {
   }
 }
 
+function RootSafeArea({children}) {
+  return (
+    <SafeAreaProvider style={styles.safeAreaProvider}>
+      <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
+    </SafeAreaProvider>
+  )
+}
+
+function MessageScreen({text}) {
+  return (
+    <View style={styles.notFoundContainer}>
+      <Text style={styles.notFoundText}>{text}</Text>
+    </View>
+  )
+}
+
 function WebRoot({
-  components = {},
-  initialComponent,
-  forcedComponentName,
-}) {
+                   components = {},
+                   initialComponent,
+                   forcedComponentName,
+                 }) {
   const names = Object.keys(components)
 
   if (names.length === 0) {
     return (
-      <SafeAreaProvider style={styles.safeAreaProvider}>
-        <SafeAreaView style={styles.emptyStateContainer}>
+      <RootSafeArea>
+        <View style={styles.emptyStateContainer}>
           <Text style={styles.emptyStateText}>
             No components exported from index.js
           </Text>
-        </SafeAreaView>
-      </SafeAreaProvider>
+        </View>
+      </RootSafeArea>
     )
   }
 
@@ -57,19 +73,15 @@ function WebRoot({
     const ForcedComponent = components[forcedComponentName]
 
     return (
-      <SafeAreaProvider style={styles.safeAreaProvider}>
-        <SafeAreaView style={styles.safeArea}>
-          {ForcedComponent ? (
-            <ForcedComponent />
-          ) : (
-            <View style={styles.notFoundContainer}>
-              <Text style={styles.notFoundText}>
-                Component "{String(forcedComponentName)}" not found
-              </Text>
-            </View>
-          )}
-        </SafeAreaView>
-      </SafeAreaProvider>
+      <RootSafeArea>
+        {ForcedComponent ? (
+          <ForcedComponent/>
+        ) : (
+          <MessageScreen
+            text={`Component "${String(forcedComponentName)}" not found`}
+          />
+        )}
+      </RootSafeArea>
     )
   }
 
@@ -82,45 +94,40 @@ function WebRoot({
   const Active = active ? components[active] : undefined
 
   return (
-    <SafeAreaProvider style={styles.safeAreaProvider}>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.topBar}>
-          {names.map((name) => {
-            const selected = name === active
-            return (
-              <Pressable
-                key={name}
-                onPress={() => setActive(name)}
-                style={({pressed}) => [
-                  styles.chipBase,
-                  selected ? styles.chipSelected : styles.chipUnselected,
-                  !selected && pressed && styles.chipPressed,
+    <RootSafeArea>
+      <View style={styles.topBar}>
+        {names.map((name) => {
+          const selected = name === active
+          return (
+            <Pressable
+              key={name}
+              onPress={() => setActive(name)}
+              style={({pressed}) => [
+                styles.chipBase,
+                selected ? styles.chipSelected : styles.chipUnselected,
+                !selected && pressed && styles.chipPressed,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.chipText,
+                  selected && styles.chipTextSelected,
                 ]}
               >
-                <Text
-                  style={[
-                    styles.chipText,
-                    selected && styles.chipTextSelected,
-                  ]}
-                >
-                  {name}
-                </Text>
-              </Pressable>
-            )
-          })}
-        </View>
-
-        {Active ? (
-          <Active />
-        ) : (
-          <View style={styles.notFoundContainer}>
-            <Text style={styles.notFoundText}>
-              Component "{String(active)}" not found
-            </Text>
-          </View>
-        )}
-      </SafeAreaView>
-    </SafeAreaProvider>
+                {name}
+              </Text>
+            </Pressable>
+          )
+        })}
+      </View>
+      {Active ? (
+        <Active/>
+      ) : (
+        <MessageScreen
+          text={`Component "${String(active)}" not found`}
+        />
+      )}
+    </RootSafeArea>
   )
 }
 
