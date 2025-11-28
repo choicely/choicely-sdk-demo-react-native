@@ -265,7 +265,7 @@ public class MyApplication extends Application implements ReactApplication {
 
         final SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String rnHost = loadConfigFromAssets("debug_rn_host", R.string.debug_rn_host);
+        final String rnHost = loadConfigFromAssets("rn_dev_host", R.string.rn_dev_host);
         if (TextUtils.getTrimmedLength(rnHost) > 0) {
             prefs.edit()
                     .putString(PREFS_DEBUG_SERVER_HOST_KEY, rnHost)

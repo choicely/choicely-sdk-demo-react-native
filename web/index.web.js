@@ -25,15 +25,21 @@ if (document && document.documentElement && rootTag) {
 
 const HIGHLIGHT = '#37ff95'
 
-function WebRoot({components = {}, initialComponent}) {
-  const names = Object.keys(components)
-  const initial =
-    initialComponent && names.includes(initialComponent)
-      ? initialComponent
-      : names[0]
+let componentFromQuery = null
+if (typeof window !== 'undefined') {
+  const params = new URLSearchParams(window.location.search)
+  const value = params.get('component')
+  if (value) {
+    componentFromQuery = value
+  }
+}
 
-  const [active, setActive] = React.useState(initial)
-  const Active = active ? components[active] : undefined
+function WebRoot({
+  components = {},
+  initialComponent,
+  forcedComponentName,
+}) {
+  const names = Object.keys(components)
 
   if (names.length === 0) {
     return (
@@ -46,6 +52,34 @@ function WebRoot({components = {}, initialComponent}) {
       </SafeAreaProvider>
     )
   }
+
+  if (forcedComponentName) {
+    const ForcedComponent = components[forcedComponentName]
+
+    return (
+      <SafeAreaProvider style={styles.safeAreaProvider}>
+        <SafeAreaView style={styles.safeArea}>
+          {ForcedComponent ? (
+            <ForcedComponent />
+          ) : (
+            <View style={styles.notFoundContainer}>
+              <Text style={styles.notFoundText}>
+                Component "{String(forcedComponentName)}" not found
+              </Text>
+            </View>
+          )}
+        </SafeAreaView>
+      </SafeAreaProvider>
+    )
+  }
+
+  const initial =
+    initialComponent && names.includes(initialComponent)
+      ? initialComponent
+      : names[0]
+
+  const [active, setActive] = React.useState(initial)
+  const Active = active ? components[active] : undefined
 
   return (
     <SafeAreaProvider style={styles.safeAreaProvider}>
@@ -77,7 +111,7 @@ function WebRoot({components = {}, initialComponent}) {
         </View>
 
         {Active ? (
-          <Active/>
+          <Active />
         ) : (
           <View style={styles.notFoundContainer}>
             <Text style={styles.notFoundText}>
@@ -165,5 +199,6 @@ AppRegistry.runApplication(WEB_APP_NAME, {
   initialProps: {
     components: exportedComponents,
     initialComponent: defaultComponentName,
+    forcedComponentName: componentFromQuery,
   },
 })

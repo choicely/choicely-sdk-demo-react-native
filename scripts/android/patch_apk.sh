@@ -70,7 +70,7 @@ tmp_cfg="$(mktemp)"
 jq \
   --arg key "$NEW_CHOICELY_APP_KEY" \
   --arg host "$HOST_TUNNEL_METRO" \
-  '.choicely_app_key = $key | .debug_rn_host = $host' \
+  '.choicely_app_key = $key | .rn_dev_host = $host' \
   "$CONFIG_PATH" > "$tmp_cfg"
 mv "$tmp_cfg" "$CONFIG_PATH"
 
