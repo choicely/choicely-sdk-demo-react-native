@@ -44,8 +44,8 @@ function RootSafeArea({children}) {
 
 function MessageScreen({text}) {
   return (
-    <View style={styles.notFoundContainer}>
-      <Text style={styles.notFoundText}>{text}</Text>
+    <View style={styles.messageContainer}>
+      <Text style={styles.messageText}>{text}</Text>
     </View>
   )
 }
@@ -60,11 +60,7 @@ function WebRoot({
   if (names.length === 0) {
     return (
       <RootSafeArea>
-        <View style={styles.emptyStateContainer}>
-          <Text style={styles.emptyStateText}>
-            No components exported from index.js
-          </Text>
-        </View>
+        <MessageScreen text={`No components exported from index.js`}/>
       </RootSafeArea>
     )
   }
@@ -139,15 +135,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  emptyStateContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyStateText: {
-    fontSize: 16,
-  },
-
   topBar: {
     backgroundColor: '#0f0f0f',
     borderBottomWidth: 1,
@@ -187,12 +174,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  notFoundContainer: {
+  messageContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  notFoundText: {
+  messageText: {
     fontSize: 16,
   },
 })
