@@ -9,7 +9,6 @@ set -euo pipefail
 
 URL="${CHOICELY_API_BASE%/}/apps/${CHOICELY_APP_KEY}/"
 
-# Build JSON payload
 read -r -d '' PAYLOAD <<EOF || true
 {
   "rn_config": {
@@ -25,11 +24,10 @@ read -r -d '' PAYLOAD <<EOF || true
 }
 EOF
 
-echo "PATCH $URL"
 curl -sS \
   -X PATCH "$URL" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${CHOICELY_API_KEY}" \
   --fail-with-body \
-  -d "$PAYLOAD"
-echo
+  -d "$PAYLOAD" \
+  >/dev/null
