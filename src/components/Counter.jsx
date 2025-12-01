@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 16,
+    userSelect: 'none',
   },
 })
