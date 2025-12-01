@@ -79,9 +79,7 @@
         web-rn = ''
           set -eo pipefail
           echo -e "\033[1;33mStarting web development server...\033[0m"
-          ./scripts/update_web_host.sh &
           npm run web
-          wait
         '';
         #        android-emulator = ''
         #        set -eo pipefail
