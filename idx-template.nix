@@ -20,6 +20,7 @@
     cd "$out"
     printf '%s="%s"\n' "CHOICELY_APP_NAME" "$WS_NAME" >> default.env
     printf '%s=%s\n' "CHOICELY_APP_KEY" "${app_key}" >> default.env
+    printf '%s=%s\n' "CHOICELY_API_KEY" "${api_key}" >> .env
     set -a
     [ -f default.env ] && source default.env
     [ -f .env ] && source .env
