@@ -81,7 +81,7 @@ module.exports = {
   ],
   devServer: {
     port: webPort,
-    open: true,
+    open: false,
     hot: true,
     compress: true,
     allowedHosts: 'all',
