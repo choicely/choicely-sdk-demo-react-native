@@ -117,3 +117,14 @@ visit: [Choicely Mobile SDK Documentation](https://studio.choicely.com/docs/sdk)
 Please refer to the official fully native SDK example
 app: [Choicely SDK Example App repository](https://github.com/choicely/choicely-sdk-demo) (fully
 native)
+
+## Licensing
+
+This project is licensed under the Elastic License 2.0.
+
+Commercial use is permitted. Offering the software as a managed service is not permitted without a commercial agreement with Choicely Oy.
+
+For commercial licensing, contact: support@choicely.com
+
+Terms and Conditions: https://www.choicely.com/terms-and-conditions  
+Privacy Policy: https://www.choicely.com/privacy-policy

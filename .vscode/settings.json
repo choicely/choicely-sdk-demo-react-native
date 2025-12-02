@@ -54,7 +54,8 @@
     "**/android/gradle": true,
     "build": true,
     "gradle": true,
-    "package-lock.json": true
+    "package-lock.json": true,
+    "LICENCE.md": true
   },
   "files.watcherExclude": {
     "**/.git/**": true,
