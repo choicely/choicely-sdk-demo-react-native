@@ -72,3 +72,4 @@ package-lock.json
 tmp/
 *.pid
 .idea
+scratch
