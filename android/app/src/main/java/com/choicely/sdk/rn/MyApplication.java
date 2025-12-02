@@ -1,6 +1,7 @@
 package com.choicely.sdk.rn;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -220,55 +221,111 @@ public class MyApplication extends Application implements ReactApplication {
         return rnHost;
     }
 
+    private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
+    private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
+
     /**
      * Application initialization hook.
-     * <p>
-     * Performs the following in order:
+     *
+     * <p>Performs the following in order:
      * <ol>
-     *   <li>Initialize native SoLoader (required by RN/Skia/JNI libs).</li>
-     *   <li>Initialize {@link ChoicelySDK} using the app key from resources.</li>
-     *   <li>Register app-specific factories:
+     *   <li>Resolve the default React Native dev host:
+     *     <ul>
+     *       <li>Reads the <code>rn_dev_host</code> value from {@value #CHOICELY_CONFIG_FILE} in assets.</li>
+     *       <li>Falls back to <code>R.string.rn_dev_host</code> if the key is missing or invalid.</li>
+     *       <li>Stores the resolved value into the default {@link SharedPreferences} under
+     *           <code>{@value #PREFS_DEBUG_SERVER_HOST_KEY}</code> so RN can use it as the debug HTTP host.</li>
+     *     </ul>
+     *   </li>
+     *
+     *   <li>Initialize {@link ChoicelySDK} with the app key:
+     *     <ul>
+     *       <li>Reads <code>choicely_app_key</code> from {@value #CHOICELY_CONFIG_FILE} in assets.</li>
+     *       <li>Falls back to <code>R.string.choicely_app_key</code> if the config file does not provide it.</li>
+     *       <li>Calls {@link ChoicelySDK#init(Context, String)} with the resolved key.</li>
+     *     </ul>
+     *   </li>
+     *
+     *   <li>Fetch dynamic app data and refine the RN bundle host:
+     *     <ul>
+     *       <li>Loads app data for the current app key via {@link ChoicelySDK#data()}.</li>
+     *       <li>Reads the <code>customData</code> JSON from the app data (if present).</li>
+     *       <li>Looks up <code>mobile_bundle_url</code> from <code>customData</code>.</li>
+     *       <li>If a non-empty <code>mobile_bundle_url</code> is found, overwrites the stored debug host in
+     *           {@link SharedPreferences}; otherwise, keeps the static <code>rn_dev_host</code> value.</li>
+     *     </ul>
+     *   </li>
+     *
+     *   <li>Register app-specific factories with the Choicely SDK:
      *     <ul>
      *       <li>{@link MyContentFactory} — custom content rendering inside Choicely.</li>
      *       <li>{@link MySplashFactory} — custom splash screen for the app.</li>
      *     </ul>
      *   </li>
-     *   <li>If the New Architecture flag is enabled, load its entry point.</li>
+     *
+     *   <li>Initialize native loading for React Native / Skia / JNI-backed libraries via
+     *       {@code SoLoaderHelper.INSTANCE.initSoLoader(this)}.</li>
+     *
+     *   <li>If the New Architecture flag is enabled ({@code BuildConfig.IS_NEW_ARCHITECTURE_ENABLED}),
+     *       load its entry point via {@link DefaultNewArchitectureEntryPoint#load()}.</li>
      * </ol>
-     * <p>
-     * Editing tips: If you introduce other native SDKs, keep initialization lightweight and idempotent.
-     * Heavy or network-bound work should be deferred to a background initializer.
+     *
+     * <p><b>Debug host resolution order</b>:
+     * <ol>
+     *   <li>Static <code>rn_dev_host</code> from assets / resources.</li>
+     *   <li>Dynamic <code>mobile_bundle_url</code> from the app’s <code>customData</code> (overrides the static
+     *       value when available).</li>
+     * </ol>
+     *
+     * <p>Editing tips:
+     * <ul>
+     *   <li>Keep this initialization path lightweight and idempotent; it runs on the main thread.</li>
+     *   <li>Push heavy, I/O-bound, or network-bound work into background initializers or feature-specific
+     *       components.</li>
+     *   <li>If you add new configuration sources or flags that affect the RN host, keep the resolution order
+     *       in sync with this Javadoc so future readers don’t get lost.</li>
+     * </ul>
      */
-
-    private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
-    private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
-
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // Native loader for RN/Skia/JNI-backed libs.
-        SoLoaderHelper.INSTANCE.initSoLoader(this);
-
+        final SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final String rnHost = loadConfigFromAssets("rn_dev_host", R.string.rn_dev_host);
+        setDebugHost(rnHost, prefs);
         // Core Choicely SDK bootstrapping with app key.
         final String appKey = loadConfigFromAssets("choicely_app_key", R.string.choicely_app_key);
         ChoicelySDK.init(this, appKey);
+        ChoicelySDK.data().getChoicelyAppData(appKey)
+                .onData((appData) -> {
+                    if (appData == null) {
+                        return;
+                    }
+                    final JSONObject customData = appData.getCustomDataJson();
+                    if (customData == null) {
+                        return;
+                    }
+                    final String rnHostDyn = customData.optString("mobile_bundle_url", rnHost);
+                    setDebugHost(rnHostDyn, prefs);
+                }).onError((errorCode, message) -> {
+                }).getData();
 
         // Register custom factories to override default content + splash behavior.
         ChoicelySDK.factory().setContentFactory(new MyContentFactory());
         ChoicelySDK.factory().setSplashFactory(new MySplashFactory());
 
+        // Native loader for RN/Skia/JNI-backed libs.
+        SoLoaderHelper.INSTANCE.initSoLoader(this);
         // Opt into React Native's New Architecture when the build flag is enabled.
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
             DefaultNewArchitectureEntryPoint.load();
         }
+    }
 
-        final SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String rnHost = loadConfigFromAssets("rn_dev_host", R.string.rn_dev_host);
-        if (TextUtils.getTrimmedLength(rnHost) > 0) {
+    private void setDebugHost(String host, SharedPreferences prefs) {
+        if (TextUtils.getTrimmedLength(host) > 0) {
             prefs.edit()
-                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, rnHost)
+                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
                     .apply();
         }
     }
