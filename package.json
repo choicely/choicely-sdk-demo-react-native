@@ -5,14 +5,12 @@
   "scripts": {
     "start": "react-native start",
     "web": "webpack-dev-server --config ./web/webpack.config.js --mode development",
-
     "bundle:web": "mkdir -p dist/web && webpack --config ./web/webpack.config.js --mode production --output-path ./dist/web",
     "bundle:android": "mkdir -p dist/android && react-native bundle --platform android --dev false --entry-file src/index.js --assets-dest dist/android --bundle-output dist/android/index.android.bundle",
     "bundle:ios": "mkdir -p dist/ios && react-native bundle --platform ios --dev false --entry-file src/index.js --assets-dest dist/ios --bundle-output dist/ios/main.jsbundle",
     "build:all": "npm run bundle:web && npm run bundle:android && npm run bundle:ios"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-navigation/native": "^7.1.19",
     "@react-navigation/native-stack": "^7.6.2",
     "axios": "^1.13.2",
@@ -20,6 +18,8 @@
     "react": "19.1.1",
     "react-native": "0.82.0",
     "react-native-image-picker": "^8.2.1",
+    "react-native-mmkv": "^4.0.1",
+    "react-native-nitro-modules": "^0.31.10",
     "react-native-permissions": "^5.4.4",
     "react-native-safe-area-context": "^5.5.2",
     "react-native-screens": "^4.18.0",
