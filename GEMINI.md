@@ -19,15 +19,13 @@ You create clear, concise, documented, and readable React Native JavaScript code
 - context7 MCP server can be used to find up-to-date React Native and other documentation.
 - More project related information can be found in 'README.md' at the project root.
 
-## Project Structure
-### Code to be modified by you
-- `/src`: React Native code root folder
-    - `/index.js`: Entry point for the React Native app to register components via AppRegistry
-    - `/components`: React Native components
-### Code to avoid modifying unless explicitly asked or fixing issues
-- `/web`: React Native Web code (do not modify unless explicitly asked)
-### Code not to be modified by you
-- `/android`: Android native code (do not modify unless explicitly asked)
+## Project Structure & Visibility
+- `/src`: **YOUR PLAYGROUND.** This is the React Native code root folder.
+    - `/index.js`: Entry point. **Crucial:** Keep Component registrations here in sync with the native app keys.
+    - `/components`: React Native components.
+- **Hidden/Excluded Folders**: The `android/`, `web/`, and `scripts/` folders are excluded from your view via `.aiexclude` to prevent accidental damage. 
+  - Do not attempt to modify native code, build scripts, or web harnesses.
+  - If a user asks for a feature requiring native code changes (e.g. "edit AndroidManifest"), explain that you cannot do this in the current environment.
 
 ## Environment
 
@@ -35,6 +33,33 @@ Whenever running any shell commands always prepend with `source ~/.bashrc &&` to
 Public environment variables are stored in `default.env` and private ones in `.env` in project root.
 If you are asked to change the choicely app key you do so by editing default.env.
 After updating the app key run `./scripts/update_app_key.sh &` (detached).
+
+## Interaction Protocol: Plan First, Code Later
+
+To ensure the best "Vibe Coding" experience, you must follow this strict interaction loop for any request involving code creation or significant modification:
+
+1.  **Analyze**: Understand the user's intent.
+2.  **Propose a Plan**: Before writing ANY code, present a clear, step-by-step plan.
+    *   List the components you intend to create or modify.
+    *   Identify which existing libraries you will use.
+    *   Describe the data flow or logic briefly.
+3.  **Wait for Approval**: Ask the user: *"Does this plan look good, or would you like to make adjustments?"*
+    *   **Do not generate code** in this step.
+4.  **Iterate**: If the user suggests changes, update the plan and ask for approval again.
+5.  **Implement**: Only after receiving explicit approval (e.g., "Yes", "Go ahead", "Looks good"), proceed to generate the code and apply changes.
+
+## Verification Protocol
+
+Before asking the user to test any changes, you MUST verify that the code compiles for the web environment, as this is the primary preview method.
+
+1.  **Check for Risky Imports**: If you used libraries known to have platform-specific implementations (like `async-storage`, `image-picker`, `camera`, `fs`), verify you have handled the `Platform.OS === 'web'` case or used a wrapper.
+2.  **Run Build Check**: Execute the following command to check for bundling errors:
+    `source ~/.bashrc && npx webpack --config ./web/webpack.config.js --mode development`
+3.  **Analyze Output**:
+    *   If the command fails (exit code non-zero), **do not** ask the user to test.
+    *   Read the error log. Look for `Module parse failed` or `resolve` errors.
+    *   Fix the issue and repeat the verification.
+4.  **Cleanup**: You may delete the `dist/` folder created by this check if you wish, or leave it.
 
 ## Overall guidelines
 
@@ -44,32 +69,39 @@ After updating the app key run `./scripts/update_app_key.sh &` (detached).
 
 ## Coding-specific guidelines
 
-- Use 2 spaces for indentation.
-- Always use strict equality (`===` and `!==`).
-- Prefer JavaScript and its conventions unless specifically asked to use TypeScript.
-- Write React Native components on request and do not modify native code unless explicitly asked.
-- Do not modify the Gradle or Xcode project files unless explicitly asked.
-- You are an excellent troubleshooter. When analyzing errors, consider them
-  thoroughly and in context of the code they affect.
-- Do not add boilerplate or placeholder code. If valid code requires more
-  information from the user, ask for it before proceeding.
-- Do not register components with names other than those already in 'index.js' unless explicitly
-  asked.
-- Component Modification: When asked to replace or modify a component, only alter the code and registration for that specific component. Leave all other components and their registrations in index.js untouched unless explicitly instructed otherwise.
-- User might call components with the following alternative names as well: screens, widgets, etc.
-- When asked to add new components or modify existing components, use this order of operations:
-    1. Check 'index.js' to see how and what components are registered.
-    2. Create a new component file in 'src/components' or modify an existing one there.
-    3. Ensure the component is properly imported and registered in 'index.js'.
-    4. Only alter component registrations that were replaced with the new one.
-    5. Leave other components and their registrations as they was.
-    6. Only then remove component files that were replaced, if applicable. (Avoids broken imports and
-       registrations.)
-    7. Always validate that the code is syntactically correct by reading the files after your edits.
-    8. Also validate all imports you add.
-- Use the .jsx file extension for React Native component files.
-- Split the code into logical packages or components where applicable to enhance readability and
-  maintainability.
+- **Self-Contained Components**:
+  - Components MUST be self-contained in a single `.jsx` file.
+  - **Do NOT create helper files** that live outside the component's folder or are shared across components.
+  - If a utility is needed (like a storage wrapper or custom hook), define it *inside* the component file or in a local file within a dedicated component subfolder (e.g., `src/components/MyComponent/utils.js`) if absolutely necessary. But preferably, keep it in one file for portability.
+  - This ensures components can be easily copied, moved, or uploaded to a component store without breaking dependencies.
+
+- **Strict Dependency Rule**: You are **strictly FORBIDDEN** from adding new entries to `package.json` without explicit confirmation that it is a pure JS library.
+  - You must use the existing libraries whenever possible. 
+  - If a requested feature requires a library not present, explain that it cannot be done without admin approval as it risks breaking the native build.
+  - **Never** add dependencies that require native linking (e.g. `react-native-camera` without pre-installation).
+
+- **Style Guidelines**: 
+  - Use 2 spaces for indentation.
+  - Always use strict equality (`===` and `!==`).
+  - Prefer `StyleSheet.create({ ... })` over inline styles for performance and readability.
+  - Prefer JavaScript and its conventions unless specifically asked to use TypeScript.
+
+- **Component Integrity**:
+  - Do not register components with names other than those already in 'index.js' unless explicitly asked.
+  - **Do not rename** `AppRegistry.registerComponent` keys. The app key must match the string expected by the Choicely Studio configuration.
+
+- **Modification Protocol**: 
+  - When asked to replace or modify a component, only alter the code and registration for that specific component.
+  - Leave all other components and their registrations in `index.js` untouched unless explicitly instructed otherwise.
+  - Use the .jsx file extension for React Native component files.
+  - Split the code into logical packages or components where applicable.
+
+### Troubleshooting & Error Recovery
+
+- You are an excellent troubleshooter. When analyzing errors, consider them thoroughly in context.
+- **Red Screen / Crash**: If the user reports a crash, the first step is ALWAYS to check if the component is correctly imported and registered in `src/index.js`.
+- Do not add boilerplate or placeholder code. If valid code requires more information from the user, ask for it before proceeding.
+- Validate all imports you add. Since you cannot easily add new packages, ensure the import exists in `node_modules` (visible via `package.json`).
 
 ### Safe area handling for React Native components
 
@@ -77,17 +109,9 @@ After updating the app key run `./scripts/update_app_key.sh &` (detached).
     - Each registered component is, by default, wrapped with a `SafeAreaProvider` and a `SafeAreaView` (with `flex: 1`) via `wrapWithSafeAreaProvider`.
     - This wrapping can be disabled by calling `registerComponents({ useSafeAreaProvider: false })` (for example, in the React Native Web root where there is already a `SafeAreaProvider`).
 - When creating or modifying **root-level** React Native components (screens/widgets that are registered in `src/index.js`):
-    - Do **not** add another `SafeAreaProvider` or `SafeAreaView` around the component unless explicitly requested or there is a very specific nested safe-area need.
-    - Use normal layout containers (for example, `View` with `flex: 1`) as the component’s top-level wrapper and assume that a single `SafeAreaView` is already provided by the root wrapper.
+    - Do **not** add another `SafeAreaProvider` or `SafeAreaView` around the component unless explicitly requested.
+    - Use normal layout containers (e.g., `View` with `flex: 1`) as the component’s top-level wrapper.
 - When a nested safe area is genuinely required (for example a scrollable sub-section that must respect insets independently):
     - Import `SafeAreaView` from `'react-native-safe-area-context'` and use it *inside* the component where needed.
     - Never use `SafeAreaView` from `'react-native'`.
-- Do not add additional `SafeAreaProvider` instances inside individual components. Assume that the provider is configured at the root level via `index.js` and, on web, via the web root entry file, unless the user explicitly asks to change this setup.
-
-## Regarding Dependencies:
-
-- All React Native dependencies are listed in 'package.json' at the project root.
-- Never alter native Gradle or Xcode dependency configurations.
-- Avoid introducing new external dependencies unless absolutely necessary or asked to.
-- If a new dependency is required, please state the reason.
-- Do not ever add dependencies that require native code changes or re-installs.
+- Do not add additional `SafeAreaProvider` instances inside individual components. Assume that the provider is configured at the root level via `index.js`.
