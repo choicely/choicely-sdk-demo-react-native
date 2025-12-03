@@ -20,6 +20,7 @@
   "debug.showBreakpointsInOverviewRuler": false,
   "debug.showInStatusBar": "never",
   "debug.toolBarLocation": "hidden",
+  "editor.wordWrap": "on",
   "editor.fontSize": 12,
   "editor.formatOnSave": false,
   "editor.formatOnSaveMode": "modificationsIfAvailable",
@@ -28,6 +29,8 @@
   "editor.smoothScrolling": false,
   "editor.stickyScroll.enabled": false,
   "explorer.autoReveal": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
   "extensions.ignoreRecommendations": true,
   "files.exclude": {
     "**/.DS_Store": true,
@@ -110,7 +113,11 @@
   "task.problemMatchers.neverPrompt": true,
   "task.verboseLogging": true,
   "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.confirmOnKill": "never",
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorBlinking": true,
   "typescript.tsc.autoDetect": "off",
   "workbench.colorCustomizations": {
     "focusBorder": "#37ff95",
@@ -170,5 +177,6 @@
   "workbench.remoteIndicator.showExtensionRecommendations": false,
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
-  "code-runner.runInTerminal": true
+  "code-runner.runInTerminal": true,
+  "react-native-tools.showUserTips": false
 }
