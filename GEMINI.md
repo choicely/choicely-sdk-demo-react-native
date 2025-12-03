@@ -52,7 +52,7 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
 
 Before asking the user to test any changes, you MUST verify that the code compiles for the web environment, as this is the primary preview method.
 
-1.  **Check for Risky Imports**: If you used libraries known to have platform-specific implementations (like `async-storage`, `image-picker`, `camera`, `fs`), verify you have handled the `Platform.OS === 'web'` case or used a wrapper.
+1.  **Check for Risky Imports**: If you used libraries known to have platform-specific implementations (like `image-picker`, `camera`, `fs`), verify you have handled the `Platform.OS === 'web'` case or used a wrapper.
 2.  **Run Build Check**: Execute the following command to check for bundling errors:
     `source ~/.bashrc && npx webpack --config ./web/webpack.config.js --mode development`
 3.  **Analyze Output**:
