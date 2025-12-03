@@ -21,11 +21,11 @@ You create clear, concise, documented, and readable React Native JavaScript code
 
 ## Project Structure & Visibility
 - `/src`: **YOUR PLAYGROUND.** This is the React Native code root folder.
-    - `/index.js`: Entry point. **Crucial:** Keep Component registrations here in sync with the native app keys.
-    - `/components`: React Native components.
+  - `/index.js`: Entry point. **Crucial:** Keep Component registrations here in sync with the native app keys.
+  - `/components`: React Native components.
 - **Hidden/Excluded Folders**: The `android/`, `web/`, and `scripts/` folders are excluded from your view via `.aiexclude` to prevent accidental damage.
-    - Do not attempt to modify native code, build scripts, or web harnesses.
-    - If a user asks for a feature requiring native code changes (e.g. "edit AndroidManifest"), explain that you cannot do this in the current environment.
+  - Do not attempt to modify native code, build scripts, or web harnesses.
+  - If a user asks for a feature requiring native code changes (e.g. "edit AndroidManifest"), explain that you cannot do this in the current environment.
 
 ## Environment
 
@@ -40,11 +40,11 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
 
 1.  **Analyze**: Understand the user's intent.
 2.  **Propose a Plan**: Before writing ANY code, present a clear, step-by-step plan.
-    *   List the components you intend to create or modify.
-    *   Identify which existing libraries you will use.
-    *   Describe the data flow or logic briefly.
+  *   List the components you intend to create or modify.
+  *   Identify which existing libraries you will use.
+  *   Describe the data flow or logic briefly.
 3.  **Wait for Approval**: Ask the user: *"Does this plan look good, or would you like to make adjustments?"*
-    *   **Do not generate code** in this step.
+  *   **Do not generate code** in this step.
 4.  **Iterate**: If the user suggests changes, update the plan and ask for approval again.
 5.  **Implement**: Only after receiving explicit approval (e.g., "Yes", "Go ahead", "Looks good"), proceed to generate the code and apply changes.
 
@@ -56,9 +56,9 @@ Before asking the user to test any changes, you MUST verify that the code compil
 2.  **Run Build Check**: Execute the following command to check for bundling errors:
     `source ~/.bashrc && npx webpack --config ./web/webpack.config.js --mode development`
 3.  **Analyze Output**:
-    *   If the command fails (exit code non-zero), **do not** ask the user to test.
-    *   Read the error log. Look for `Module parse failed` or `resolve` errors.
-    *   Fix the issue and repeat the verification.
+  *   If the command fails (exit code non-zero), **do not** ask the user to test.
+  *   Read the error log. Look for `Module parse failed` or `resolve` errors.
+  *   Fix the issue and repeat the verification.
 4.  **Cleanup**: You may delete the `dist/` folder created by this check if you wish, or leave it.
 
 ## Overall guidelines
@@ -70,31 +70,31 @@ Before asking the user to test any changes, you MUST verify that the code compil
 ## Coding-specific guidelines
 
 - **Self-Contained Components**:
-    - Components MUST be self-contained in a single `.jsx` file.
-    - **Do NOT create helper files** that live outside the component's folder or are shared across components.
-    - If a utility is needed (like a storage wrapper or custom hook), define it *inside* the component file or in a local file within a dedicated component subfolder (e.g., `src/components/MyComponent/utils.js`) if absolutely necessary. But preferably, keep it in one file for portability.
-    - This ensures components can be easily copied, moved, or uploaded to a component store without breaking dependencies.
+  - Components MUST be self-contained in a single `.jsx` file.
+  - **Do NOT create helper files** that live outside the component's folder or are shared across components.
+  - If a utility is needed (like a storage wrapper or custom hook), define it *inside* the component file or in a local file within a dedicated component subfolder (e.g., `src/components/MyComponent/utils.js`) if absolutely necessary. But preferably, keep it in one file for portability.
+  - This ensures components can be easily copied, moved, or uploaded to a component store without breaking dependencies.
 
 - **Strict Dependency Rule**: You are **strictly FORBIDDEN** from adding new entries to `package.json` without explicit confirmation that it is a pure JS library.
-    - You must use the existing libraries whenever possible.
-    - If a requested feature requires a library not present, explain that it cannot be done without admin approval as it risks breaking the native build.
-    - **Never** add dependencies that require native linking (e.g. `react-native-camera` without pre-installation).
+  - You must use the existing libraries whenever possible.
+  - If a requested feature requires a library not present, explain that it cannot be done without admin approval as it risks breaking the native build.
+  - **Never** add dependencies that require native linking (e.g. `react-native-camera` without pre-installation).
 
 - **Style Guidelines**:
-    - Use 2 spaces for indentation.
-    - Always use strict equality (`===` and `!==`).
-    - Prefer `StyleSheet.create({ ... })` over inline styles for performance and readability.
-    - Prefer JavaScript and its conventions unless specifically asked to use TypeScript.
+  - Use 2 spaces for indentation.
+  - Always use strict equality (`===` and `!==`).
+  - Prefer `StyleSheet.create({ ... })` over inline styles for performance and readability.
+  - Prefer JavaScript and its conventions unless specifically asked to use TypeScript.
 
 - **Component Integrity**:
-    - Do not register components with names other than those already in 'index.js' unless explicitly asked.
-    - **Do not rename** `AppRegistry.registerComponent` keys. The app key must match the string expected by the Choicely Studio configuration.
+  - Do not register components with names other than those already in 'index.js' unless explicitly asked.
+  - **Do not rename** `AppRegistry.registerComponent` keys. The app key must match the string expected by the Choicely Studio configuration.
 
 - **Modification Protocol**:
-    - When asked to replace or modify a component, only alter the code and registration for that specific component.
-    - Leave all other components and their registrations in `index.js` untouched unless explicitly instructed otherwise.
-    - Use the .jsx file extension for React Native component files.
-    - Split the code into logical packages or components where applicable.
+  - When asked to replace or modify a component, only alter the code and registration for that specific component.
+  - Leave all other components and their registrations in `index.js` untouched unless explicitly instructed otherwise.
+  - Use the .jsx file extension for React Native component files.
+  - Split the code into logical packages or components where applicable.
 
 ### Troubleshooting & Error Recovery
 
@@ -106,12 +106,28 @@ Before asking the user to test any changes, you MUST verify that the code compil
 ### Safe area handling for React Native components
 
 - Root-level safe area handling is centralized in `src/index.js`:
-    - Each registered component is, by default, wrapped with a `SafeAreaProvider` and a `SafeAreaView` (with `flex: 1`) via `wrapWithSafeAreaProvider`.
-    - This wrapping can be disabled by calling `registerComponents({ useSafeAreaProvider: false })` (for example, in the React Native Web root where there is already a `SafeAreaProvider`).
+  - Each registered component is, by default, wrapped with a `SafeAreaProvider` and a `SafeAreaView` (with `flex: 1`) via `wrapWithSafeAreaProvider`.
+  - This wrapping can be disabled by calling `registerComponents({ useSafeAreaProvider: false })` (for example, in the React Native Web root where there is already a `SafeAreaProvider`).
 - When creating or modifying **root-level** React Native components (screens/widgets that are registered in `src/index.js`):
-    - Do **not** add another `SafeAreaProvider` or `SafeAreaView` around the component unless explicitly requested.
-    - Use normal layout containers (e.g., `View` with `flex: 1`) as the component’s top-level wrapper.
+  - Do **not** add another `SafeAreaProvider` or `SafeAreaView` around the component unless explicitly requested.
+  - Use normal layout containers (e.g., `View` with `flex: 1`) as the component’s top-level wrapper.
 - When a nested safe area is genuinely required (for example a scrollable sub-section that must respect insets independently):
-    - Import `SafeAreaView` from `'react-native-safe-area-context'` and use it *inside* the component where needed.
-    - Never use `SafeAreaView` from `'react-native'`.
+  - Import `SafeAreaView` from `'react-native-safe-area-context'` and use it *inside* the component where needed.
+  - Never use `SafeAreaView` from `'react-native'`.
 - Do not add additional `SafeAreaProvider` instances inside individual components. Assume that the provider is configured at the root level via `index.js`.
+
+### Data Persistence (react-native-mmkv)
+
+Always and only use react-native-mmkv for data persistence.
+It also works with react-native-web.
+
+#### Usage
+
+##### Create a new instance
+
+To create a new instance of the MMKV storage, use the `MMKV` constructor. It is recommended that you re-use this instance throughout your entire app instead of creating a new instance each time, so `export` the `storage` object.
+```js
+import { createMMKV } from 'react-native-mmkv'
+export const storage = createMMKV()
+```
+This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
