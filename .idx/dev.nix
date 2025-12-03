@@ -5,12 +5,11 @@
   channel = "stable-25.05";
   # Use https://search.nixos.org/packages to find packages
   packages = [
-    pkgs.bash
     pkgs.nodejs_20
     pkgs.cloudflared
-    pkgs.jdk17
     pkgs.qrencode
     pkgs.zip
+    # pkgs.jdk17
   ];
   services.docker.enable = false;
   # Sets environment variables in the workspace
