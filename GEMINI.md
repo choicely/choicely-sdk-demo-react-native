@@ -131,3 +131,54 @@ import { createMMKV } from 'react-native-mmkv'
 export const storage = createMMKV()
 ```
 This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
+
+##### Set
+
+```js
+storage.set('user.name', 'Marc')
+storage.set('user.age', 21)
+storage.set('is-mmkv-fast-asf', true)
+```
+
+##### Get
+
+```js
+const username = storage.getString('user.name') // 'Marc'
+const age = storage.getNumber('user.age') // 21
+const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
+```
+
+##### Hooks
+
+```js
+const [username, setUsername] = useMMKVString('user.name')
+const [age, setAge] = useMMKVNumber('user.age')
+const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
+```
+
+##### Keys
+
+```js
+// checking if a specific key exists
+const hasUsername = storage.contains('user.name')
+// getting all keys
+const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
+// delete a specific key + value
+const wasRemoved = storage.remove('user.name')
+// delete all keys
+storage.clearAll()
+```
+
+##### Objects
+
+```js
+const user = {
+  username: 'Marc',
+  age: 21
+}
+// Serialize the object into a JSON string
+storage.set('user', JSON.stringify(user))
+// Deserialize the JSON string into an object
+const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
+const userObject = JSON.parse(jsonUser)
+```

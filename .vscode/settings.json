@@ -177,6 +177,9 @@
   "workbench.remoteIndicator.showExtensionRecommendations": false,
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
+  "outline.icons": false,
+  "outline.collapseItems": "alwaysCollapse",
+  "timeline.pageSize": 0,
   "code-runner.runInTerminal": true,
   "react-native-tools.showUserTips": false
 }
