@@ -4,7 +4,12 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "web": "webpack-dev-server --config ./web/webpack.config.js --mode development"
+    "web": "webpack-dev-server --config ./web/webpack.config.js --mode development",
+
+    "bundle:web": "mkdir -p dist/web && webpack --config ./web/webpack.config.js --mode production --output-path ./dist/web",
+    "bundle:android": "mkdir -p dist/android && react-native bundle --platform android --dev false --entry-file src/index.js --assets-dest dist/android --bundle-output dist/android/index.android.bundle",
+    "bundle:ios": "mkdir -p dist/ios && react-native bundle --platform ios --dev false --entry-file src/index.js --assets-dest dist/ios --bundle-output dist/ios/main.jsbundle",
+    "build:all": "npm run bundle:web && npm run bundle:android && npm run bundle:ios"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
