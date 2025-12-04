@@ -52,6 +52,7 @@
     "**/gradle/wrapper": true,
     "**/node_modules": true,
     "**/tmp": true,
+    "**/.tmp": true,
     "**/android/.kotlin": true,
     "**/android/build": true,
     "**/android/gradle": true,

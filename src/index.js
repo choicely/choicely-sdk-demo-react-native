@@ -4,11 +4,13 @@ import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
 import Hello from './components/Hello'
 import Counter from './components/Counter'
+import VideoPlayer from './components/VideoPlayer'
 
-const defaultComponentName = 'component_1'
+const defaultComponentName = 'hello'
 export const components = {
   [defaultComponentName]: Hello,
-  component_2: Counter,
+  counter: Counter,
+  video_player: VideoPlayer,
 }
 
 function wrapWithSafeAreaProvider(Component) {
