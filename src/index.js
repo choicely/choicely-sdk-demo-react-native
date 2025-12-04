@@ -2,18 +2,15 @@ import React from 'react'
 import {AppRegistry, ScrollView} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
-import Hello from './components/Hello'
-import Counter from './components/Counter'
-import VideoPlayer from './components/VideoPlayer'
-import TicTacToe from './components/TicTacToe'
-
 const defaultComponentName = 'hello'
+
 export const components = {
-  [defaultComponentName]: Hello,
-  counter: Counter,
-  video_player: VideoPlayer,
-  tic_tac_toe: TicTacToe,
+  [defaultComponentName]: require('./components/Hello').default,
+  counter: require('./components/Counter').default,
+  video_player: require('./components/VideoPlayer').default,
+  tic_tac_toe: require('./components/TicTacToe').default,
 }
+
 
 function wrapWithSafeAreaProvider(Component) {
   return function WrappedWithSafeAreaProvider(props) {

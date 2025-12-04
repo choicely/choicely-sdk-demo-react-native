@@ -1,13 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react'
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  Animated,
-  Easing,
-  TouchableOpacity,
-} from 'react-native'
+import React, {useEffect, useRef, useState} from 'react'
+import {Animated, Easing, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
 const COLORS = {
   background: '#F0F4F8',
@@ -125,7 +117,7 @@ export default function TicTacToe() {
   }
 
   const getStatusText = () => {
-    if (winner === 'Draw') return "It's a Draw!"
+    if (winner === 'Draw') return 'It\'s a Draw!'
     if (winner) return `Winner: ${winner}`
     return `Player ${isXNext ? 'X' : 'O'}'s Turn`
   }
@@ -136,7 +128,7 @@ export default function TicTacToe() {
 
       <View style={styles.statusContainer}>
         <Text style={[styles.statusText, winner && styles.winnerText]}>
-           {getStatusText()}
+          {getStatusText()}
         </Text>
       </View>
 
@@ -147,7 +139,7 @@ export default function TicTacToe() {
             style={styles.cell}
             onPress={() => handlePress(index)}
             android_ripple={{color: '#EEE'}}>
-            <Mark type={cell} visible={!!cell} />
+            <Mark type={cell} visible={!!cell}/>
           </Pressable>
         ))}
       </View>

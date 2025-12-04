@@ -1,14 +1,7 @@
-import {AppRegistry, View, Text, Pressable, StyleSheet} from 'react-native'
 import React from 'react'
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-} from 'react-native-safe-area-context'
-import {
-  components as exportedComponents,
-  defaultComponentName,
-  registerComponents,
-} from '../src/index.js'
+import {AppRegistry, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native'
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
+import {components as exportedComponents, defaultComponentName, registerComponents} from '../src/index.js'
 
 registerComponents({useSafeAreaProvider: false})
 
@@ -37,7 +30,11 @@ if (typeof window !== 'undefined') {
 function RootSafeArea({children}) {
   return (
     <SafeAreaProvider style={styles.safeAreaProvider}>
-      <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          {children}
+        </ScrollView>
+      </SafeAreaView>
     </SafeAreaProvider>
   )
 }
