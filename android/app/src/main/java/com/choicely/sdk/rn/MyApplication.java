@@ -231,8 +231,8 @@ public class MyApplication extends Application implements ReactApplication {
      * <ol>
      *   <li>Resolve the default React Native dev host:
      *     <ul>
-     *       <li>Reads the <code>rn_dev_host</code> value from {@value #CHOICELY_CONFIG_FILE} in assets.</li>
-     *       <li>Falls back to <code>R.string.rn_dev_host</code> if the key is missing or invalid.</li>
+     *       <li>Reads the <code>rn_host_dev</code> value from {@value #CHOICELY_CONFIG_FILE} in assets.</li>
+     *       <li>Falls back to <code>R.string.rn_host_dev</code> if the key is missing or invalid.</li>
      *       <li>Stores the resolved value into the default {@link SharedPreferences} under
      *           <code>{@value #PREFS_DEBUG_SERVER_HOST_KEY}</code> so RN can use it as the debug HTTP host.</li>
      *     </ul>
@@ -252,7 +252,7 @@ public class MyApplication extends Application implements ReactApplication {
      *       <li>Reads the <code>customData</code> JSON from the app data (if present).</li>
      *       <li>Looks up <code>bundle_url_mobile</code> from <code>customData</code>.</li>
      *       <li>If a non-empty <code>bundle_url_mobile</code> is found, overwrites the stored debug host in
-     *           {@link SharedPreferences}; otherwise, keeps the static <code>rn_dev_host</code> value.</li>
+     *           {@link SharedPreferences}; otherwise, keeps the static <code>rn_host_dev</code> value.</li>
      *     </ul>
      *   </li>
      *
@@ -272,7 +272,7 @@ public class MyApplication extends Application implements ReactApplication {
      *
      * <p><b>Debug host resolution order</b>:
      * <ol>
-     *   <li>Static <code>rn_dev_host</code> from assets / resources.</li>
+     *   <li>Static <code>rn_host_dev</code> from assets / resources.</li>
      *   <li>Dynamic <code>bundle_url_mobile</code> from the app’s <code>customData</code> (overrides the static
      *       value when available).</li>
      * </ol>
@@ -291,7 +291,7 @@ public class MyApplication extends Application implements ReactApplication {
         super.onCreate();
         final SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String rnHost = loadConfigFromAssets("rn_dev_host", R.string.rn_dev_host);
+        final String rnHost = loadConfigFromAssets("rn_host_dev", R.string.rn_host_dev);
         setDebugHost(rnHost, prefs);
         // Core Choicely SDK bootstrapping with app key.
         final String appKey = loadConfigFromAssets("choicely_app_key", R.string.choicely_app_key);

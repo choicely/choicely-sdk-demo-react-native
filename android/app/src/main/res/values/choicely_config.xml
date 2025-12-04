@@ -1,4 +1,4 @@
 <resources>
     <string name="choicely_app_key"></string>
-    <string name="rn_dev_host"></string>
+    <string name="rn_host_dev"></string>
 </resources>
