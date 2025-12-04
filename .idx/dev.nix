@@ -9,7 +9,7 @@
     pkgs.cloudflared
     pkgs.qrencode
     pkgs.zip
-    # pkgs.jdk17
+    pkgs.jdk17
   ];
   services.docker.enable = false;
   # Sets environment variables in the workspace
