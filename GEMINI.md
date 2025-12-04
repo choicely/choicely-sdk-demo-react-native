@@ -54,7 +54,7 @@ Before asking the user to test any changes, you MUST verify that the code compil
 
 1.  **Check for Risky Imports**: If you used libraries known to have platform-specific implementations (like `image-picker`, `camera`, `fs`), verify you have handled the `Platform.OS === 'web'` case or used a wrapper.
 2.  **Run Build Check**: Execute the following command to check for bundling errors:
-    `source ~/.bashrc && npx webpack --config ./web/webpack.config.js --mode development`
+    `source ~/.bashrc && npm run bundle:all`
 3.  **Analyze Output**:
   *   If the command fails (exit code non-zero), **do not** ask the user to test.
   *   Read the error log. Look for `Module parse failed` or `resolve` errors.
