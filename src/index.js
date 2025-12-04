@@ -1,16 +1,18 @@
 import React from 'react'
-import {AppRegistry} from 'react-native'
+import {AppRegistry, ScrollView} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
 import Hello from './components/Hello'
 import Counter from './components/Counter'
 import VideoPlayer from './components/VideoPlayer'
+import TicTacToe from './components/TicTacToe'
 
 const defaultComponentName = 'hello'
 export const components = {
   [defaultComponentName]: Hello,
   counter: Counter,
   video_player: VideoPlayer,
+  tic_tac_toe: TicTacToe,
 }
 
 function wrapWithSafeAreaProvider(Component) {
@@ -18,7 +20,9 @@ function wrapWithSafeAreaProvider(Component) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={{flex: 1}}>
-          <Component {...props} />
+          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <Component {...props} />
+          </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
     )
