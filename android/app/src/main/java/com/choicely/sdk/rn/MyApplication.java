@@ -250,8 +250,8 @@ public class MyApplication extends Application implements ReactApplication {
      *     <ul>
      *       <li>Loads app data for the current app key via {@link ChoicelySDK#data()}.</li>
      *       <li>Reads the <code>customData</code> JSON from the app data (if present).</li>
-     *       <li>Looks up <code>mobile_bundle_url</code> from <code>customData</code>.</li>
-     *       <li>If a non-empty <code>mobile_bundle_url</code> is found, overwrites the stored debug host in
+     *       <li>Looks up <code>bundle_url_mobile</code> from <code>customData</code>.</li>
+     *       <li>If a non-empty <code>bundle_url_mobile</code> is found, overwrites the stored debug host in
      *           {@link SharedPreferences}; otherwise, keeps the static <code>rn_dev_host</code> value.</li>
      *     </ul>
      *   </li>
@@ -273,7 +273,7 @@ public class MyApplication extends Application implements ReactApplication {
      * <p><b>Debug host resolution order</b>:
      * <ol>
      *   <li>Static <code>rn_dev_host</code> from assets / resources.</li>
-     *   <li>Dynamic <code>mobile_bundle_url</code> from the app’s <code>customData</code> (overrides the static
+     *   <li>Dynamic <code>bundle_url_mobile</code> from the app’s <code>customData</code> (overrides the static
      *       value when available).</li>
      * </ol>
      *
@@ -305,7 +305,7 @@ public class MyApplication extends Application implements ReactApplication {
                     if (customData == null) {
                         return;
                     }
-                    final String rnHostDyn = customData.optString("mobile_bundle_url", rnHost);
+                    final String rnHostDyn = customData.optString("bundle_url_mobile", rnHost);
                     setDebugHost(rnHostDyn, prefs);
                 }).onError((errorCode, message) -> {
                 }).getData();
