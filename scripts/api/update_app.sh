@@ -13,13 +13,13 @@ read -r -d '' PAYLOAD <<EOF || true
 {
   "rn_config": {
     "dev": {
-      "mobile_bundle_url": "${HOST_TUNNEL_METRO}",
-      "web_bundle_url": "${HOST_TUNNEL_WEB}"
+      "bundle_url_mobile": "${HOST_TUNNEL_METRO}",
+      "bundle_url_web": "${HOST_TUNNEL_WEB}"
     }
   },
   "custom_data": {
-    "mobile_bundle_url": "${HOST_TUNNEL_METRO}",
-    "web_bundle_url": "${HOST_TUNNEL_WEB}"
+    "bundle_url_mobile": "${HOST_TUNNEL_METRO}",
+    "bundle_url_web": "${HOST_TUNNEL_WEB}"
   }
 }
 EOF
