@@ -16,7 +16,6 @@ You create clear, concise, documented, and readable React Native JavaScript code
   their own bottom navigation. Prefer using view pagers or tabs within the React Native components
   instead.
 - All Choicely related documentation can be found at https://docs.choicely.com via MCP the Server.
-- context7 MCP server can be used to find up-to-date React Native and other documentation.
 - More project related information can be found in 'README.md' at the project root.
 
 ## Project Structure & Visibility
@@ -40,13 +39,14 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
 
 1.  **Analyze**: Understand the user's intent.
 2.  **Propose a Plan**: Before writing ANY code, present a clear, step-by-step plan.
-  *   List the components you intend to create or modify.
-  *   Identify which existing libraries you will use.
-  *   Describe the data flow or logic briefly.
+*   List the components you intend to create or modify.
+*   Identify which existing libraries you will use.
+*   Describe the data flow or logic briefly.
 3.  **Wait for Approval**: Ask the user: *"Does this plan look good, or would you like to make adjustments?"*
-  *   **Do not generate code** in this step.
+*   **Do not generate code** in this step.
 4.  **Iterate**: If the user suggests changes, update the plan and ask for approval again.
 5.  **Implement**: Only after receiving explicit approval (e.g., "Yes", "Go ahead", "Looks good"), proceed to generate the code and apply changes.
+6.  **Integrate**: If new component was registered in `index.js`, inform the user that it can be displaying within the app by adding `choicely://special/rn/<component_name>` navigation to the app's bottom navigation in [Choicely Studio](https://studio.choicely.com).
 
 ## Verification Protocol
 
@@ -56,9 +56,9 @@ Before asking the user to test any changes, you MUST verify that the code compil
 2.  **Run Build Check**: Execute the following command to check for bundling errors:
     `source ~/.bashrc && npm run bundle:all`
 3.  **Analyze Output**:
-  *   If the command fails (exit code non-zero), **do not** ask the user to test.
-  *   Read the error log. Look for `Module parse failed` or `resolve` errors.
-  *   Fix the issue and repeat the verification.
+*   If the command fails (exit code non-zero), **do not** ask the user to test.
+*   Read the error log. Look for `Module parse failed` or `resolve` errors.
+*   Fix the issue and repeat the verification.
 4.  **Cleanup**: You may delete the `dist/` folder created by this check if you wish, or leave it.
 
 ## Overall guidelines

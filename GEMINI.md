@@ -16,7 +16,6 @@ You create clear, concise, documented, and readable React Native JavaScript code
   their own bottom navigation. Prefer using view pagers or tabs within the React Native components
   instead.
 - All Choicely related documentation can be found at https://docs.choicely.com via MCP the Server.
-- context7 MCP server can be used to find up-to-date React Native and other documentation.
 - More project related information can be found in 'README.md' at the project root.
 
 ## Project Structure & Visibility
@@ -47,6 +46,7 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
   *   **Do not generate code** in this step.
 4.  **Iterate**: If the user suggests changes, update the plan and ask for approval again.
 5.  **Implement**: Only after receiving explicit approval (e.g., "Yes", "Go ahead", "Looks good"), proceed to generate the code and apply changes.
+6.  **Integrate**: If new component was registered in `index.js`, inform the user that it can be displaying within the app by adding `choicely://special/rn/<component_name>` navigation to the app's bottom navigation in [Choicely Studio](https://studio.choicely.com).
 
 ## Verification Protocol
 
