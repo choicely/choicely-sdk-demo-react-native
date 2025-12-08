@@ -115,6 +115,13 @@ Before asking the user to test any changes, you MUST verify that the code compil
   - Import `SafeAreaView` from `'react-native-safe-area-context'` and use it *inside* the component where needed.
   - Never use `SafeAreaView` from `'react-native'`.
 - Do not add additional `SafeAreaProvider` instances inside individual components. Assume that the provider is configured at the root level via `index.js`.
+- `index.js` adds `ScrollView` to all registered components by default.
+- To disable automatic `ScrollView`, the component can export:
+```js
+export const rootOptions = {
+  disableScrollView: true,
+}
+``` 
 
 ### Data Persistence (react-native-mmkv)
 

@@ -63,7 +63,7 @@ function WebRoot({
   }
 
   if (forcedComponentName) {
-    const ForcedComponent = components[forcedComponentName]
+    const ForcedComponent = components[forcedComponentName].default
 
     return (
       <RootSafeArea>
@@ -84,7 +84,7 @@ function WebRoot({
       : names[0]
 
   const [active, setActive] = React.useState(initial)
-  const Active = active ? components[active] : undefined
+  const Active = active ? components[active].default : undefined
 
   return (
     <RootSafeArea>

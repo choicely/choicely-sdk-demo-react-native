@@ -3,26 +3,36 @@ import {AppRegistry, ScrollView} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
 const defaultComponentName = 'hello'
-
 export const components = {
-  [defaultComponentName]: require('./components/Hello').default,
-  counter: require('./components/Counter').default,
-  video_player: require('./components/VideoPlayer').default,
-  tic_tac_toe: require('./components/TicTacToe').default,
+  [defaultComponentName]: require('./components/Hello'),
+  counter: require('./components/Counter'),
+  video_player: require('./components/VideoPlayer'),
+  tic_tac_toe: require('./components/TicTacToe'),
 }
 
+function createRootComponent(Comp, {useSafeAreaProvider, rootOptions = {}}) {
+  const {disableScrollView} = rootOptions
 
-function wrapWithSafeAreaProvider(Component) {
-  return function WrappedWithSafeAreaProvider(props) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={{flex: 1}}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
-            <Component {...props} />
-          </ScrollView>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    )
+  return function Root(props) {
+    let content = <Comp {...props} />
+
+    if (useSafeAreaProvider && !disableScrollView) {
+      content = (
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          {content}
+        </ScrollView>
+      )
+    }
+
+    if (useSafeAreaProvider) {
+      return (
+        <SafeAreaProvider>
+          <SafeAreaView style={{flex: 1}}>{content}</SafeAreaView>
+        </SafeAreaProvider>
+      )
+    }
+
+    return content
   }
 }
 
@@ -33,10 +43,14 @@ export function registerComponents({useSafeAreaProvider = true} = {}) {
     return
   }
 
-  Object.entries(components).forEach(([name, Comp]) => {
-    const RootComponent = useSafeAreaProvider
-      ? wrapWithSafeAreaProvider(Comp)
-      : Comp
+  Object.entries(components).forEach(([name, compModule]) => {
+    const Comp = compModule.default
+    const rootOptions = compModule.rootOptions ?? {}
+
+    const RootComponent = createRootComponent(Comp, {
+      useSafeAreaProvider,
+      rootOptions,
+    })
 
     AppRegistry.registerComponent(name, () => RootComponent)
   })
