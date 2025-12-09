@@ -123,6 +123,10 @@ export const rootOptions = {
 }
 ``` 
 
+### Listing
+
+Always use `@shopify/flash-list` instead of FlatList for listing components.
+
 ### Data Persistence (react-native-mmkv)
 
 Always and only use react-native-mmkv for data persistence.

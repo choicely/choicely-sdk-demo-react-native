@@ -10,6 +10,7 @@
     pkgs.qrencode
     pkgs.zip
     pkgs.jdk17
+    pkgs.watchman
   ];
   services.docker.enable = false;
   # Sets environment variables in the workspace

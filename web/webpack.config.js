@@ -66,6 +66,9 @@ module.exports = {
       '../../Utilities/Platform': 'react-native-web/dist/exports/Platform',
       './Platform': 'react-native-web/dist/exports/Platform',
     },
+  fallback: {
+    process: require.resolve('process/browser'),
+  },
   },
   module: {
     rules: [
@@ -74,11 +77,17 @@ module.exports = {
       ttfLoaderConfiguration,
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({template: indexHtmlPath}),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({__DEV__: JSON.stringify(true)}),
-  ],
+    plugins: [
+      new HtmlWebpackPlugin({ template: indexHtmlPath }),
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.DefinePlugin({
+        __DEV__: JSON.stringify(true),
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      }),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
+    ],
   devServer: {
     port: webPort,
     open: false,
