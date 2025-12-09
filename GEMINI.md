@@ -10,8 +10,7 @@ You create clear, concise, documented, and readable React Native JavaScript code
 - This setup demonstrates how to use the Choicely SDK and React Native together.
 - Works by embedding React Native components within a native Choicely app.
 - The Choicely SDK native host app already contains toolbar on all screens, so
-  React Native components do not need to implement their own toolbar except when the toolbar
-  provides functionality such as back button or title change.
+  React Native components should not add a top toolbar to components.
 - It also contains bottom navigation on screens, so React Native components do not need to implement
   their own bottom navigation. Prefer using view pagers or tabs within the React Native components
   instead.
