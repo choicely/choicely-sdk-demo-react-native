@@ -87,6 +87,7 @@ public class MyApplication extends Application implements ReactApplication {
          *
          * @return list of packages to register with RN.
          */
+        @NonNull
         @Override
         public List<ReactPackage> getPackages() {
             return new PackageList(this).getPackages(); // pulls in all autolinked packages
@@ -224,6 +225,8 @@ public class MyApplication extends Application implements ReactApplication {
     private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
     private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
 
+    private SharedPreferences rnPrefs;
+
     /**
      * Application initialization hook.
      *
@@ -289,13 +292,13 @@ public class MyApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        final SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String rnHost = loadConfigFromAssets("rn_host_dev", R.string.rn_host_dev);
-        setDebugHost(rnHost, prefs);
-        // Core Choicely SDK bootstrapping with app key.
+        final boolean isDev = rnHost.getUseDeveloperSupport();
+        if (isDev) {
+            this.rnPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            setDebugHost(loadConfigFromAssets("rn_host_dev", R.string.rn_host_dev), rnPrefs);
+        }
         final String appKey = loadConfigFromAssets("choicely_app_key", R.string.choicely_app_key);
-        ChoicelySDK.init(this, appKey);
+        initChoicely(appKey);
         ChoicelySDK.data().getChoicelyAppData(appKey)
                 .onData((appData) -> {
                     if (appData == null) {
@@ -305,15 +308,23 @@ public class MyApplication extends Application implements ReactApplication {
                     if (customData == null) {
                         return;
                     }
-                    final String rnHostDyn = customData.optString("bundle_url_mobile", rnHost);
-                    setDebugHost(rnHostDyn, prefs);
+                    if (isDev) {
+                        setDebugHost(customData.optString("bundle_url_mobile", ""), rnPrefs);
+                    }
                 }).onError((errorCode, message) -> {
                 }).getData();
+        initRNEngine();
+    }
 
+    private void initChoicely(@NonNull final String appKey) {
+        // Core Choicely SDK bootstrapping with app key.
+        ChoicelySDK.init(this, appKey);
         // Register custom factories to override default content + splash behavior.
         ChoicelySDK.factory().setContentFactory(new MyContentFactory());
         ChoicelySDK.factory().setSplashFactory(new MySplashFactory());
+    }
 
+    private void initRNEngine() {
         // Native loader for RN/Skia/JNI-backed libs.
         SoLoaderHelper.INSTANCE.initSoLoader(this);
         // Opt into React Native's New Architecture when the build flag is enabled.
@@ -322,16 +333,8 @@ public class MyApplication extends Application implements ReactApplication {
         }
     }
 
-    private void setDebugHost(String host, SharedPreferences prefs) {
-        if (TextUtils.getTrimmedLength(host) > 0) {
-            prefs.edit()
-                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
-                    .apply();
-        }
-    }
-
-    private String loadConfigFromAssets(@NonNull String assetKey, int defaultResId) {
-        try (InputStream is = getAssets().open(CHOICELY_CONFIG_FILE);
+    private String loadConfigFromAssets(@NonNull final String assetKey, final int defaultResId) {
+        try (InputStream is = this.getAssets().open(CHOICELY_CONFIG_FILE);
              final BufferedReader reader = new BufferedReader(
                      new InputStreamReader(is, StandardCharsets.UTF_8))) {
             final StringBuilder sb = new StringBuilder();
@@ -347,5 +350,13 @@ public class MyApplication extends Application implements ReactApplication {
         } catch (IOException | JSONException e) {
         }
         return getResources().getString(defaultResId);
+    }
+
+    private static void setDebugHost(final String host, final SharedPreferences prefs) {
+        if (TextUtils.getTrimmedLength(host) > 0) {
+            prefs.edit()
+                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
+                    .apply();
+        }
     }
 }
