@@ -210,18 +210,6 @@ public class MyApplication extends Application implements ReactApplication {
         );
     }
 
-    /**
-     * Legacy accessor for the {@link ReactNativeHost}. Some RN components still query this in
-     * mixed-architecture setups. Keep it in sync with {@link #getReactHost()}.
-     *
-     * @return the singleton {@link ReactNativeHost} instance.
-     */
-    @NonNull
-    @Override
-    public ReactNativeHost getReactNativeHost() {
-        return rnHost;
-    }
-
     private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
     private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
 
