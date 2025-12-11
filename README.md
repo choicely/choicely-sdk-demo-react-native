@@ -103,11 +103,14 @@ native)
 
 ## Licensing
 
-This project is licensed under the Elastic License 2.0.
+This project is provided under the Elastic License 2.0 (ELv2). See `LICENCE.md` for full terms. Notable points:
+- Commercial use is permitted.
+- You may not offer the Software as a managed service without a separate commercial agreement with Choicely Oy.
 
-Commercial use is permitted. Offering the software as a managed service is not permitted without a commercial agreement with Choicely Oy.
+## Support & commercial inquiries
 
-For commercial licensing, contact: support@choicely.com
+For commercial licensing, enterprise integration, or support, contact: support@choicely.com
 
-Terms and Conditions: https://www.choicely.com/terms-and-conditions  
-Privacy Policy: https://www.choicely.com/privacy-policy
+For terms and privacy information:
+- Terms and Conditions: https://www.choicely.com/terms-and-conditions
+- Privacy Policy: https://www.choicely.com/privacy-policy
