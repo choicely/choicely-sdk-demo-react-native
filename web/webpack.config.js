@@ -1,4 +1,5 @@
-const path = require('path')
+console.log('Loading webpack.config.js...')
+const path = require('node:path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -66,9 +67,9 @@ module.exports = {
       '../../Utilities/Platform': 'react-native-web/dist/exports/Platform',
       './Platform': 'react-native-web/dist/exports/Platform',
     },
-  fallback: {
-    process: require.resolve('process/browser'),
-  },
+    fallback: {
+      process: require.resolve('process/browser'),
+    },
   },
   module: {
     rules: [
@@ -77,21 +78,24 @@ module.exports = {
       ttfLoaderConfiguration,
     ],
   },
-    plugins: [
-      new HtmlWebpackPlugin({ template: indexHtmlPath }),
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      }),
-      new webpack.DefinePlugin({
-        __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
-      }),
-    ],
+  plugins: [
+    new HtmlWebpackPlugin({template: indexHtmlPath}),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+    }),
+  ],
   devServer: {
     port: webPort,
     open: false,
     hot: true,
     compress: true,
     allowedHosts: 'all',
+  },
+  cache: {
+    type: 'filesystem',
   },
 }

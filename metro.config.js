@@ -1,6 +1,7 @@
 console.log('Loading metro.config.js...')
-const path = require('path')
+const path = require('node:path')
 const {getDefaultConfig} = require('@react-native/metro-config')
+const {FileStore} = require('metro-cache')
 const {getPorts} = require('./dev/ports')
 
 module.exports = (async () => {
@@ -12,6 +13,11 @@ module.exports = (async () => {
   }
   config.watchFolders = [
     path.resolve(__dirname, 'src'),
+  ]
+  config.cacheStores = [
+    new FileStore({
+      root: path.join(__dirname, 'node_modules/.cache/metro'),
+    }),
   ]
   return config
 })()
