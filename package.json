@@ -7,7 +7,7 @@
     "web": "webpack-dev-server --config ./web/webpack.config.js --mode development",
     "bundle:android": "mkdir -p dist/android && react-native bundle --platform android --dev false --entry-file src/index.js --assets-dest dist/android --bundle-output dist/android/index.android.bundle",
     "bundle:ios": "mkdir -p dist/ios && react-native bundle --platform ios --dev false --entry-file src/index.js --assets-dest dist/ios --bundle-output dist/ios/main.jsbundle",
-    "bundle:web": "mkdir -p dist/web && webpack --config ./web/webpack.config.js --mode production --output-path ./dist/web",
+    "bundle:web": "mkdir -p dist/web && webpack --no-stats --no-watch --watch-options-stdin --no-color --no-devtool --config ./web/webpack.config.js --mode production --output-path ./dist/web",
     "bundle:all": "set -euo pipefail && npm run bundle:android && npm run bundle:ios && npm run bundle:web"
   },
   "dependencies": {
