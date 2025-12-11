@@ -44,6 +44,9 @@ export function registerComponents({useSafeAreaProvider = true} = {}) {
   }
 
   Object.entries(components).forEach(([name, compModule]) => {
+    if (compModule == null) {
+      return
+    }
     const Comp = compModule.default
     const rootOptions = compModule.rootOptions ?? {}
 
