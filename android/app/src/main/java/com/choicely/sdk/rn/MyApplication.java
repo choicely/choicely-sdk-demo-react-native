@@ -10,7 +10,6 @@ import com.choicely.sdk.rn.factory.MySplashFactory;
 
 public class MyApplication extends ChoicelyRNApplication {
 
-
     @NonNull
     @Override
     protected ChoicelyRNHost createReactNativeHost() {
