@@ -28,7 +28,7 @@ public final class ChoicelyRNConfig {
     private static SharedPreferences rnPrefs;
 
     @NonNull
-    public static synchronized String loadConfigFromAssets(
+    public static synchronized String loadValue(
             @Nullable final String assetKey,
             final int defaultResId,
             @NonNull Context context
@@ -53,7 +53,7 @@ public final class ChoicelyRNConfig {
         return context.getResources().getString(defaultResId);
     }
 
-    public static synchronized void refreshRNConfig(@NonNull String appKey, @NonNull ChoicelyRNApplication app) {
+    public static synchronized void refresh(@NonNull String appKey, @NonNull ChoicelyRNApplication app) {
         ChoicelySDK.data().getChoicelyAppData(appKey)
                 .onData((appData) -> {
                     if (appData == null) {
@@ -63,12 +63,12 @@ public final class ChoicelyRNConfig {
                     if (customData == null) {
                         return;
                     }
-                    setRNHostDebug(customData.optString("bundle_url_mobile", ""), app);
+                    setServerDebug(customData.optString("bundle_url_mobile", ""), app);
                 }).onError((errorCode, message) -> {
                 }).getData();
     }
 
-    public static synchronized void setRNHostDebug(@Nullable final String host, @NonNull ChoicelyRNApplication app) {
+    public static synchronized void setServerDebug(@Nullable final String host, @NonNull ChoicelyRNApplication app) {
         final boolean isDev = app.getReactNativeHost().getUseDeveloperSupport();
         if (!isDev) {
             return;

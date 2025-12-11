@@ -27,8 +27,8 @@ public class MyApplication extends ChoicelyRNApplication {
     public void onCreate() {
         super.onCreate();
         this.initRNEngine();
-        ChoicelyRNConfig.setRNHostDebug(ChoicelyRNConfig.loadConfigFromAssets("rn_host_dev", R.string.rn_host_dev, this), this);
-        final String appKey = ChoicelyRNConfig.loadConfigFromAssets("choicely_app_key", R.string.choicely_app_key, this);
+        ChoicelyRNConfig.setServerDebug(ChoicelyRNConfig.loadValue("rn_host_dev", R.string.rn_host_dev, this), this);
+        final String appKey = ChoicelyRNConfig.loadValue("choicely_app_key", R.string.choicely_app_key, this);
         if (TextUtils.getTrimmedLength(appKey) > 0) {
             this.initChoicely(appKey);
         }
@@ -41,6 +41,6 @@ public class MyApplication extends ChoicelyRNApplication {
         ChoicelySDK.factory().setContentFactory(new MyContentFactory());
         ChoicelySDK.factory().setSplashFactory(new MySplashFactory());
         // Load Choicely React Native configuration.
-        ChoicelyRNConfig.refreshRNConfig(appKey, this);
+        ChoicelyRNConfig.refresh(appKey, this);
     }
 }
