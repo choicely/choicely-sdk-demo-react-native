@@ -25,32 +25,59 @@ public final class ChoicelyRNConfig {
     private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
     private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
 
+    @Nullable
+    private static JSONObject cachedConfigJson;
+    @Nullable
     private static SharedPreferences rnPrefs;
 
     @NonNull
-    public static synchronized String loadValue(
+    public static String loadValue(
             @Nullable final String assetKey,
             final int defaultResId,
-            @NonNull Context context
+            @NonNull final Context context
     ) {
+        String value = null;
         if (assetKey != null) {
-            try (InputStream is = context.getAssets().open(CHOICELY_CONFIG_FILE);
-                 final BufferedReader reader = new BufferedReader(
-                         new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                final StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-                final JSONObject json = new JSONObject(sb.toString());
-                final String appKey = json.getString(assetKey);
-                if (TextUtils.getTrimmedLength(appKey) > 0) {
-                    return appKey;
-                }
-            } catch (IOException | JSONException e) {
+            value = loadFromAssets(assetKey, context);
+        }
+        if (value == null) {
+            value = context.getResources().getString(defaultResId);
+        }
+        return value;
+    }
+
+    @Nullable
+    public static String loadFromAssets(
+            @NonNull final String assetKey,
+            @NonNull final Context context
+    ) {
+        loadConfigFromAssetsIfNeeded(context.getApplicationContext());
+        if (cachedConfigJson != null) {
+            final String value = cachedConfigJson.optString(assetKey, "");
+            if (TextUtils.getTrimmedLength(value) > 0) {
+                return value;
             }
         }
-        return context.getResources().getString(defaultResId);
+        return null;
+    }
+
+    private static synchronized void loadConfigFromAssetsIfNeeded(@NonNull final Context context) {
+        if (cachedConfigJson != null) {
+            return;
+        }
+        try (final InputStream is = context.getAssets().open(CHOICELY_CONFIG_FILE);
+             final BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(is, StandardCharsets.UTF_8)
+             )) {
+            final StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            cachedConfigJson = new JSONObject(sb.toString());
+        } catch (IOException | JSONException e) {
+            cachedConfigJson = null;
+        }
     }
 
     public static synchronized void refresh(@NonNull String appKey, @NonNull ChoicelyRNApplication app) {
