@@ -1,4 +1,5 @@
 console.log('Loading metro.config.js...')
+
 const path = require('node:path')
 const {getDefaultConfig} = require('@react-native/metro-config')
 const {FileStore} = require('metro-cache')

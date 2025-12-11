@@ -1,4 +1,5 @@
 console.log('Loading webpack.config.js...')
+
 const path = require('node:path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
