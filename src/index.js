@@ -3,7 +3,7 @@ import {AppRegistry, ScrollView} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
 const defaultComponentName = 'hello'
-export const components = {
+export const componentMapping = {
   [defaultComponentName]: require('./components/Hello'),
   counter: require('./components/Counter'),
   video_player: require('./components/VideoPlayer'),
@@ -16,7 +16,7 @@ function createRootComponent(Comp, {useSafeAreaProvider, rootOptions = {}}) {
   return function Root(props) {
     let content = <Comp {...props} />
 
-    if (useSafeAreaProvider && !disableScrollView) {
+    if (!disableScrollView) {
       content = (
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           {content}
@@ -43,7 +43,7 @@ export function registerComponents({useSafeAreaProvider = true} = {}) {
     return
   }
 
-  Object.entries(components).forEach(([name, compModule]) => {
+  Object.entries(componentMapping).forEach(([name, compModule]) => {
     if (compModule == null) {
       return
     }
@@ -54,7 +54,10 @@ export function registerComponents({useSafeAreaProvider = true} = {}) {
       useSafeAreaProvider,
       rootOptions,
     })
-
+    componentMapping[name] = {
+      ...compModule,
+      registeredComponent: RootComponent,
+    }
     AppRegistry.registerComponent(name, () => RootComponent)
   })
 

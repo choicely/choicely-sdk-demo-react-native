@@ -1,39 +1,57 @@
 import React from 'react'
 import {AppRegistry, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
-import {components as exportedComponents, defaultComponentName, registerComponents} from '../src/index.js'
+import {componentMapping, defaultComponentName, registerComponents} from '../src/index.js'
 
 registerComponents({useSafeAreaProvider: false})
 
+if (typeof document === 'undefined' || document.documentElement == null) {
+  throw new Error('Document is undefined. This file should be run in a web environment.')
+}
+
 const rootTag = document.getElementById('root')
 
-if (document && document.documentElement && rootTag) {
-  document.documentElement.style.height = '100%'
-  document.body.style.height = '100%'
-  document.body.style.margin = '0'
-  rootTag.style.height = '100%'
-  rootTag.style.display = 'flex'
-  rootTag.style.flexDirection = 'column'
+if (rootTag == null) {
+  throw new Error(
+    'Root tag not found. Please ensure there is a <div id="root"></div> in your HTML file.',
+  )
 }
+
+document.documentElement.style.height = '100%'
+document.body.style.height = '100%'
+document.body.style.margin = '0'
+rootTag.style.height = '100%'
+rootTag.style.display = 'flex'
+rootTag.style.flexDirection = 'column'
 
 const HIGHLIGHT = '#37ff95'
 
-let componentFromQuery = null
-if (typeof window !== 'undefined') {
-  const params = new URLSearchParams(window.location.search)
-  const value = params.get('component')
-  if (value) {
-    componentFromQuery = value
+function getQueryState() {
+  if (typeof window === 'undefined') {
+    return {forcedComponentName: null, queryProps: {}}
   }
+
+  const params = new URLSearchParams(window.location.search)
+
+  const queryProps = {}
+  for (const [key, value] of params.entries()) {
+    // URLSearchParams always yields strings here
+    queryProps[key] = value
+  }
+
+  const component = params.get('component')
+  const forcedComponentName = component ? component : null
+
+  return {forcedComponentName, queryProps}
 }
+
+const {forcedComponentName, queryProps} = getQueryState()
 
 function RootSafeArea({children}) {
   return (
     <SafeAreaProvider style={styles.safeAreaProvider}>
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          {children}
-        </ScrollView>
+        {children}
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -41,85 +59,89 @@ function RootSafeArea({children}) {
 
 function MessageScreen({text}) {
   return (
-    <View style={styles.messageContainer}>
-      <Text style={styles.messageText}>{text}</Text>
+    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <View style={styles.messageContainer}>
+        <Text style={styles.messageText}>{text}</Text>
+      </View>
+    </ScrollView>
+  )
+}
+
+export function TopBar({names, active, onSelect}) {
+  return (
+    <View style={styles.topBar}>
+      {names.map((name) => {
+        const selected = name === active
+        return (
+          <Pressable
+            key={name}
+            onPress={() => onSelect(name)}
+            style={({pressed}) => [
+              styles.chipBase,
+              selected ? styles.chipSelected : styles.chipUnselected,
+              !selected && pressed && styles.chipPressed,
+            ]}
+          >
+            <Text
+              style={[
+                styles.chipText,
+                selected && styles.chipTextSelected,
+              ]}
+            >
+              {name}
+            </Text>
+          </Pressable>
+        )
+      })}
     </View>
   )
 }
 
 function WebRoot({
-                   components = {},
-                   initialComponent,
-                   forcedComponentName,
-                 }) {
+  components = {},
+  initialComponent,
+  forcedComponentName,
+  queryProps = {},
+}) {
   const names = Object.keys(components)
 
   if (names.length === 0) {
     return (
       <RootSafeArea>
-        <MessageScreen text={`No components exported from index.js`}/>
+        <MessageScreen text={`No components found`} />
       </RootSafeArea>
     )
   }
 
   if (forcedComponentName) {
-    const ForcedComponent = components[forcedComponentName]?.default
-
+    const ForcedComponent = components[forcedComponentName]?.registeredComponent
     return (
       <RootSafeArea>
         {ForcedComponent ? (
-          <ForcedComponent/>
+          <ForcedComponent {...queryProps} />
         ) : (
-          <MessageScreen
-            text={`Component "${String(forcedComponentName)}" not found`}
-          />
+          <MessageScreen text={`Component "${String(forcedComponentName)}" not found`} />
         )}
       </RootSafeArea>
     )
   }
 
   const initial =
-    initialComponent && names.includes(initialComponent)
-      ? initialComponent
-      : names[0]
+    initialComponent && names.includes(initialComponent) ? initialComponent : names[0]
 
   const [active, setActive] = React.useState(initial)
-  const Active = active ? components[active]?.default : undefined
+  const Active = active ? components[active]?.registeredComponent : undefined
 
   return (
     <RootSafeArea>
-      <View style={styles.topBar}>
-        {names.map((name) => {
-          const selected = name === active
-          return (
-            <Pressable
-              key={name}
-              onPress={() => setActive(name)}
-              style={({pressed}) => [
-                styles.chipBase,
-                selected ? styles.chipSelected : styles.chipUnselected,
-                !selected && pressed && styles.chipPressed,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.chipText,
-                  selected && styles.chipTextSelected,
-                ]}
-              >
-                {name}
-              </Text>
-            </Pressable>
-          )
-        })}
+      <View style={styles.webRootContainer}>
+        <TopBar names={names} active={active} onSelect={setActive} />
+        {Active ? (
+          <Active {...queryProps} />
+        ) : (
+          <MessageScreen text={`Component "${String(active)}" not found`} />
+        )}
       </View>
-      {Active ? (
-        <Active/>
-      ) : (
-        <MessageScreen
-          text={`Component "${String(active)}" not found`}
-        />
-      )}
     </RootSafeArea>
   )
 }
@@ -131,7 +153,9 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-
+  webRootContainer: {
+    flex: 1,
+  },
   topBar: {
     backgroundColor: '#0f0f0f',
     borderBottomWidth: 1,
@@ -142,7 +166,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
   },
-
   chipBase: {
     paddingVertical: 6,
     paddingHorizontal: 12,
@@ -170,7 +193,6 @@ const styles = StyleSheet.create({
     color: HIGHLIGHT,
     fontWeight: '600',
   },
-
   messageContainer: {
     flex: 1,
     alignItems: 'center',
@@ -188,8 +210,9 @@ AppRegistry.registerComponent(WEB_APP_NAME, () => WebRoot)
 AppRegistry.runApplication(WEB_APP_NAME, {
   rootTag,
   initialProps: {
-    components: exportedComponents,
+    components: componentMapping,
     initialComponent: defaultComponentName,
-    forcedComponentName: componentFromQuery,
+    forcedComponentName,
+    queryProps,
   },
 })

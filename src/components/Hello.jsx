@@ -1,10 +1,10 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 
-export default function Hello() {
+export default function Hello({message = 'React Native'}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello from React Native!</Text>
+      <Text style={styles.text}>Hello from {message}!</Text>
     </View>
   )
 }

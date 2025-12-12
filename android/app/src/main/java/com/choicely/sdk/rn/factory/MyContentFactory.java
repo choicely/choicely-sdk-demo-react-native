@@ -12,6 +12,7 @@ import com.choicely.sdk.activity.ChoicelyIntentKeys;
 import com.choicely.sdk.activity.content.factory.ChoicelyContentFragmentFactory;
 import com.choicely.sdk.rn.custom.RNFragmentWrapper;
 
+import java.util.Set;
 import java.util.List;
 
 /**
@@ -33,16 +34,16 @@ import java.util.List;
  * The {@code INTERNAL_URL} is expected to be a well-formed URI with a path that starts
  * with a "special key". Current support:
  * <ul>
- *   <li><b>React Native mount</b>: {@code <scheme>://special/rn/<ComponentName>}</li>
+ *   <li><b>React Native mount</b>: {@code <scheme>://special/rn/<component_name>}</li>
  * </ul>
  *
  * <h3>Examples</h3>
  * <pre>
- *  // Mount RN component "MyAwesomeScreen"
- *  choicely://special/rn/MyAwesomeScreen
+ *  // Mount RN component "my_awesome_screen"
+ *  choicely://special/rn/my_awesome_screen
  *
  *  // Optionally pass props via other mechanisms (e.g., data Bundle or query params)
- *  choicely://special/rn/Checkout
+ *  choicely://special/rn/checkout
  * </pre>
  *
  * <h2>Extending this router</h2>
@@ -94,7 +95,16 @@ public class MyContentFactory extends ChoicelyContentFragmentFactory {
 
             // Props for the RN component (fill this if you want to pass initial props).
             final Bundle reactProps = new Bundle();
-
+            final Set<String> queryKeys = uri.getQueryParameterNames();
+            if (queryKeys != null && !queryKeys.isEmpty()) {
+                for (final String key : queryKeys) {
+                    if (TextUtils.isEmpty(key)) continue;
+                    final String value = uri.getQueryParameter(key);
+                    if (value != null) {
+                        reactProps.putString(key, value);
+                    }
+                }
+            }
             // Extra fragment args for the wrapper (e.g., flags for lifecycle/back handling).
             final Bundle fragmentArgs = new Bundle();
 

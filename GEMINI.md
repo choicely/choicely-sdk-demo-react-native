@@ -29,7 +29,7 @@ You create clear, concise, documented, and readable React Native JavaScript code
 
 Whenever running any shell commands always prepend with `source ~/.bashrc &&` to load proper env.
 Public environment variables are stored in `default.env` and private ones in `.env` in project root.
-If you are asked to change the choicely app key you do so by editing default.env.
+If you are asked to change the Choicely app key you do so by editing default.env.
 After updating the app key run `./scripts/update_app_key.sh &` (detached).
 
 ## Interaction Protocol: Plan First, Code Later
@@ -45,7 +45,7 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
   *   **Do not generate code** in this step.
 4.  **Iterate**: If the user suggests changes, update the plan and ask for approval again.
 5.  **Implement**: Only after receiving explicit approval (e.g., "Yes", "Go ahead", "Looks good"), proceed to generate the code and apply changes.
-6.  **Integrate**: If new component was registered in `index.js`, inform the user that it can be displaying within the app by adding `choicely://special/rn/<component_name>` (`component_name` is the snake_case key in components key-value mapping) navigation to the app's bottom navigation in [Choicely Studio](https://studio.choicely.com).
+6.  **Integrate**: If new component was registered in `index.js`, inform the user that it can be displaying within the app by adding `choicely://special/rn/<component_name>` (`component_name` is the snake_case key in `componentMapping` key-value mapping) navigation to the app's bottom navigation in [Choicely Studio](https://studio.choicely.com).
 
 ## Verification Protocol
 
@@ -83,10 +83,12 @@ Before asking the user to test any changes, you MUST verify that the code compil
   - Use 2 spaces for indentation.
   - Always use strict equality (`===` and `!==`).
   - Prefer `StyleSheet.create({ ... })` over inline styles for performance and readability.
-  - Prefer JavaScript and its conventions unless specifically asked to use TypeScript.
+  - Prefer JavaScript and its conventions and never use TypeScript.
+  - Never use type annotations or interfaces!
+  - Never hardcode dimensions as globals. Components should be responsive by default.
+  - All components should also work on web via pre-configured and pre-installed `react-native-web`.
 
 - **Component Integrity**:
-  - Do not register components with names other than those already in 'index.js' unless explicitly asked.
   - **Do not rename** `AppRegistry.registerComponent` keys. The app key must match the string expected by the Choicely Studio configuration.
 
 - **Modification Protocol**:
