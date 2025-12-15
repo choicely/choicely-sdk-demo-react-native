@@ -49,41 +49,11 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 
     override func bundleURL() -> URL? {
       #if DEBUG
-      RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "src/index")
+      let provider = RCTBundleURLProvider.sharedSettings()
+      provider.jsLocation = "localhost:8932" // <-- host:port
+      return provider.jsBundleURL(forBundleRoot: "src/index")
       #else
-      Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+      return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
       #endif
     }
-}
-
-class TestViewController: UIViewController {
-
-  var reactViewController: ReactViewController?
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    // Do any additional setup after loading the view.
-    self.view.backgroundColor = .systemBackground
-
-    let button = UIButton()
-    button.setTitle("Open React Native", for: .normal)
-    button.setTitleColor(.systemBlue, for: .normal)
-    button.setTitleColor(.blue, for: .highlighted)
-    button.addAction(UIAction { [weak self] _ in
-      guard let self else { return }
-      if reactViewController == nil {
-       reactViewController = ReactViewController()
-      }
-      present(reactViewController!, animated: true)
-    }, for: .touchUpInside)
-    self.view.addSubview(button)
-
-    button.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-      button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-      button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-      button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-    ])
-  }
 }

@@ -6,7 +6,7 @@ export default function VideoPlayer() {
   return (
     <View style={styles.container}>
       <Video
-        source={{uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'}}
+        source={{uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'}}
         style={styles.video}
         controls={true}
         resizeMode="contain"
