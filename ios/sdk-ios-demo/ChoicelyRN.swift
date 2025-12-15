@@ -47,6 +47,9 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
         #if DEBUG
         let provider = RCTBundleURLProvider.sharedSettings()
         provider.jsLocation = "localhost:8932"
+        if let port = ProcessInfo.processInfo.environment["RCT_METRO_PORT"], !port.isEmpty {
+          provider.jsLocation = "localhost:\(port)"
+        }
         return provider.jsBundleURL(forBundleRoot: "src/index")
         #else
         return Bundle.main.url(forResource: "main", withExtension: "jsbundle")

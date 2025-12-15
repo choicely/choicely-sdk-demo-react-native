@@ -10,6 +10,8 @@
 		0A360AF8C0D7CB03E53A3DFA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E3718DCFE10DFA5E6667524A /* PrivacyInfo.xcprivacy */; };
 		34D1BC812E8C149E00E81165 /* ChoicelyCore in Frameworks */ = {isa = PBXBuildFile; productRef = 34D1BC802E8C149E00E81165 /* ChoicelyCore */; };
 		84BF290A81A209CECF782BE8 /* Pods_sdk_ios_demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 912B3C96047DC0CFE12AE5B1 /* Pods_sdk_ios_demo.framework */; };
+		DADF87942EF04FE9009751C9 /* setup.sh in Resources */ = {isa = PBXBuildFile; fileRef = DADF87922EF04FE9009751C9 /* setup.sh */; };
+		DADF87962EF05006009751C9 /* bundle_prod.sh in Resources */ = {isa = PBXBuildFile; fileRef = DADF87952EF04FFC009751C9 /* bundle_prod.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +19,8 @@
 		34D5D95B2E82BD1C00E18DE8 /* sdk-ios-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sdk-ios-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78138D8BF795C282B4639AB4 /* Pods-sdk-ios-demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sdk-ios-demo.debug.xcconfig"; path = "Target Support Files/Pods-sdk-ios-demo/Pods-sdk-ios-demo.debug.xcconfig"; sourceTree = "<group>"; };
 		912B3C96047DC0CFE12AE5B1 /* Pods_sdk_ios_demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sdk_ios_demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DADF87922EF04FE9009751C9 /* setup.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = setup.sh; sourceTree = "<group>"; };
+		DADF87952EF04FFC009751C9 /* bundle_prod.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = bundle_prod.sh; sourceTree = "<group>"; };
 		E3718DCFE10DFA5E6667524A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +70,7 @@
 		34D5D9522E82BD1C00E18DE8 = {
 			isa = PBXGroup;
 			children = (
+				DADF87932EF04FE9009751C9 /* scripts */,
 				34D5D95D2E82BD1C00E18DE8 /* sdk-ios-demo */,
 				34D5D95C2E82BD1C00E18DE8 /* Products */,
 				E3718DCFE10DFA5E6667524A /* PrivacyInfo.xcprivacy */,
@@ -90,6 +95,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DADF87932EF04FE9009751C9 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				DADF87952EF04FFC009751C9 /* bundle_prod.sh */,
+				DADF87922EF04FE9009751C9 /* setup.sh */,
+			);
+			path = scripts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -101,6 +115,7 @@
 				34D5D9572E82BD1C00E18DE8 /* Sources */,
 				34D5D9582E82BD1C00E18DE8 /* Frameworks */,
 				34D5D9592E82BD1C00E18DE8 /* Resources */,
+				DADF87912EF04F86009751C9 /* Bundle React Native code and images */,
 				36E854F1BAB830C28064DF38 /* [CP] Embed Pods Frameworks */,
 				3B0F99606666E38C5F6E8FDD /* [CP] Copy Pods Resources */,
 			);
@@ -161,7 +176,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DADF87942EF04FE9009751C9 /* setup.sh in Resources */,
 				0A360AF8C0D7CB03E53A3DFA /* PrivacyInfo.xcprivacy in Resources */,
+				DADF87962EF05006009751C9 /* bundle_prod.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +248,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-sdk-ios-demo/Pods-sdk-ios-demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		DADF87912EF04F86009751C9 /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "$(pwd)/scripts/bundle_prod.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
