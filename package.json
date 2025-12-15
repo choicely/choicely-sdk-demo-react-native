@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start",
+    "start": "react-native start --config metro.config.js",
     "web": "webpack-dev-server --config ./web/webpack.config.js --mode development",
     "bundle:android": "mkdir -p dist/android && react-native bundle --config metro.config.js --platform android --dev false --entry-file src/index.js --assets-dest dist/android --bundle-output dist/android/index.android.bundle",
     "bundle:ios": "mkdir -p dist/ios && react-native bundle --config metro.config.js --platform ios --dev false --entry-file src/index.js --assets-dest dist/ios --bundle-output dist/ios/main.jsbundle",
@@ -51,7 +51,7 @@
     "react-test-renderer": "19.1.0",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.2.2"
   },
   "engines": {
     "node": ">=20"

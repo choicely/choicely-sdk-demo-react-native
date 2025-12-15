@@ -14,4 +14,8 @@ BUNDLE_FORCE_RUBY_PLATFORM=1 bundle install --path vendor/bundle
 
 bundle exec ruby -e 'require "ffi"; puts "#{RUBY_PLATFORM} ffi=#{FFI::VERSION}"'
 
-bundle exec pod install
+pod deintegrate
+
+RCT_USE_PREBUILT_RNCORE=1 RCT_USE_RN_DEP=1 bundle exec pod install
+
+rm -rf .build/DerivedData-iOS

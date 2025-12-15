@@ -25,7 +25,8 @@ local.properties
 ############################
 # Build output (generic)
 ############################
-**/build/
+build/
+.build/
 dist/
 out/
 bin/
@@ -103,6 +104,8 @@ vendor/bundle/
 ############################
 .metro-health-check*
 *.jsbundle
+*.bundle
+*.bundle.js
 
 ############################
 # Node / JS package managers

@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 trap_card() {
+  trap - SIGINT SIGQUIT SIGTSTP
 	echo -e "\nGoodbye!"; exit 0
 }
 trap trap_card SIGINT SIGQUIT SIGTSTP
