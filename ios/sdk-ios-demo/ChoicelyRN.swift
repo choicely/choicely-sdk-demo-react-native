@@ -48,10 +48,12 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
         let provider = RCTBundleURLProvider.sharedSettings()
         provider.jsLocation = "localhost:8932"
         if let port = ProcessInfo.processInfo.environment["RCT_METRO_PORT"], !port.isEmpty {
+          # This does not work
           provider.jsLocation = "localhost:\(port)"
         }
         if let port = Bundle.main.object(forInfoDictionaryKey: "RCT_METRO_PORT") as? String,
            !port.isEmpty {
+          # This does not work
           provider.jsLocation = "localhost:\(port)"
         }
         return provider.jsBundleURL(forBundleRoot: "src/index")

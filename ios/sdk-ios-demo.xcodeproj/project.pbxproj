@@ -290,7 +290,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -euo pipefail\n. ${PODS_PODFILE_DIR_PATH}/scripts/load_env.sh\nif [ -z \"${RCT_METRO_PORT+x}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is not set\"\n  exit 1\nelif [ -z \"${RCT_METRO_PORT}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is set but empty\"\n  exit 1\nfi\n";
+			shellScript = "set -euo pipefail\n. ${PODS_PODFILE_DIR_PATH}/scripts/load_env.sh\nif [ -z \"${RCT_METRO_PORT+x}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is not set\"\n  exit 1\nelif [ -z \"${RCT_METRO_PORT}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is set but empty\"\n  exit 1\nfi\n# This does not work\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
