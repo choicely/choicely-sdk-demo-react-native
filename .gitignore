@@ -91,6 +91,7 @@ xcuserdata/
 .bundle/
 vendor/
 *.xcprivacy
+*.xcscheme
 
 ############################
 # CocoaPods / Ruby

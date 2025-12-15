@@ -50,6 +50,10 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
         if let port = ProcessInfo.processInfo.environment["RCT_METRO_PORT"], !port.isEmpty {
           provider.jsLocation = "localhost:\(port)"
         }
+        if let port = Bundle.main.object(forInfoDictionaryKey: "RCT_METRO_PORT") as? String,
+           !port.isEmpty {
+          provider.jsLocation = "localhost:\(port)"
+        }
         return provider.jsBundleURL(forBundleRoot: "src/index")
         #else
         return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
