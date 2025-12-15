@@ -27,14 +27,27 @@ final class ReactViewController: ChoicelyViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = []
+        extendedLayoutIncludesOpaqueBars = false
+
         reactNativeFactoryDelegate = ReactNativeDelegate()
         reactNativeFactoryDelegate!.dependencyProvider = RCTAppDependencyProvider()
         reactNativeFactory = RCTReactNativeFactory(delegate: reactNativeFactoryDelegate!)
-        view = reactNativeFactory!.rootViewFactory.view(
-            withModuleName: moduleName,
-            initialProperties: initialProps as? [AnyHashable: Any],
-            launchOptions: nil
+
+        let rnView = reactNativeFactory!.rootViewFactory.view(
+          withModuleName: moduleName,
+          initialProperties: initialProps as? [AnyHashable: Any],
+          launchOptions: nil
         )
+        rnView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(rnView)
+        
+        NSLayoutConstraint.activate([
+          rnView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+          rnView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+          rnView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+          rnView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
     }
 }
 
@@ -46,19 +59,19 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
     override func bundleURL() -> URL? {
         #if DEBUG
         let provider = RCTBundleURLProvider.sharedSettings()
-        provider.jsLocation = "localhost:8932"
-        if let port = ProcessInfo.processInfo.environment["RCT_METRO_PORT"], !port.isEmpty {
-          // This does not work
-          provider.jsLocation = "localhost:\(port)"
-        }
-        if let port = Bundle.main.object(forInfoDictionaryKey: "RCT_METRO_PORT") as? String,
-           !port.isEmpty {
-          // This does not work
-          provider.jsLocation = "localhost:\(port)"
-        }
+        let port = metroPort()
+        provider.jsLocation = "localhost:\(port)"
         return provider.jsBundleURL(forBundleRoot: "src/index")
         #else
         return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
         #endif
+    }
+    
+    private func metroPort() -> Int {
+      if let s = Bundle.main.object(forInfoDictionaryKey: "RCT_METRO_PORT") as? String,
+         let p = Int(s) { return p }
+      if let s = ProcessInfo.processInfo.environment["RCT_METRO_PORT"],
+         let p = Int(s) { return p }
+      return 8932
     }
 }
