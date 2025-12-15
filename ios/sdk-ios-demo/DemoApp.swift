@@ -5,7 +5,6 @@ import ChoicelyCore
 struct DemoApp: App {
     
     init() {
-        
         ChoicelySDK.settings.externalViewControllerFactory = YourCustomViewControllerFactory()
         ChoicelySDK.initialize(
             application: UIApplication.shared,

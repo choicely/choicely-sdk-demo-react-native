@@ -1,16 +1,43 @@
 import Foundation
 import ChoicelyCore
 
-class YourCustomViewControllerFactory: ChoicelyExternalViewControllerFactory {
-    
-    func createViewController(choicelyNavigationitem: ChoicelyNavigationItem?) -> ChoicelyController? {
-        let yourCustomUrl = "choicely://special/custom"
-        let internalUrl = choicelyNavigationitem?.internalUrl
-        
-        if internalUrl?.contains(yourCustomUrl) == true {
-            return ChoicelyView { YourCustomView() }
+final class YourCustomViewControllerFactory: ChoicelyExternalViewControllerFactory {
+
+  func createViewController(choicelyNavigationitem: ChoicelyNavigationItem?) -> ChoicelyController? {
+    guard let internalUrl = choicelyNavigationitem?.internalUrl,
+          !internalUrl.isEmpty
+    else { return nil }
+
+    guard let comps = URLComponents(string: internalUrl) else { return nil }
+
+    // Android equivalent: type == "special"
+    // In URL form: choicely://special/...
+    guard comps.host == "special" else { return nil }
+
+    // Path like: /rn/<ComponentName>
+    let segments = comps.path.split(separator: "/").map(String.init)
+    guard segments.count >= 2 else { return nil }
+
+    let specialKey = segments[0]
+    guard specialKey == "rn" else { return nil }
+
+    let rnComponentName = segments[1]
+    guard !rnComponentName.isEmpty else { return nil }
+
+    // Android: query params -> reactProps Bundle
+    var props: [String: Any] = [:]
+    if let items = comps.queryItems {
+      for item in items {
+        guard !item.name.isEmpty else { continue }
+        if let value = item.value {
+          props[item.name] = value
         }
-        
-        return nil
+      }
     }
+
+    return ReactViewController(
+      moduleName: rnComponentName,
+      initialProps: props as NSDictionary
+    )
+  }
 }
