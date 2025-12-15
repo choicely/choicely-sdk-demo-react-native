@@ -8,13 +8,7 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# linkage = ENV['USE_FRAMEWORKS']
-# if linkage != nil
-#   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-#   use_frameworks! :linkage => linkage.to_sym
-# end
 use_frameworks! :linkage => :dynamic
-# use_frameworks! :linkage => :static
 
 target 'sdk-ios-demo' do
   config = use_native_modules!
@@ -35,23 +29,18 @@ target 'sdk-ios-demo' do
       :ccache_enabled => true
     )
 
-    # ---- Pods deployment target hygiene (kills the iOS 9.0 warning) ----
-    # Keep this aligned with what you actually support. 13.0 is a common baseline.
     min_pods_ios = min_ios_version_supported
-
     installer.pods_project.targets.each do |t|
       t.build_configurations.each do |c|
         c.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_pods_ios
       end
     end
 
-    # Xcode user script sandboxing breaks CocoaPods' rsync embed of frameworks for many setups
     installer.pods_project.targets.each do |t|
       t.build_configurations.each do |c|
         c.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
       end
     end
-
     installer.aggregate_targets.each do |aggregate|
       aggregate.user_project.native_targets.each do |nt|
         nt.build_configurations.each do |c|
@@ -60,16 +49,5 @@ target 'sdk-ios-demo' do
       end
       aggregate.user_project.save
     end
-
-    # ---- Optional: workaround for binary deps that lack arm64 simulator slice ----
-    # Enable only when needed:
-    #   EXCLUDE_ARM64_SIM=1 pod install
-#     if ENV['EXCLUDE_ARM64_SIM'] == '1'
-#       installer.pods_project.targets.each do |t|
-#         t.build_configurations.each do |c|
-#           c.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
-#         end
-#       end
-#     end
   end
 end
