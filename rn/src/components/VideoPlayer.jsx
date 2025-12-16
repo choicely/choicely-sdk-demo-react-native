@@ -2,11 +2,11 @@ import React from 'react'
 import {StyleSheet, View} from 'react-native'
 import Video from 'react-native-video'
 
-export default function VideoPlayer() {
+export default function VideoPlayer({url = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'}) {
   return (
     <View style={styles.container}>
       <Video
-        source={{uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'}}
+        source={{uri: url}}
         style={styles.video}
         controls
         resizeMode="contain"
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   video: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
 })
 

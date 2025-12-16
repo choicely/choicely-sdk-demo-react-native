@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {Pressable, StyleSheet, Text, View} from 'react-native'
-
 const {createMMKV} = require('react-native-mmkv')
+
 const storage = createMMKV({id: 'counter'})
 
-export default function Counter({startingCount = 0}) {
+export default function Counter({start = 0}) {
   const [count, setCount] = useState(() => {
     const storedCount = storage.getNumber('count')
-    return storedCount === undefined ? startingCount : storedCount
+    return storedCount === undefined ? start : storedCount
   })
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function Counter({startingCount = 0}) {
   }, [count])
 
   const resetCount = () => {
-    setCount(startingCount)
+    setCount(start)
   }
 
   return (

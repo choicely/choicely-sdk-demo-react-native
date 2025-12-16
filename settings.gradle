@@ -13,8 +13,8 @@ def ensureAndroidLocalProps() {
     def home = System.getProperty("user.home")
 
     def candidates = [
-            env.ANDROID_SDK_ROOT,
             env.ANDROID_HOME,
+            env.ANDROID_SDK_ROOT,
             os.contains("mac") ? "${home}/Library/Android/sdk" :
                     os.contains("win") ? ((env.LOCALAPPDATA ?: "${env.USERPROFILE}\\AppData\\Local") + "\\Android\\Sdk") :
                             "${home}/Android/Sdk"
@@ -25,7 +25,7 @@ def ensureAndroidLocalProps() {
         lp.text = "sdk.dir=" + new File(sdkDir).absolutePath.replace("\\", "\\\\") + System.lineSeparator()
         println "[settings] Wrote android/local.properties (sdk.dir=${sdkDir})"
     } else {
-        println "[settings] WARNING: Android SDK not found. Set ANDROID_SDK_ROOT or open android/ once to let Studio create local.properties."
+        println "[settings] WARNING: Android SDK not found. Set ANDROID_HOME or open android/ once to let Studio create local.properties."
     }
 }
 

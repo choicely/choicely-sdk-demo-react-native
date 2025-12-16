@@ -1,5 +1,6 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require('node:fs')
+const path = require('node:path')
+
 const dotenv = require('dotenv')
 
 function parseIfExists(p) {
@@ -20,7 +21,7 @@ function loadEnv(root = process.cwd()) {
   const merged = {...defaults, ...local}
 
   for (const [k, v] of Object.entries(merged)) {
-    if (process.env[k] === undefined) process.env[k] = v
+    if (process.env[k] === undefined && typeof v === 'string') process.env[k] = v
   }
 }
 
