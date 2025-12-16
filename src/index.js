@@ -18,7 +18,7 @@ function createRootComponent(Comp, {useSafeAreaProvider, rootOptions = {}}) {
 
     if (!disableScrollView) {
       content = (
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView style={{flex: 1}} contentContainerStyle={{flexGrow: 1}}>
           {content}
         </ScrollView>
       )
@@ -27,7 +27,9 @@ function createRootComponent(Comp, {useSafeAreaProvider, rootOptions = {}}) {
     if (useSafeAreaProvider) {
       return (
         <SafeAreaProvider>
-          <SafeAreaView style={{flex: 1}}>{content}</SafeAreaView>
+          <SafeAreaView style={{flex: 1}}>
+            {content}
+          </SafeAreaView>
         </SafeAreaProvider>
       )
     }

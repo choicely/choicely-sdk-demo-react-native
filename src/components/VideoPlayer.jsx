@@ -6,25 +6,26 @@ export default function VideoPlayer() {
   return (
     <View style={styles.container}>
       <Video
-        source={{uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'}}
+        source={{uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'}}
         style={styles.video}
-        controls={true}
+        controls
         resizeMode="contain"
-        paused={true}
+        paused
       />
     </View>
   )
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'black',
   },
   video: {
-    width: '100%',
-    height: '100%',
+    ...StyleSheet.absoluteFillObject,
   },
 })
+
+export const rootOptions = {
+  disableScrollView: true,
+}
