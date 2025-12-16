@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start --config metro.config.js",
+    "start": "react-native start --config metro.config.js --host 0.0.0.0",
     "web": "webpack-dev-server --config ./web/webpack.config.js --mode development",
     "bundle:android": "mkdir -p dist/android && react-native bundle --config metro.config.js --platform android --dev false --entry-file src/index.js --assets-dest dist/android --bundle-output dist/android/index.android.bundle",
     "bundle:ios": "mkdir -p dist/ios && react-native bundle --config metro.config.js --platform ios --dev false --entry-file src/index.js --assets-dest dist/ios --bundle-output dist/ios/main.jsbundle",
