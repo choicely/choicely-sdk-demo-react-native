@@ -15,7 +15,7 @@ const defaultConfig = getDefaultConfig(rnRoot)
 
 module.exports = mergeConfig(defaultConfig, {
   projectRoot: rnRoot,
-  watchFolders: [repoRoot],
+  watchFolders: [path.join(repoRoot, 'node_modules')],
   server: {port: metroPort},
   resolver: {
     nodeModulesPaths: [path.join(repoRoot, 'node_modules')],
