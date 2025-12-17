@@ -95,7 +95,10 @@ public final class ChoicelyRNConfig {
                 }).getData();
     }
 
-    public static synchronized void setServerDebug(@Nullable final String host, @NonNull ChoicelyRNApplication app) {
+    public static synchronized void setServerDebug(
+            @Nullable final String host,
+            @NonNull ChoicelyRNApplication app
+    ) {
         final boolean isDev = app.getReactNativeHost().getUseDeveloperSupport();
         if (!isDev) {
             return;
@@ -103,10 +106,19 @@ public final class ChoicelyRNConfig {
         if (rnPrefs == null) {
             rnPrefs = PreferenceManager.getDefaultSharedPreferences(app);
         }
-        if (TextUtils.getTrimmedLength(host) > 0) {
-            rnPrefs.edit()
-                    .putString(PREFS_DEBUG_SERVER_HOST_KEY, host)
-                    .apply();
+        if (TextUtils.getTrimmedLength(host) <= 0) {
+            return;
         }
+        String normalized = host.trim();
+        normalized = normalized.replaceFirst("(?i)^https?://", "");
+        while (normalized.endsWith("/")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        if (normalized.isEmpty()) {
+            return;
+        }
+        rnPrefs.edit()
+                .putString(PREFS_DEBUG_SERVER_HOST_KEY, normalized)
+                .apply();
     }
 }
