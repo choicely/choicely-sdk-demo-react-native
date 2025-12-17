@@ -80,7 +80,7 @@ public final class ChoicelyRNConfig {
         }
     }
 
-    public static synchronized void refresh(@NonNull String appKey, @NonNull ChoicelyRNApplication app) {
+    public static synchronized void refresh(@NonNull final String appKey, @NonNull final ChoicelyRNApplication app) {
         ChoicelySDK.data().getChoicelyAppData(appKey)
                 .onData((appData) -> {
                     if (appData == null) {
@@ -97,7 +97,7 @@ public final class ChoicelyRNConfig {
 
     public static synchronized void setServerDebug(
             @Nullable final String host,
-            @NonNull ChoicelyRNApplication app
+            @NonNull final ChoicelyRNApplication app
     ) {
         final boolean isDev = app.getReactNativeHost().getUseDeveloperSupport();
         if (!isDev) {
