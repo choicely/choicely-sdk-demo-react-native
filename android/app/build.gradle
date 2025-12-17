@@ -10,10 +10,12 @@ plugins {
     id "com.facebook.react"
 }
 react {
-    nodeExecutableAndArgs.set([gradle.ext.nodeBinary])   // ← reuse the one value
+    nodeExecutableAndArgs.set([gradle.ext.nodeBinary])
     // Needed to enable Autolinking - https://github.com/react-native-community/cli/blob/master/docs/autolinking.md
     autolinkLibrariesWithApp()
-    entryFile.set(file("../../rn/src/index.js"))       // or "index.ts" if that’s your entry
+    jsRootDir.set(file("../../rn"))
+    bundleConfig.set(file("../../rn/metro.config.js"))
+    entryFile.set(file("../../rn/src/index.js"))
 }
 android {
     namespace 'com.choicely.sdk.rn'
