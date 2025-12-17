@@ -127,7 +127,7 @@ export default function TicTacToe() {
       <Text style={styles.title}>Tic-Tac-Toe</Text>
 
       <View style={styles.statusContainer}>
-        <Text style={[styles.statusText, winner && styles.winnerText]}>
+        <Text style={[styles.statusText, winner ? styles.winnerText : null]}>
           {getStatusText()}
         </Text>
       </View>

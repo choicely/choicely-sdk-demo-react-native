@@ -1,30 +1,36 @@
 console.log('Loading webpack.config.js...')
 
 const path = require('node:path')
+
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const appDirectory = path.resolve(__dirname, '..')
-
 const babelConfig = require('./babel.config')
 
+const repoRoot = path.resolve(__dirname, '../..')
+const rnRoot = path.resolve(__dirname, '..')
+const webRoot = path.resolve(rnRoot, 'web')
+const nodeModulesRoot = path.resolve(repoRoot, 'node_modules')
+
 const {getPorts} = require('../dev/ports')
-const indexHtmlPath = path.resolve(appDirectory, 'web/index.html')
-const indexJsPath = path.resolve(appDirectory, 'web/index.web.js')
+const {webPort} = getPorts(repoRoot)
+
+const indexHtmlPath = path.resolve(webRoot, 'index.html')
+const indexJsPath = path.resolve(webRoot, 'index.web.js')
 
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
   include: [
     indexJsPath,
-    path.resolve(appDirectory, 'src'),
-    path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
+    path.resolve(rnRoot, 'src'),
+    path.resolve(nodeModulesRoot, 'react-native-vector-icons'),
   ],
   exclude: [
     {
       and: [
-        path.resolve(appDirectory, 'node_modules'),
-        path.resolve(appDirectory, 'android'),
-        path.resolve(appDirectory, 'ios'),
+        nodeModulesRoot,
+        path.resolve(repoRoot, 'android'),
+        path.resolve(repoRoot, 'ios'),
       ],
       not: [],
     },
@@ -32,7 +38,7 @@ const babelLoaderConfiguration = {
   use: {
     loader: 'babel-loader',
     options: {
-      cacheDirectory: true,
+      cacheDirectory: path.resolve(repoRoot, '.cache/babel-loader'),
       presets: ['module:@react-native/babel-preset'],
       plugins: ['react-native-web', ...(babelConfig.plugins || [])],
     },
@@ -49,12 +55,11 @@ const ttfLoaderConfiguration = {
   type: 'asset/resource',
 }
 
-const {webPort} = getPorts(path.resolve(__dirname, '..'))
 module.exports = {
   entry: {app: indexJsPath},
   output: {
     clean: true,
-    path: path.resolve(appDirectory, 'dist'),
+    path: path.resolve(repoRoot, 'dist'),
     filename: 'app.bundle.js',
   },
   resolve: {
@@ -98,5 +103,7 @@ module.exports = {
   },
   cache: {
     type: 'filesystem',
+    cacheDirectory: path.resolve(repoRoot, '.cache/webpack'),
+    name: 'webpack',
   },
 }

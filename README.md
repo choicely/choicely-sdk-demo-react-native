@@ -1,8 +1,8 @@
 # Choicely SDK React Native Example App
 
-Welcome! This project provides sample application for
-**Android**. It is intended to serve as a reference or starting point for developers looking to
-explore cross-platform app development.
+Welcome! 
+This project provides sample applications for integrating *React Native* to *Choicely* on **Android** and **iOS**.
+It is intended to serve as a reference or starting point for developers looking to explore cross-platform app development.
 
 This is an example setup demonstrating how to use the Choicely SDK and React Native together by
 embedding React Native components within a native Choicely app.
@@ -10,37 +10,38 @@ embedding React Native components within a native Choicely app.
 ## Features
 
 - Example Android app
+- Example iOS app
 - Demonstrates basic app structure and functionality
-- Shows how to embed React Native components in a native Android app
+- Shows how to embed React Native components in a native Choicely app
 
 ## Project Overview
 
-This project is structured as a native Android application that integrates React Native. The native
-side handles the main application structure and Choicely SDK integration, while the React Native
+This project is structured as a Choicely SDK setup that integrates React Native. 
+The native side handles the main application structure and Choicely SDK integration, while the React Native
 part contains the UI components that are embedded into the native views.
 
 ## File Structure
 
-The project is divided into two main parts: the native Android project and the React Native project.
+The project is divided into these main parts: the native Android and iOS projects and the React Native project.
 
 ### React Native Project
 
-The React Native project is located in the root directory of the project. The main files in this
+The React Native project is located in the `rn` directory of the project. The main files in this
 project are:
 
 * `package.json`: This file contains the project's dependencies and scripts. It lists the React
   Native and other JavaScript libraries that are used in the project.
-* `src/index.js`: This is the entry point for the React Native application. It registers the two React
-  Native components that are used in the application: `Hello` and `Counter`.
-* `src/components/`: This directory contains the React Native components. To add more components, create new
-  files in this directory and then import and register them in `src/index.js`.
+* `rn/src/index.js`: This is the entry point for the React Native application. It registers the React
+  Native components that are used in the application, like: `Hello` and `Counter`.
+* `rn/src/components/`: This directory contains the React Native components. To add more components, create new
+  files in this directory and then import and register them in `rn/src/index.js`.
 
 ## Android
 
 The native Android project is located in the `android` directory.
 
-To run the application, you need to have the Android SDK and the React Native CLI installed. You
-also need to have an Android emulator or a physical device connected to your computer.
+To run the application, you need to have the *Android SDK* and *node* installed. 
+You also need to have an Android emulator or a physical device connected to your computer.
 
 ### Build Types
 
@@ -52,7 +53,9 @@ also need to have an Android emulator or a physical device connected to your com
 
 ## iOS
 
-**Official React Native iOS example code**: Coming soon...
+The native iOS project is located in the `ios` directory.
+
+To run the application, you need to have an Apple Mac computer with *Xcode* and *node* installed. 
 
 ## Environment Configuration
 
@@ -79,8 +82,8 @@ RCT_METRO_PORT=8932
 
 ## Debug Builds & Live Reloading via Metro
 
-In debug builds, you need to start the Metro server. This will
-enable live reloading of your React Native components, allowing you to see changes to the React
+In debug builds, you need to start the Metro server. 
+This will enable live reloading of your React Native components, allowing you to see changes to the React
 Native components without rebuilding the entire application.
 Start the Metro server by running the following command in the root directory of the project:
 
@@ -91,7 +94,7 @@ npm start
 ## Documentation
 
 For detailed documentation,
-visit: [Choicely Mobile SDK Documentation](https://studio.choicely.com/docs/sdk)
+visit: [Choicely Mobile SDK Documentation](https://docs.choicely.com)
 
 ## Notes
 

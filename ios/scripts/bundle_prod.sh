@@ -6,6 +6,9 @@ set -euo pipefail
 WITH_ENVIRONMENT="$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh"
 REACT_NATIVE_XCODE="$REACT_NATIVE_PATH/scripts/react-native-xcode.sh"
 
-export ENTRY_FILE=${1:-src/index.js}
+export PROJECT_ROOT="$PROJECT_DIR/../rn"
+
+export ENTRY_FILE="src/index.js"
+export BUNDLE_CONFIG="metro.config.js"
 
 /usr/bin/env bash -c "$WITH_ENVIRONMENT $REACT_NATIVE_XCODE"
