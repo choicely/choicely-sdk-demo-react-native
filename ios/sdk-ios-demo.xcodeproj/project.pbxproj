@@ -26,22 +26,9 @@
 		E3718DCFE10DFA5E6667524A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		DADF87902EF021FC009751C9 /* Exceptions for "sdk-ios-demo" folder in "sdk-ios-demo" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 34D5D95A2E82BD1C00E18DE8 /* sdk-ios-demo */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		34D5D95D2E82BD1C00E18DE8 /* sdk-ios-demo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				DADF87902EF021FC009751C9 /* Exceptions for "sdk-ios-demo" folder in "sdk-ios-demo" target */,
-			);
 			path = "sdk-ios-demo";
 			sourceTree = "<group>";
 		};
