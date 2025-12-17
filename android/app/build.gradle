@@ -13,7 +13,7 @@ react {
     nodeExecutableAndArgs.set([gradle.ext.nodeBinary])   // ← reuse the one value
     // Needed to enable Autolinking - https://github.com/react-native-community/cli/blob/master/docs/autolinking.md
     autolinkLibrariesWithApp()
-    entryFile.set(file("../../src/index.js"))       // or "index.ts" if that’s your entry
+    entryFile.set(file("../../rn/src/index.js"))       // or "index.ts" if that’s your entry
 }
 android {
     namespace 'com.choicely.sdk.rn'

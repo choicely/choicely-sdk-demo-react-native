@@ -1,7 +1,8 @@
 import React from 'react'
 import {AppRegistry, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
-import {componentMapping, defaultComponentName, registerComponents} from '../src/index.js'
+
+import {componentMapping, defaultComponentName, registerComponents} from '../src/index'
 
 registerComponents({useSafeAreaProvider: false})
 
@@ -30,18 +31,13 @@ function getQueryState() {
   if (typeof window === 'undefined') {
     return {forcedComponentName: null, queryProps: {}}
   }
-
   const params = new URLSearchParams(window.location.search)
-
   const queryProps = {}
   for (const [key, value] of params.entries()) {
-    // URLSearchParams always yields strings here
     queryProps[key] = value
   }
-
   const component = params.get('component')
   const forcedComponentName = component ? component : null
-
   return {forcedComponentName, queryProps}
 }
 
@@ -128,10 +124,8 @@ function WebRoot({
 
   const initial =
     initialComponent && names.includes(initialComponent) ? initialComponent : names[0]
-
   const [active, setActive] = React.useState(initial)
   const Active = active ? components[active]?.registeredComponent : undefined
-
   return (
     <RootSafeArea>
       <View style={styles.webRootContainer}>
@@ -204,9 +198,7 @@ const styles = StyleSheet.create({
 })
 
 const WEB_APP_NAME = 'web_root'
-
 AppRegistry.registerComponent(WEB_APP_NAME, () => WebRoot)
-
 AppRegistry.runApplication(WEB_APP_NAME, {
   rootTag,
   initialProps: {
