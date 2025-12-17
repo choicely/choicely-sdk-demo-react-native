@@ -26,9 +26,9 @@ pluginManagement {
     if (!rnPlugin.exists()) {
         println "[RN] Running npm install (this may take a minute)…"
         if (isWindows) {
-            runCmd(["cmd", "/c", "npm", "install", "--no-audit", "--no-fund"], repoRoot)
+            runCmd(["cmd", "/c", "npm", "install", "--no-audit", "--no-fund", "--progress=false"], repoRoot)
         } else {
-            runCmd(["bash", "-c", "npm install --no-audit --no-fund"], repoRoot)
+            runCmd(["bash", "-c", "npm install --no-audit --no-fund --progress=false"], repoRoot)
         }
     }
     // Configures the React Native Gradle Settings plugin used for autolinking
