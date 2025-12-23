@@ -18,7 +18,7 @@ You create clear, concise, documented, and readable React Native JavaScript code
 - More project related information can be found in 'README.md' at the project root.
 
 ## Project Structure & Visibility
-- `/src`: **YOUR PLAYGROUND.** This is the React Native code root folder.
+- `/rn/src`: **YOUR PLAYGROUND.** This is the React Native code root folder.
   - `/index.js`: Entry point. **Crucial:** Keep Component registrations here in sync with the native app keys.
   - `/components`: React Native components.
 - **Hidden/Excluded Folders**: The `android/`, `web/`, and `scripts/` folders are excluded from your view via `.aiexclude` to prevent accidental damage.
@@ -73,7 +73,7 @@ Before asking the user to test any changes, you MUST verify that the code compil
 - **Self-Contained Components**:
   - Components MUST be self-contained in a single `.jsx` file.
   - **Do NOT create helper files** that live outside the component's folder or are shared across components.
-  - If a utility is needed (like a storage wrapper or custom hook), define it *inside* the component file or in a local file within a dedicated component subfolder (e.g., `src/components/MyComponent/utils.js`) if absolutely necessary. But preferably, keep it in one file for portability.
+  - If a utility is needed (like a storage wrapper or custom hook), define it *inside* the component file or in a local file within a dedicated component subfolder (e.g., `rn/src/components/MyComponent/utils.js`) if absolutely necessary. But preferably, keep it in one file for portability.
   - This ensures components can be easily copied, moved, or uploaded to a component store without breaking dependencies.
 
 - **Strict Dependency Rule**: You are **strictly FORBIDDEN** from adding new entries to `package.json` without explicit confirmation that it is a pure JS library.
@@ -102,16 +102,16 @@ Before asking the user to test any changes, you MUST verify that the code compil
 ### Troubleshooting & Error Recovery
 
 - You are an excellent troubleshooter. When analyzing errors, consider them thoroughly in context.
-- **Red Screen / Crash**: If the user reports a crash, the first step is ALWAYS to check if the component is correctly imported and registered in `src/index.js`.
+- **Red Screen / Crash**: If the user reports a crash, the first step is ALWAYS to check if the component is correctly imported and registered in `rn/src/index.js`.
 - Do not add boilerplate or placeholder code. If valid code requires more information from the user, ask for it before proceeding.
 - Validate all imports you add. Since you cannot easily add new packages, ensure the import exists in `node_modules` (visible via `package.json`).
 
 ### Safe area handling for React Native components
 
-- Root-level safe area handling is centralized in `src/index.js`:
+- Root-level safe area handling is centralized in `rn/src/index.js`:
   - Each registered component is, by default, wrapped with a `SafeAreaProvider` and a `SafeAreaView` (with `flex: 1`) via `wrapWithSafeAreaProvider`.
   - This wrapping can be disabled by calling `registerComponents({ useSafeAreaProvider: false })` (for example, in the React Native Web root where there is already a `SafeAreaProvider`).
-- When creating or modifying **root-level** React Native components (screens/widgets that are registered in `src/index.js`):
+- When creating or modifying **root-level** React Native components (screens/widgets that are registered in `rn/src/index.js`):
   - Do **not** add another `SafeAreaProvider` or `SafeAreaView` around the component unless explicitly requested.
   - Use normal layout containers (e.g., `View` with `flex: 1`) as the component’s top-level wrapper.
 - When a nested safe area is genuinely required (for example a scrollable sub-section that must respect insets independently):
