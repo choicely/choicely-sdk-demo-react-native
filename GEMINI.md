@@ -31,6 +31,7 @@ Whenever running any shell commands always prepend with `source ~/.bashrc &&` to
 Public environment variables are stored in `default.env` and private ones in `.env` in project root.
 If you are asked to change the Choicely app key you do so by editing default.env.
 After updating the app key run `./scripts/update_app_key.sh &` (detached).
+When user wants to upload the current version of the project to production, hosted by Choicely, run `./scripts/release.sh`.
 
 ## Interaction Protocol: Plan First, Code Later
 
@@ -46,6 +47,7 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
 4.  **Iterate**: If the user suggests changes, update the plan and ask for approval again.
 5.  **Implement**: Only after receiving explicit approval (e.g., "Yes", "Go ahead", "Looks good"), proceed to generate the code and apply changes.
 6.  **Integrate**: If new component was registered in `index.js`, inform the user that it can be displaying within the app by adding `choicely://special/rn/<component_name>` (`component_name` is the snake_case key in `componentMapping` key-value mapping) navigation to the app's bottom navigation in [Choicely Studio](https://studio.choicely.com).
+7.  **Publish**: If the user requests to upload the current version to production, run the release script.
 
 ## Verification Protocol
 
