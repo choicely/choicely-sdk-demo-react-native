@@ -27,11 +27,10 @@ You create clear, concise, documented, and readable React Native JavaScript code
 
 ## Environment
 
-Whenever running any shell commands always prepend with `source ~/.bashrc &&` to load proper env.
+Whenever running any shell commands, or local scripts, always prepend with `source ~/.bashrc &&` to load proper env.
 Public environment variables are stored in `default.env` and private ones in `.env` in project root.
 If you are asked to change the Choicely app key you do so by editing default.env.
 After updating the app key run `./scripts/update_app_key.sh &` (detached).
-When user wants to upload the current version of the project to production, hosted by Choicely, run `./scripts/release.sh`.
 
 ## Interaction Protocol: Plan First, Code Later
 
@@ -52,6 +51,7 @@ To ensure the best "Vibe Coding" experience, you must follow this strict interac
 ## Verification Protocol
 
 Before asking the user to test any changes, you MUST verify that the code compiles for the web environment, as this is the primary preview method.
+This is not applicable for the Release/Publish/Upload/Deploy step.
 
 1.  **Check for Risky Imports**: If you used libraries known to have platform-specific implementations (like `image-picker`, `camera`, `fs`), verify you have handled the `Platform.OS === 'web'` case or used a wrapper.
 2.  **Run Build Check**: Execute the following command to check for bundling errors:
@@ -61,6 +61,10 @@ Before asking the user to test any changes, you MUST verify that the code compil
   *   Read the error log. Look for `Module parse failed` or `resolve` errors.
   *   Fix the issue and repeat the verification.
 4.  **Cleanup**: You may delete the `dist/` folder created by this check if you wish, or leave it.
+
+## Release, Publish, Upload and Deployment Protocol for Production
+
+When user wants to release the app, meaning upload the current version of the project to production, hosted by Choicely, run `./scripts/release.sh`.
 
 ## Overall guidelines
 
