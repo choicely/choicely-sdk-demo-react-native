@@ -43,10 +43,11 @@ public final class ChoicelyRemoteBundle {
         final long token = System.nanoTime();
         LAST_TOKEN.set(token);
         final String tmpName = destFile.getName()
-                + ".tmp."
-                + Long.toHexString(token)
                 + "."
-                + Integer.toHexString(ThreadLocalRandom.current().nextInt());
+                + Integer.toHexString(ThreadLocalRandom.current().nextInt())
+                + "-"
+                + Long.toHexString(token)
+                + ".tmp";
         final File tmp = new File(parent, tmpName);
         final Request req = new Request.Builder().url(url).get().build();
         HTTP.newCall(req).enqueue(new Callback() {
