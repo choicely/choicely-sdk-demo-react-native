@@ -154,9 +154,19 @@ public final class ChoicelyRNConfig {
                 versionName,
                 bundleAssetName
         );
-        ChoicelyRemoteBundle.downloadToFileAsync(bundleUrl, destFile);
-        rnPrefs.edit()
-                .putString(PREFS_PROD_VERSION_KEY, versionName)
-                .apply();
+        java.util.concurrent.ExecutorService exec =
+                java.util.concurrent.Executors.newSingleThreadExecutor();
+        exec.execute(() -> {
+            final boolean bundleUpdateOk = ChoicelyRemoteBundle.download(bundleUrl, destFile, false).join();
+            if (!bundleUpdateOk) {
+                return;
+            }
+            rnPrefs.edit()
+                    .putString(PREFS_PROD_VERSION_KEY, versionName)
+                    .apply();
+            // If you need UI changes:
+//            new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+//            });
+        });
     }
 }
