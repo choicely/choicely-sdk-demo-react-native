@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 public final class ChoicelyRNConfig {
 
+    private static final String PREFS_PROD_VERSION_KEY = "bundle_version_name";
     private static final String PREFS_DEBUG_SERVER_HOST_KEY = "debug_http_host";
     private static final String CHOICELY_CONFIG_FILE = "choicely_config.json";
 
@@ -91,6 +93,7 @@ public final class ChoicelyRNConfig {
                         return;
                     }
                     setServerDebug(customData.optString("bundle_url_mobile", ""), app);
+                    setServerProd(customData.optString("full_version_name", ""), app, appKey);
                 }).onError((errorCode, message) -> {
                 }).getData();
     }
@@ -119,6 +122,41 @@ public final class ChoicelyRNConfig {
         }
         rnPrefs.edit()
                 .putString(PREFS_DEBUG_SERVER_HOST_KEY, normalized)
+                .apply();
+    }
+
+
+    private static synchronized void setServerProd(
+            @Nullable final String versionName,
+            @NonNull final ChoicelyRNApplication app,
+            @NonNull final String appKey
+    ) {
+        final boolean isDev = app.getReactNativeHost().getUseDeveloperSupport();
+        if (isDev) {
+            return;
+        }
+        if (TextUtils.getTrimmedLength(versionName) <= 0) {
+            return;
+        }
+        if (rnPrefs == null) {
+            rnPrefs = PreferenceManager.getDefaultSharedPreferences(app);
+        }
+        final String lastVersion = rnPrefs.getString(PREFS_PROD_VERSION_KEY, "");
+        final String bundleAssetName = app.getReactNativeHost().getBundleAssetName();
+        final File destFile = app.getReactNativeHost().getRemoteBundleFile();
+        if (versionName.equals(lastVersion) && destFile.isFile() && destFile.canRead() && destFile.length() > 0) {
+            return;
+        }
+        final String bundleUrl = app.getString(
+                R.string.choicely_rn_bundles_url,
+                appKey,
+                app.getString(R.string.choicely_rn_platform),
+                versionName,
+                bundleAssetName
+        );
+        ChoicelyRemoteBundle.downloadToFileAsync(bundleUrl, destFile);
+        rnPrefs.edit()
+                .putString(PREFS_PROD_VERSION_KEY, versionName)
                 .apply();
     }
 }

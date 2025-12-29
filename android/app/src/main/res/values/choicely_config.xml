@@ -1,4 +1,8 @@
 <resources>
-    <string name="choicely_app_key"></string>
-    <string name="rn_host_dev"></string>
+    <string name="choicely_app_key" translatable="false"></string>
+    <string name="rn_host_dev" translatable="false"></string>
+    <string name="choicely_rn_bundles_url" translatable="false">
+        https://bundles.choicely.com/apps/%1$s/rn/%2$s/v/%3$s/%4$s
+    </string>
+    <string name="choicely_rn_platform" translatable="false">android</string>
 </resources>

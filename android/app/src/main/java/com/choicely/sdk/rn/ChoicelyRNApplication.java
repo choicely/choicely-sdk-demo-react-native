@@ -41,7 +41,7 @@ public abstract class ChoicelyRNApplication extends Application implements React
 
     @NonNull
     @Override
-    public final ReactNativeHost getReactNativeHost() {
+    public final ChoicelyRNHost getReactNativeHost() {
         return rnHost;
     }
 
