@@ -103,6 +103,7 @@ When user wants to release the app, meaning upload the current version of the pr
   - All props must be strings.
   - Keep props human-readable and document their expected values inside the component file; derive booleans or numbers inside the component by parsing the incoming string if needed.
   - The native router converts Choicely deep links shaped like `choicely://special/rn/<component_name>?prop1=value1&prop2=value2` into string props by copying every query parameter into the component’s props bundle.
+  - Aim to make the components reusable and configurable via these props. Expose sensible props for titles, colors, sizes, and feature toggles. Always set meaningful defaults.
 
 - **Modification Protocol**:
   - When asked to replace or modify a component, only alter the code and registration for that specific component.
