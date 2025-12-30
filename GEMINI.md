@@ -79,6 +79,7 @@ When user wants to release the app, meaning upload the current version of the pr
   - **Do NOT create helper files** that live outside the component's folder or are shared across components.
   - If a utility is needed (like a storage wrapper or custom hook), define it *inside* the component file or in a local file within a dedicated component subfolder (e.g., `rn/src/components/MyComponent/utils.js`) if absolutely necessary. But preferably, keep it in one file for portability.
   - This ensures components can be easily copied, moved, or uploaded to a component store without breaking dependencies.
+  - Choicely does not define any custom React hooks or utilities for React Native, so all code must be standard React Native JavaScript.
 
 - **Strict Dependency Rule**: You are **strictly FORBIDDEN** from adding new entries to `package.json` without explicit confirmation that it is a pure JS library.
   - You must use the existing libraries whenever possible.

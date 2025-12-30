@@ -1,8 +1,48 @@
+import Foundation
 import UIKit
 import ChoicelyCore
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+
+enum DebugServerHost {
+    static func normalizeFromCustomData(_ raw: String?) -> String? {
+        guard let raw, !raw.isEmpty else { return nil }
+        return normalize(raw)
+    }
+
+    static func normalize(_ input: String) -> String? {
+        var s = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        if s.isEmpty { return nil }
+        if let hostPort = extractHostPort(s) {
+            s = hostPort
+        } else {
+            s = s.replacingOccurrences(
+                of: #"(?i)^https?://"#,
+                with: "",
+                options: .regularExpression
+            )
+        }
+        while s.hasSuffix("/") {
+            s.removeLast()
+        }
+        return s.isEmpty ? nil : s
+    }
+
+    private static func extractHostPort(_ s: String) -> String? {
+        let hasScheme = s.lowercased().hasPrefix("http://") || s.lowercased().hasPrefix("https://")
+        let candidate = hasScheme ? s : "http://\(s)"
+        guard let url = URL(string: candidate) else { return nil }
+        guard let host = url.host, !host.isEmpty else { return nil }
+        if let port = url.port {
+            if host.contains(":") && !host.hasPrefix("[") {
+                return "[\(host)]:\(port)"
+            }
+            return "\(host):\(port)"
+        }
+        return host
+    }
+}
 
 final class ReactViewController: ChoicelyViewController {
     private var reactNativeFactory: RCTReactNativeFactory?
@@ -59,8 +99,16 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
     override func bundleURL() -> URL? {
         #if DEBUG
         let provider = RCTBundleURLProvider.sharedSettings()
-        let port = metroPort()
-        provider.jsLocation = "localhost:\(port)"
+        let appData = ChoicelyDataManager.shared
+            .getObject(ofType: ChoicelyAppData.self, forId: ChoicelyConfig.choicelyAppKey)
+        let dict = appData?.customData?.parseAsJSONToDictionary()
+        let bundleUrlMobile = dict?["bundle_url_mobile"] as? String
+        provider.packagerScheme = "http"
+        if let host = DebugServerHost.normalizeFromCustomData(bundleUrlMobile) {
+            provider.jsLocation = "\(host):80"
+        } else {
+            provider.jsLocation = "localhost:\(metroPort())"
+        }
         return provider.jsBundleURL(forBundleRoot: "src/index")
         #else
         return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
