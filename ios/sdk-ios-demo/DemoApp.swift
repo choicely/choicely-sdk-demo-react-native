@@ -3,6 +3,8 @@ import ChoicelyCore
 
 @main
 struct DemoApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     init() {
         ChoicelySDK.settings.externalViewControllerFactory = CustomViewControllerFactory()
         ChoicelySDK.initialize(
