@@ -27,7 +27,11 @@ You create clear, concise, documented, and readable React Native JavaScript code
 
 ## Environment
 
-Whenever running any shell commands, or local scripts, always prepend with `source ~/.bashrc &&` to load proper env.
+Shell command rule (non-negotiable):
+When you output any shell command (bash/zsh/sh), you MUST prefix it with:
+`source ~/.bashrc && `
+This applies to every command line, including cd, export, echo, ./script.sh, node, etc.
+If you cannot or should not run commands, output no commands.
 Public environment variables are stored in `default.env` and private ones in `.env` in project root.
 If you are asked to change the Choicely app key you do so by editing default.env.
 After updating the app key run `./scripts/update_app_key.sh &` (detached).

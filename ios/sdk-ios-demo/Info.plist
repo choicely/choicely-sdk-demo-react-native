@@ -4,8 +4,10 @@
 <dict>
 	<key>RCTNewArchEnabled</key>
 	<true/>
+    
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSExceptionDomains</key>
@@ -19,5 +21,8 @@
         </dict>
       </dict>
     </dict>
+    
+    <key>CHOICELY_RN_BUNDLES_URL</key>
+    <string>https://bundles.choicely.com/apps/%1$@/rn/%2$@/v/%3$@/%4$@</string>
 </dict>
 </plist>

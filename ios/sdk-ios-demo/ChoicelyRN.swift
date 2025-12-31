@@ -111,6 +111,10 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
         }
         return provider.jsBundleURL(forBundleRoot: "src/index")
         #else
+        ChoicelyRNBundleManager.refreshProductionBundleIfNeeded(appKey: ChoicelyConfig.choicelyAppKey)
+        if let url = ChoicelyRNBundleManager.preferredBundleURL() {
+            return url
+        }
         return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
         #endif
     }
