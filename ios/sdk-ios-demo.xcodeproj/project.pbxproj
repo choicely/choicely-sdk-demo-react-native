@@ -114,7 +114,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 34D5D9692E82BD1C00E18DE8 /* Build configuration list for PBXNativeTarget "sdk-ios-demo" */;
 			buildPhases = (
-				DADF87992EF0561E009751C9 /* Load env */,
 				F596102BB2B1933911074926 /* [CP] Check Pods Manifest.lock */,
 				34D5D9572E82BD1C00E18DE8 /* Sources */,
 				34D5D9582E82BD1C00E18DE8 /* Frameworks */,
@@ -122,6 +121,7 @@
 				DADF87912EF04F86009751C9 /* Bundle React Native code and images */,
 				A93FBF40356B621C47E510DF /* [CP] Embed Pods Frameworks */,
 				AE256A21F1AE85BBEA1E5C21 /* [CP] Copy Pods Resources */,
+				DADF87992EF0561E009751C9 /* Load env */,
 			);
 			buildRules = (
 			);
@@ -268,7 +268,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -euo pipefail\n. ${PODS_PODFILE_DIR_PATH}/scripts/load_env.sh\nif [ -z \"${RCT_METRO_PORT+x}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is not set\"\n  exit 1\nelif [ -z \"${RCT_METRO_PORT}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is set but empty\"\n  exit 1\nfi\n# This does not work\n";
+			shellScript = "set -euo pipefail\n. ${PODS_PODFILE_DIR_PATH}/scripts/load_env.sh\nif [ -z \"${RCT_METRO_PORT+x}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is not set\"\n  exit 1\nelif [ -z \"${RCT_METRO_PORT}\" ]; then\n  echo \"ERROR: RCT_METRO_PORT is set but empty\"\n  exit 1\nfi\n\nINFO_PLIST=\"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\nif [[ ! -f \"$INFO_PLIST\" ]]; then\n  echo \"ERROR: Info.plist not found at: $INFO_PLIST\" >&2\n  exit 1\nfi\n\nKEY=\"RCT_METRO_PORT\"\n\n/usr/libexec/PlistBuddy -c \"Delete :$KEY\" \"$INFO_PLIST\" >/dev/null 2>&1 || true\n/usr/libexec/PlistBuddy -c \"Add :$KEY string ${RCT_METRO_PORT}\" \"$INFO_PLIST\"\n\necho \"Wrote $KEY=${RCT_METRO_PORT} to $INFO_PLIST\"\n\nif [ -z \"${CHOICELY_APP_KEY+x}\" ]; then\n  echo \"ERROR: CHOICELY_APP_KEY is not set\"\n  exit 1\nelif [ -z \"${CHOICELY_APP_KEY}\" ]; then\n  echo \"ERROR: CHOICELY_APP_KEY is set but empty\"\n  exit 1\nfi\n\nKEY=\"CHOICELY_APP_KEY\"\n\n/usr/libexec/PlistBuddy -c \"Delete :$KEY\" \"$INFO_PLIST\" >/dev/null 2>&1 || true\n/usr/libexec/PlistBuddy -c \"Add :$KEY string ${CHOICELY_APP_KEY}\" \"$INFO_PLIST\"\n\necho \"Wrote $KEY=${CHOICELY_APP_KEY} to $INFO_PLIST\"\n";
 		};
 		F596102BB2B1933911074926 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
