@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_FILE_DEFAULT="${PROJECT_DIR}/../default.env"
-if [ -f "$ENV_FILE_DEFAULT" ]; then
+source_env_if_exists() {
+  local file="$1"
+  [[ -f "$file" ]] || return 0
   set -a
-  source "$ENV_FILE_DEFAULT"
+  # shellcheck disable=SC1090
+  source "$file"
   set +a
-fi
-ENV_FILE="${PROJECT_DIR}/../.env"
-if [ -f "$ENV_FILE" ]; then
-  set -a
-  source "$ENV_FILE"
-  set +a
-fi
+}
 
-export RCT_METRO_PORT
+for f in \
+  "${PROJECT_DIR}/../default.env" \
+  "${PROJECT_DIR}/../.env"
+do
+  source_env_if_exists "$f"
+done
