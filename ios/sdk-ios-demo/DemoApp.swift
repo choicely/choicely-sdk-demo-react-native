@@ -9,6 +9,7 @@ struct DemoApp: App {
             application: UIApplication.shared,
             appKey: ChoicelyConfig.choicelyAppKey
         )
+        ChoicelyRNBundleManager.refreshProductionBundleIfNeeded(appKey: ChoicelyConfig.choicelyAppKey)
     }
 
     var body: some Scene {
