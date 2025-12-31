@@ -114,12 +114,18 @@ final class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
         return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
         #endif
     }
-    
+
     private func metroPort() -> Int {
-      if let s = Bundle.main.object(forInfoDictionaryKey: "RCT_METRO_PORT") as? String,
-         let p = Int(s) { return p }
-      if let s = ProcessInfo.processInfo.environment["RCT_METRO_PORT"],
-         let p = Int(s) { return p }
-      return 8932
+        guard let raw = Bundle.main.object(forInfoDictionaryKey: "RCT_METRO_PORT") as? String else {
+            preconditionFailure("Missing RCT_METRO_PORT in Info.plist")
+        }
+        let s = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !s.isEmpty else {
+            preconditionFailure("RCT_METRO_PORT is empty in Info.plist")
+        }
+        guard let p = Int(s) else {
+            preconditionFailure("RCT_METRO_PORT is not a valid integer: '\(s)'")
+        }
+        return p
     }
 }
