@@ -1,7 +1,7 @@
 import Foundation
 import ChoicelyCore
 
-final class CustomViewControllerFactory: ChoicelyExternalViewControllerFactory {
+final class MyContentFactory: ChoicelyExternalViewControllerFactory {
 
     func createViewController(choicelyNavigationitem: ChoicelyNavigationItem?) -> ChoicelyController? {
         guard let internalUrl = choicelyNavigationitem?.internalUrl,

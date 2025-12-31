@@ -2,7 +2,7 @@
 import Foundation
 import ChoicelyCore
 
-enum ChoicelyRNBundleManager {
+enum ChoicelyRemoteBundle {
     private static let prefsProdVersionKey = "bundle_version_name"
     private static let bundlesSubdir = "rn/bundles"
     private static let bundleFileName = "main.jsbundle"

@@ -8,7 +8,7 @@ import com.choicely.sdk.ChoicelySDK;
 import com.choicely.sdk.rn.factory.MyContentFactory;
 import com.choicely.sdk.rn.factory.MySplashFactory;
 
-public class MyApplication extends ChoicelyRNApplication {
+public class DemoApp extends ChoicelyRNApplication {
 
     @NonNull
     @Override
