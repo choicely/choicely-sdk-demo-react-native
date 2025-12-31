@@ -99,7 +99,6 @@ vendor/
 ############################
 **/Pods/
 vendor/bundle/
-*.lock
 
 ############################
 # React Native / Metro
