@@ -19,11 +19,6 @@ import com.choicely.sdk.rn.splash.DemoAppSplashFragment;
  * <pre>{@code
  * ChoicelySDK.factory().setSplashFactory(new MySplashFactory());
  * }</pre>
- *
- * <h2>LLM editing tips</h2>
- * - To change the splash, return your custom fragment instead of {@link DemoAppSplashFragment}.
- * - Keep fragment creation lightweight; do not perform I/O in the constructor.
- * - If you need construction args, expose a static {@code newInstance(...)} on your fragment and call it here.
  */
 public class MySplashFactory implements ChoicelySplashFactory {
 

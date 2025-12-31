@@ -25,11 +25,6 @@ import com.choicely.sdk.rn.R;
  *   <li>Add timers/animations/async warmups inside {@link #updateSplash()}.</li>
  *   <li>Tune {@link #getSplashDuration()} to match your animation length (in milliseconds).</li>
  * </ul>
- *
- * <h2>LLM editing tips</h2>
- * - Keep work in {@link #updateSplash()} side-effectful but quick; expensive I/O should be deferred.
- * - If you need to observe lifecycle, prefer {@link #onLayoutCreated(View, Bundle)} (already hooked) or standard fragment callbacks.
- * - Navigation off the splash (if needed) should happen after duration or when your warmup completes.
  */
 public class DemoAppSplashFragment extends AbstractSplashFragment {
 

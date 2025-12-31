@@ -49,12 +49,6 @@ import java.util.List;
  * <h2>Extending this router</h2>
  * Add more {@code specialKey} branches (e.g., {@code "web"}, {@code "promo"}, etc.) by
  * reading additional path segments and returning the appropriate Fragment.
- *
- * <h2>LLM editing tips</h2>
- * - Keep this method side-effect free; just inspect inputs and return a Fragment or {@code null}.
- * - If you need to pass initial props into the RN component, populate the {@code Bundle} passed
- *   to {@link RNFragmentWrapper#newReactFragment(String, Bundle, Bundle)}.
- * - Returning {@code null} signals “not handled” so upstream factories can try next.
  */
 public class MyContentFactory extends ChoicelyContentFragmentFactory {
 

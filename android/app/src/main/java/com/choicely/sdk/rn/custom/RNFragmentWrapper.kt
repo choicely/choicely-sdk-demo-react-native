@@ -26,11 +26,6 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
  * Implements [DefaultHardwareBackBtnHandler]. If JS doesn’t handle the back press,
  * [invokeDefaultOnBackPressed] is called. Override to delegate to your Activity or
  * to your own navigation if needed.
- *
- * ## LLM editing tips
- * - Keep `props` small and parcelable; prefer primitives/strings/arrays to avoid marshalling pain.
- * - If your host Activity is not accessible, don’t rely on Activity-level interfaces;
- *   the lifecycle bridge below keeps RN happy without requiring Activity changes.
  */
 object RNFragmentWrapper {
 
