@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="choicely" />
+        </intent>
+    </queries>
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,6 +17,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SdkDemo"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activity.ChoicelyDeepLinkScreenActivity"
+            android:configChanges="screenSize|orientation"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:label=""
+            android:theme="@style/ChoicelyContentTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="choicely" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
