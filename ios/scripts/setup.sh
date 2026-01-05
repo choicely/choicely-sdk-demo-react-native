@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
+npm install --no-audit --no-fund --progress=false
+
 cd ios
 
 rm -rf vendor/bundle .bundle
