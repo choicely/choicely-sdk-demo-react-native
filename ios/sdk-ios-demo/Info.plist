@@ -22,6 +22,21 @@
       </dict>
     </dict>
     
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>choicely</string>
+        </array>
+      </dict>
+    </array>
+    
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>choicely</string>
+    </array>
+    
     <key>CHOICELY_RN_BUNDLES_URL</key>
     <string>https://bundles.choicely.com/apps/%1$@/rn/%2$@/v/%3$@/%4$@</string>
 </dict>
