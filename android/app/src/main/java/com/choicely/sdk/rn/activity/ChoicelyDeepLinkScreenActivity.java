@@ -31,7 +31,8 @@ public class ChoicelyDeepLinkScreenActivity extends ChoicelyScreenActivity {
         if (intent == null) return;
         final Uri uri = intent.getData();
         if (uri == null) return;
-        if (!TextUtils.isEmpty(intent.getStringExtra(ChoicelyIntentKeys.CHOICELY_CONTENT_TYPE))) return;
+        if (!TextUtils.isEmpty(intent.getStringExtra(ChoicelyIntentKeys.CHOICELY_CONTENT_TYPE)))
+            return;
         if (intent.hasExtra(ChoicelyIntentKeys.DATA_BUNDLE)) return;
         final String url = uri.toString();
         final LinkEngine link = ChoicelyUtil.link(url);
