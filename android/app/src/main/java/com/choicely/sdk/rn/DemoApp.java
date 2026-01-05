@@ -10,24 +10,18 @@ import com.choicely.sdk.rn.factory.MySplashFactory;
 
 public class DemoApp extends ChoicelyRNApplication {
 
-    @NonNull
     @Override
-    protected ChoicelyRNHost createReactNativeHost() {
-        return new ChoicelyRNHost(this) {
+    public void onCreate() {
+        super.onCreate();
+        final String appKey = this.getAppKey();
+        this.initRNEngine(new ChoicelyRNHost(this, appKey) {
             @NonNull
             @Override
             public String getJSMainModuleName() {
                 return "src/index";
             }
-        };
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        this.initRNEngine();
+        });
         ChoicelyRNConfig.setServerDebug(ChoicelyRNConfig.loadValue("rn_host_dev", R.string.rn_host_dev, this), this);
-        final String appKey = ChoicelyRNConfig.loadValue("choicely_app_key", R.string.choicely_app_key, this);
         if (TextUtils.getTrimmedLength(appKey) > 0) {
             this.initChoicely(appKey);
         }
@@ -41,5 +35,10 @@ public class DemoApp extends ChoicelyRNApplication {
         ChoicelySDK.factory().setSplashFactory(new MySplashFactory());
         // Load Choicely React Native configuration.
         ChoicelyRNConfig.refresh(appKey, this);
+    }
+
+    @NonNull
+    private String getAppKey() {
+        return ChoicelyRNConfig.loadValue("choicely_app_key", R.string.choicely_app_key, this);
     }
 }

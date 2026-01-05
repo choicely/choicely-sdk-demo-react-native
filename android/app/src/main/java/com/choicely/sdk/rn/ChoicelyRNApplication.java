@@ -14,9 +14,15 @@ import java.util.ArrayList;
 
 public abstract class ChoicelyRNApplication extends Application implements ReactApplication {
 
-    private final ChoicelyRNHost rnHost = createReactNativeHost();
+    private ChoicelyRNHost rnHost;
 
     private ReactHost choicelyReactHost;
+
+    protected final synchronized void initRNEngine(@NonNull final ChoicelyRNHost rnHost) {
+        this.choicelyReactHost = null;
+        this.rnHost = rnHost;
+        ReactNativeApplicationEntryPoint.loadReactNative(this);
+    }
 
     @NonNull
     @Override
@@ -43,12 +49,5 @@ public abstract class ChoicelyRNApplication extends Application implements React
     @Override
     public final ChoicelyRNHost getReactNativeHost() {
         return rnHost;
-    }
-
-    @NonNull
-    protected abstract ChoicelyRNHost createReactNativeHost();
-
-    protected final synchronized void initRNEngine() {
-        ReactNativeApplicationEntryPoint.loadReactNative(this);
     }
 }

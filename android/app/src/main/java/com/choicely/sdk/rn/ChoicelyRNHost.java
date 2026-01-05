@@ -21,10 +21,15 @@ public abstract class ChoicelyRNHost extends DefaultReactNativeHost {
 
     private static final String BUNDLES_SUBDIR = "rn/bundles";
 
+    @NonNull
+    private final String appKey;
+
     public ChoicelyRNHost(
-            @NonNull final Application application
+            @NonNull final Application application,
+            @NonNull final String appKey
     ) {
         super(application);
+        this.appKey = appKey;
     }
 
     @NonNull
@@ -58,7 +63,7 @@ public abstract class ChoicelyRNHost extends DefaultReactNativeHost {
     public File getRemoteBundleFile() {
         final String assetName = getBundleAssetName();
         final Context ctx = getApplication().getApplicationContext();
-        return new File(new File(ctx.getFilesDir(), BUNDLES_SUBDIR), assetName);
+        return new File(new File(new File(ctx.getFilesDir(), this.appKey), BUNDLES_SUBDIR), assetName);
     }
 
     @NonNull
