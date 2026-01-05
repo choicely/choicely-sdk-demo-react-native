@@ -16,6 +16,7 @@ enum ChoicelyRemoteBundle {
         let fm = FileManager.default
         let base = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         return base
+            .appendingPathComponent(ChoicelyConfig.choicelyAppKey, isDirectory: true)
             .appendingPathComponent(bundlesSubdir, isDirectory: true)
             .appendingPathComponent(bundleFileName, isDirectory: false)
     }

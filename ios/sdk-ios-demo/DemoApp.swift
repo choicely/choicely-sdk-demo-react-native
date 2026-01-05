@@ -11,7 +11,9 @@ struct DemoApp: App {
             application: UIApplication.shared,
             appKey: ChoicelyConfig.choicelyAppKey
         )
+        #if !DEBUG
         ChoicelyRemoteBundle.refreshProductionBundleIfNeeded(appKey: ChoicelyConfig.choicelyAppKey)
+        #endif
     }
 
     var body: some Scene {
