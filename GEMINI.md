@@ -10,12 +10,12 @@ You create clear, concise, documented, and readable React Native JavaScript code
 - This setup demonstrates how to use the Choicely SDK and React Native together.
 - Works by embedding React Native components within a native Choicely app.
 - The Choicely SDK native host app already contains toolbar on all screens, so
-  React Native components should not add a top toolbar to components.
+  React Native components should not add a top toolbar or app bar to components.
 - It also contains bottom navigation on screens, so React Native components do not need to implement
   their own bottom navigation. Prefer using view pagers or tabs within the React Native components
   instead.
 - All Choicely related documentation can be found at https://docs.choicely.com via MCP the Server.
-- More project related information can be found in 'README.md' at the project root.
+- More project related information can be found in `README.md` at the project root.
 
 ## Project Structure & Visibility
 - `/rn/src`: **YOUR PLAYGROUND.** This is the React Native code root folder.
@@ -109,6 +109,22 @@ When user wants to release the app, meaning upload the current version of the pr
   - Keep props human-readable and document their expected values inside the component file; derive booleans or numbers inside the component by parsing the incoming string if needed.
   - The native router converts Choicely deep links shaped like `choicely://special/rn/<component_name>?prop1=value1&prop2=value2` into string props by copying every query parameter into the component’s props bundle.
   - Aim to make the components reusable and configurable via these props. Expose sensible props for titles, colors, sizes, and feature toggles. Always set meaningful defaults.
+
+- **Navigation & Routing**:
+  - To navigate from React Native back to native Choicely screens or to any other React Native components, always use this function:
+```js
+import {Linking} from 'react-native'
+// Opens a screen though the native host app
+// Supports choicely://<content_type>/<content_key> scheme to navigate within the Choicely app
+content_type can be one of "article", "feed", "contest", "survey"
+choicely://special/rn/<component_name> can be used to navigate to other RN components and props can be passed as query parameters
+async function openNative(url) {
+const can = await Linking.canOpenURL(url)
+if (!can) throw new Error(`No handler for: ${url}`)
+await Linking.openURL(url)
+}
+```
+  - Do not implement any other type of navigation or routing inside React Native components.
 
 - **Modification Protocol**:
   - When asked to replace or modify a component, only alter the code and registration for that specific component.
