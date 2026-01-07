@@ -4,7 +4,8 @@ const {createMMKV} = require('react-native-mmkv')
 
 const storage = createMMKV({id: 'counter'})
 
-export default function Counter({start = 0}) {
+export default function Counter({start = "0"}) {
+  start = Number(start) || 0
   const [count, setCount] = useState(() => {
     const storedCount = storage.getNumber('count')
     return storedCount === undefined ? start : storedCount
