@@ -112,18 +112,18 @@ When user wants to release the app, meaning upload the current version of the pr
 
 - **Navigation & Routing**:
   - To navigate from React Native back to native Choicely screens or to any other React Native components, always use this function:
-```js
-import {Linking} from 'react-native'
-// Opens a screen though the native host app
-// Supports choicely://<content_type>/<content_key> scheme to navigate within the Choicely app
-content_type can be one of "article", "feed", "contest", "survey"
-choicely://special/rn/<component_name> can be used to navigate to other RN components and props can be passed as query parameters
-async function openNative(url) {
-const can = await Linking.canOpenURL(url)
-if (!can) throw new Error(`No handler for: ${url}`)
-await Linking.openURL(url)
-}
-```
+  ```js
+  import {Linking} from 'react-native'
+  // Opens a screen though the native host app
+  // Supports choicely://<content_type>/<content_key> scheme to navigate within the Choicely app
+  // content_type can be one of "article", "feed", "contest", "survey"
+  // choicely://special/rn/<component_name> can be used to navigate to other RN components and props can be passed as query parameters
+  async function openNative(url) {
+  const can = await Linking.canOpenURL(url)
+  if (!can) throw new Error(`No handler for: ${url}`)
+  await Linking.openURL(url)
+  }
+  ```
   - Do not implement any other type of navigation or routing inside React Native components.
 
 - **Modification Protocol**:
