@@ -123,6 +123,8 @@ When user wants to release the app, meaning upload the current version of the pr
   if (!can) throw new Error(`No handler for: ${url}`)
   await Linking.openURL(url)
   }
+  // Then you can call it like this:
+  await openNative('choicely://special/rn/hello?message=testing')
   ```
   - Do not implement any other type of navigation or routing inside React Native components.
 
