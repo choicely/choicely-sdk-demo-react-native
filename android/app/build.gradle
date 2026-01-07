@@ -43,7 +43,8 @@ android {
     signingConfigs {
         debug {
             v2SigningEnabled true
-            storeFile file("./signing/debug.jks")
+            def ks = rootProject.ext.has('apkKeyStore') ? rootProject.ext.apkKeyStore : null
+            storeFile ks != null ? file("../../${ks}") : null
             storePassword rootProject.ext.has('apkStorePass') ? rootProject.ext.apkStorePass : null
             keyAlias rootProject.ext.has('apkKeyAlias') ? rootProject.ext.apkKeyAlias : null
             keyPassword rootProject.ext.has('apkKeyPass') ? rootProject.ext.apkKeyPass : null
