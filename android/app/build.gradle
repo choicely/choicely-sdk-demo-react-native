@@ -53,20 +53,35 @@ android {
     buildTypes {
         release {
             debuggable false
+            jniDebuggable false
             minifyEnabled true
             shrinkResources true
+            crunchPngs true
             buildConfigField "boolean", "USE_METRO", "false"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk { debugSymbolLevel 'none' }
         }
         debug {
             signingConfig signingConfigs.debug
             debuggable true
+            jniDebuggable true
             minifyEnabled false
             shrinkResources false
             crunchPngs false
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             buildConfigField "boolean", "USE_METRO", "true"
+        }
+        debugDist {
+            initWith(buildTypes.debug)
+            debuggable false
+            jniDebuggable false
+            minifyEnabled true
+            shrinkResources true
+            crunchPngs true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ['debug', 'debugOptimized', 'release']
+            ndk { debugSymbolLevel 'none' }
         }
         offline {
             initWith(buildTypes.debug)
@@ -102,7 +117,7 @@ dependencies {
 }
 afterEvaluate {
     android.applicationVariants.configureEach { variant ->
-        if (variant.buildType.name in ["release", "offline"]) {
+        if (variant.buildType.name in ["release", "offline", "debugDist"]) {
             def vName = variant.name.capitalize()
             tasks.named("merge${vName}Assets").configure {
                 dependsOn("createBundle${vName}JsAndAssets")
@@ -148,7 +163,7 @@ tasks.register("adbReverseMetro") {
 tasks.register("prepareDevRuntime") { t ->
     t.dependsOn("adbReverseMetro")
 }
-def assembleRx = ~/(?i).*assemble.*(Debug|DebugOptimized)$/
+def assembleRx = ~/(?i).*assemble.*(Debug|DebugDist|DebugOptimized)$/
 tasks.configureEach { t ->
     if (t.name ==~ assembleRx) {
         t.dependsOn("prepareDevRuntime")

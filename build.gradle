@@ -3,9 +3,11 @@ def ANDROID = gradle.includedBuild("android")
 [
         "clean",
         "assembleDebug",
+        "assembleDebugDist",
         "assembleOffline",
         "assembleRelease",
         "installDebug",
+        "installDebugDist",
         "installOffline",
         "installRelease",
 ].each { t ->
