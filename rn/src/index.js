@@ -1,6 +1,10 @@
 import React from 'react'
-import {AppRegistry, ScrollView} from 'react-native'
+import {AppRegistry, ScrollView, LogBox} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
+
+if (__DEV__) {
+  LogBox.ignoreLogs(['Open debugger to view warnings']);
+}
 
 const defaultComponentName = 'hello'
 export const componentMapping = {
