@@ -46,7 +46,7 @@ public abstract class ChoicelyRNHost extends DefaultReactNativeHost {
 
     @Override
     public boolean getUseDeveloperSupport() {
-        return BuildConfig.DEBUG && BuildConfig.USE_METRO;
+        return BuildConfig.USE_METRO;
     }
 
     @Nullable
