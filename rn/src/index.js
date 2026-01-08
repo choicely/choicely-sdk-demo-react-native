@@ -6,7 +6,6 @@ const defaultComponentName = 'hello'
 export const componentMapping = {
   [defaultComponentName]: require('./components/Hello'),
   counter: require('./components/Counter'),
-  video_player: require('./components/VideoPlayer'),
   tic_tac_toe: require('./components/TicTacToe'),
 }
 
