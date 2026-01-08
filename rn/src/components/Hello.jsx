@@ -1,7 +1,7 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 
-export default function Hello({message = 'React Native'}) {
+export default function Hello({message = 'Choicely'}) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Hello from {message}!</Text>
