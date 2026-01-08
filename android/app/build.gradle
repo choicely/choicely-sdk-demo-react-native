@@ -39,6 +39,7 @@ android {
         if (appKey?.toString()?.trim()) {
             resValue "string", "choicely_app_key", appKey.toString()
         }
+        manifestPlaceholders = [extractNativeLibs: "false"]
     }
     signingConfigs {
         debug {
@@ -82,6 +83,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             matchingFallbacks = ['debug', 'debugOptimized', 'release']
             ndk { debugSymbolLevel 'none' }
+            manifestPlaceholders.extractNativeLibs = "true"
         }
         offline {
             initWith(buildTypes.debug)
@@ -101,6 +103,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = '17'
+    }
+}
+androidComponents {
+    onVariants(selector().withBuildType("debugDist")) { variant ->
+        variant.packaging.jniLibs.useLegacyPackaging.set(true)
     }
 }
 dependencies {
