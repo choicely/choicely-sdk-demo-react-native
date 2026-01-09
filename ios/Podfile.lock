@@ -1381,6 +1381,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-render-html (6.3.4):
+    - React-Core
   - react-native-safe-area-context (5.6.2):
     - hermes-engine
     - RCTRequired
@@ -1508,6 +1510,28 @@ PODS:
     - React-ImageManager
     - React-jsi
     - react-native-video/Fabric
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - react-native-webview (13.16.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1890,6 +1914,28 @@ PODS:
     - React-utils (= 0.82.0)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.82.0)
+  - RNLocalize (3.6.1):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - RNPermissions (5.4.4):
     - hermes-engine
     - RCTRequired
@@ -2023,8 +2069,10 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2058,6 +2106,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -2145,10 +2194,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-render-html:
+    :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-video:
     :path: "../node_modules/react-native-video"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-oscompat:
@@ -2215,6 +2268,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNScreens:
@@ -2264,8 +2319,10 @@ SPEC CHECKSUMS:
   React-Mapbuffer: a20caa628f68245e472de0cc6621e2868a794d34
   React-microtasksnativemodule: 7c760a7bf96a3dd5725d4dbb4ad4e7a3092010d6
   react-native-image-picker: 20ad0f669770f020675cf8c7013a51c8a5490889
+  react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 3f031fa5a6c36a3731f6fa2202bfa8f411850c6b
   react-native-video: c586617475f0fa93a6d6bd63d835249ea220331f
+  react-native-webview: e90afced564d2c18c2d814f9e8d3d922fe11cfd7
   React-NativeModulesApple: 170fda2f874957992d47d3ab6438b3e6b6464aae
   React-oscompat: 6ed19a860bd0cabd1bb3b387c358710ce709ee3a
   React-perflogger: 3ba2cad8e8ba66bd2029ad9f3dc852624ff6ecc9
@@ -2299,6 +2356,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 51aa5ca07b515cb49b2050177f2efd9c6b64c527
   ReactCommon: e63ee799a93b4c3dea223339a660c392dead4d76
   ReactNativeDependencies: 1b2d8e7c970b245dbc0daa4b9e770de205bc4230
+  RNLocalize: e3bc11bf7067f435d77687fae3a0e066ecb863a0
   RNPermissions: c25d2299f8fc0f0c572e0f467e041135d3a7c039
   RNScreens: cb48db0cd3e4590e68620ee24c99c097213ef4ee
   RNVectorIcons: 63e011d60ff13ccece9646df93ba53f753954987

@@ -123,6 +123,9 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.2.1"
 }
 afterEvaluate {
+    tasks.matching { it.name.startsWith("externalNativeBuildClean") }.configureEach {
+        enabled = false
+    }
     android.applicationVariants.configureEach { variant ->
         if (variant.buildType.name in ["release", "offline", "debugDist"]) {
             def vName = variant.name.capitalize()
