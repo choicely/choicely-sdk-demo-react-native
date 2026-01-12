@@ -31,6 +31,7 @@ buildscript {
         targetSdkVersion = compileSdkVersion
         kotlin_version = '2.2.20'
         kotlinVersion = kotlin_version
+        REACT_NATIVE_NODE_MODULES_DIR = file("${rootDir}/../node_modules/react-native").canonicalPath
     }
     repositories {
         google()
