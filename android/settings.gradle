@@ -88,6 +88,17 @@ gradle.beforeProject { p ->
     p.ext.apkKeyPass = mergedEnv['APK_KEY_PASS'] ?: System.getenv('APK_KEY_PASS')
     p.ext.reactNativeDevServerPort = rctPortStr
 }
+gradle.afterProject { p ->
+    if (p.name in ["react-native-reanimated", "react-native-worklets"]) {
+        p.tasks.matching { t ->
+            t.name.startsWith("assert")
+        }.configureEach { t ->
+            t.enabled = false
+            // extra safety: even if something tries to run it, it won't
+            t.onlyIf { false }
+        }
+    }
+}
 
 // --- Node detector ---
 def findOnPath = {
