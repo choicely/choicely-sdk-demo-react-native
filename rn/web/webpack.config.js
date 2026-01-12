@@ -21,6 +21,7 @@ const indexJsPath = path.resolve(webRoot, 'index.web.js')
 const transpileModules = [
   'react-native-vector-icons',
   'react-native-toast-message',
+  'react-native-reanimated',
 ]
 
 const babelLoaderConfiguration = {

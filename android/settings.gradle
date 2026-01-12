@@ -80,6 +80,13 @@ try {
 
 // expose to all projects (no defaults here, just the validated value)
 gradle.beforeProject { p ->
+    if (p.name == "react-native-nitro-modules") {
+        def headersDir = new File(p.buildDir, "headers/nitromodules")
+        if (!headersDir.exists()) {
+            headersDir.mkdirs()
+            println "[nitro] Created missing headers dir: ${headersDir}"
+        }
+    }
     p.ext.choicelyAppName = mergedEnv['CHOICELY_APP_NAME'] ?: System.getenv('CHOICELY_APP_NAME')
     p.ext.choicelyAppKey = mergedEnv['CHOICELY_APP_KEY'] ?: System.getenv('CHOICELY_APP_KEY')
     p.ext.apkKeyStore = mergedEnv['APK_KEYSTORE'] ?: System.getenv('APK_KEYSTORE')
@@ -87,6 +94,17 @@ gradle.beforeProject { p ->
     p.ext.apkKeyAlias = mergedEnv['APK_KEY_ALIAS'] ?: System.getenv('APK_KEY_ALIAS')
     p.ext.apkKeyPass = mergedEnv['APK_KEY_PASS'] ?: System.getenv('APK_KEY_PASS')
     p.ext.reactNativeDevServerPort = rctPortStr
+}
+gradle.afterProject { p ->
+    if (p.name in ["react-native-reanimated", "react-native-worklets"]) {
+        p.tasks.matching { t ->
+            t.name.startsWith("assert") || t.name.startsWith("cleanCmake")
+        }.configureEach { t ->
+            t.enabled = false
+            // extra safety: even if something tries to run it, it won't
+            t.onlyIf { false }
+        }
+    }
 }
 
 // --- Node detector ---

@@ -32,6 +32,7 @@ buildscript {
         kotlin_version = '2.2.20'
         kotlinVersion = kotlin_version
         REACT_NATIVE_NODE_MODULES_DIR = file("${rootDir}/../node_modules/react-native").canonicalPath
+        REACT_NATIVE_WORKLETS_NODE_MODULES_DIR = file("$rootDir/../node_modules/react-native-worklets").canonicalPath
     }
     repositories {
         google()

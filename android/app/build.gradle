@@ -9,13 +9,17 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "com.facebook.react"
 }
+ext {
+    REACT_NATIVE_NODE_MODULES_DIR = file("$rootDir/../node_modules/react-native").canonicalPath
+    REACT_NATIVE_WORKLETS_NODE_MODULES_DIR = file("$rootDir/../node_modules/react-native-worklets").canonicalPath
+}
 react {
     nodeExecutableAndArgs.set([gradle.ext.nodeBinary])
-    // Needed to enable Autolinking - https://github.com/react-native-community/cli/blob/master/docs/autolinking.md
-    autolinkLibrariesWithApp()
     jsRootDir.set(file("../../rn"))
     bundleConfig.set(file("../../rn/metro.config.js"))
     entryFile.set(file("../../rn/src/index.js"))
+    // Needed to enable Autolinking - https://github.com/react-native-community/cli/blob/master/docs/autolinking.md
+    autolinkLibrariesWithApp()
 }
 android {
     namespace 'com.choicely.sdk.rn'

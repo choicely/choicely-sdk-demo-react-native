@@ -8,6 +8,7 @@ module.exports = function (api) {
     plugins: [
       '@babel/plugin-transform-export-namespace-from',
       '@babel/plugin-transform-modules-commonjs',
+      'react-native-reanimated/plugin',
     ],
   }
 }
