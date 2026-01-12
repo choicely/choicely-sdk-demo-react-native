@@ -1,6 +1,7 @@
 import React from 'react'
 import {AppRegistry, ScrollView, LogBox} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
+import Toast from 'react-native-toast-message'
 
 if (__DEV__) {
   LogBox.ignoreLogs(['Open debugger to view warnings']);
@@ -32,12 +33,18 @@ function createRootComponent(Comp, {useSafeAreaProvider, rootOptions = {}}) {
         <SafeAreaProvider>
           <SafeAreaView style={{flex: 1}}>
             {content}
+            <Toast />
           </SafeAreaView>
         </SafeAreaProvider>
       )
     }
 
-    return content
+    return (
+      <>
+        {content}
+        <Toast />
+      </>
+    )
   }
 }
 

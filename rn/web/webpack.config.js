@@ -18,22 +18,17 @@ const {webPort} = getPorts(repoRoot)
 const indexHtmlPath = path.resolve(webRoot, 'index.html')
 const indexJsPath = path.resolve(webRoot, 'index.web.js')
 
+const transpileModules = [
+  'react-native-vector-icons',
+  'react-native-toast-message',
+]
+
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
   include: [
     indexJsPath,
     path.resolve(rnRoot, 'src'),
-    path.resolve(nodeModulesRoot, 'react-native-vector-icons'),
-  ],
-  exclude: [
-    {
-      and: [
-        nodeModulesRoot,
-        path.resolve(repoRoot, 'android'),
-        path.resolve(repoRoot, 'ios'),
-      ],
-      not: [],
-    },
+    ...transpileModules.map((m) => path.resolve(nodeModulesRoot, m)),
   ],
   use: {
     loader: 'babel-loader',
