@@ -120,9 +120,7 @@ dependencies {
     implementation "com.facebook.react:react-android:0.82.0"
     implementation "com.facebook.react:hermes-android:0.82.0"
 
-    // Import the BOM
-    implementation(platform("com.choicely.sdk:bom:1.1.0"))
-    implementation "com.choicely.sdk:android-core"
+    implementation "com.choicely.sdk:android-core:1.1.1-SNAPSHOT"
 
     implementation "androidx.preference:preference-ktx:1.2.1"
 }
