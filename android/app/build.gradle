@@ -9,6 +9,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "com.facebook.react"
 }
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 ext {
     REACT_NATIVE_NODE_MODULES_DIR = file("$rootDir/../node_modules/react-native").canonicalPath
     REACT_NATIVE_WORKLETS_NODE_MODULES_DIR = file("$rootDir/../node_modules/react-native-worklets").canonicalPath
