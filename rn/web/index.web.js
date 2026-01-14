@@ -3,7 +3,6 @@ import {AppRegistry, Pressable, ScrollView, StyleSheet, Text, View} from 'react-
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 
 import {componentMapping, defaultComponentName, registerComponents} from '../src/index'
-import useFirebaseRealtimeListener from './useFirebaseRealtimeListener'
 
 registerComponents({useSafeAreaProvider: false})
 
@@ -100,12 +99,6 @@ function WebRoot({
   forcedComponentName,
   queryProps = {},
 }) {
-  // Listen for Firebase updates using appKey and firebaseUrl from query params
-  const { appKey, firebaseUrl } = queryProps
-  useFirebaseRealtimeListener(appKey, firebaseUrl, () => {
-    window.location.reload()
-  })
-
   const names = Object.keys(components)
 
   if (names.length === 0) {

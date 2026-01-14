@@ -22,7 +22,10 @@ const transpileModules = [
   'react-native-vector-icons',
   'react-native-toast-message',
   'react-native-reanimated',
+  'react-native-gesture-handler'
 ]
+
+
 
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
