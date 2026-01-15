@@ -7,19 +7,19 @@ import androidx.annotation.NonNull;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactHost;
 import com.facebook.react.ReactNativeApplicationEntryPoint;
-import com.facebook.react.ReactNativeHost;
 import com.facebook.react.defaults.DefaultReactHost;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ChoicelyRNApplication extends Application implements ReactApplication {
 
     private ChoicelyRNHost rnHost;
 
-    private ReactHost choicelyReactHost;
+    private final Map<String, ReactHost> choicelyReactHostsByBundlePath = new HashMap<>();
 
     protected final synchronized void initRNEngine(@NonNull final ChoicelyRNHost rnHost) {
-        this.choicelyReactHost = null;
         this.rnHost = rnHost;
         ReactNativeApplicationEntryPoint.loadReactNative(this);
     }
@@ -27,22 +27,26 @@ public abstract class ChoicelyRNApplication extends Application implements React
     @NonNull
     @Override
     public final synchronized ReactHost getReactHost() {
-        if (choicelyReactHost != null) {
-            return choicelyReactHost;
+        final String bundleFilePath = rnHost.getJSBundleFile();
+        final ReactHost cached = choicelyReactHostsByBundlePath.get(bundleFilePath);
+        if (cached != null) {
+            return cached;
         }
-        choicelyReactHost = DefaultReactHost.getDefaultReactHost(
+        final ReactHost created = ChoicelyDefaultReactHost.getDefaultReactHost(
                 this,
                 rnHost.getPackages(),
                 rnHost.getJSMainModuleName(),
                 rnHost.getBundleAssetName(),
-                rnHost.getJSBundleFile(),
+                bundleFilePath,
                 null,
                 rnHost.getUseDeveloperSupport(),
                 new ArrayList<>(),
                 rnHost::onJSException,
                 null
         );
-        return choicelyReactHost;
+        ChoicelyDefaultReactHost.invalidate();
+        choicelyReactHostsByBundlePath.put(bundleFilePath, created);
+        return created;
     }
 
     @NonNull

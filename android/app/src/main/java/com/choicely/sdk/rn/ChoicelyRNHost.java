@@ -49,7 +49,7 @@ public abstract class ChoicelyRNHost extends DefaultReactNativeHost {
         return BuildConfig.USE_METRO;
     }
 
-    @Nullable
+    @NonNull
     @Override
     protected String getJSBundleFile() {
         final File bundleFile = getRemoteBundleFile();
