@@ -25,8 +25,6 @@ const transpileModules = [
   'react-native-gesture-handler'
 ]
 
-
-
 const babelLoaderConfiguration = {
   test: /\.[jt]sx?$/,
   include: [
