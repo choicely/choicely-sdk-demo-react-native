@@ -96,6 +96,13 @@ module.exports = {
     hot: true,
     compress: true,
     allowedHosts: 'all',
+    client: {
+      webSocketURL: {
+        port: 443,
+        pathname: "/ws",
+      },
+    },
+    webSocketServer: "ws",
   },
   cache: {
     type: 'filesystem',
