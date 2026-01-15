@@ -51,6 +51,8 @@ const ttfLoaderConfiguration = {
   type: 'asset/resource',
 }
 
+const isWorkspace = Boolean(process.env.WORKSPACE_SLUG)
+
 module.exports = {
   entry: {app: indexJsPath},
   output: {
@@ -96,13 +98,17 @@ module.exports = {
     hot: true,
     compress: true,
     allowedHosts: 'all',
-    client: {
-      webSocketURL: {
-        port: 443,
-        pathname: "/ws",
-      },
-    },
-    webSocketServer: "ws",
+    ...(isWorkspace
+      ? {
+          client: {
+            webSocketURL: {
+              port: 443,
+              pathname: '/ws',
+            },
+          },
+          webSocketServer: 'ws',
+        }
+      : {}),
   },
   cache: {
     type: 'filesystem',
