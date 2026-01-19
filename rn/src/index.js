@@ -13,6 +13,7 @@ export const componentMapping = {
   [defaultComponentName]: require('./components/Hello'),
   counter: require('./components/Counter'),
   tic_tac_toe: require('./components/TicTacToe'),
+  three_js: require('./components/ThreeJsScene'),
 }
 
 function RootShell({useSafeAreaProvider, children}) {
