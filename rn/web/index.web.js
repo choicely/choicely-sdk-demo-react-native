@@ -36,9 +36,9 @@ function getQueryState() {
   for (const [key, value] of params.entries()) {
     queryProps[key] = value
   }
-  const component = params.get('component')
-  const forcedComponentName = component ? component : null
-  return {forcedComponentName, queryProps}
+  const forcedComponentName =
+    params.get('_component') ?? params.get('component') ?? null
+  return { forcedComponentName, queryProps }
 }
 
 const {forcedComponentName, queryProps} = getQueryState()
