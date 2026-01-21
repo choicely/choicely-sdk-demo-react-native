@@ -63,10 +63,8 @@ def localEnv    = parseEnv(new File(repoRoot, '.env'))
 def mergedEnv   = new LinkedHashMap(defaultsEnv)
 mergedEnv.putAll(localEnv)
 
-// precedence: default.env -> .env -> REAL env
-def rctFromFiles = mergedEnv['RCT_METRO_PORT']
-def rctFromReal  = System.getenv('RCT_METRO_PORT')
-def rctPortStr   = (rctFromReal ?: rctFromFiles)
+// precedence: default.env -> .env
+def rctPortStr = mergedEnv['RCT_METRO_PORT']
 
 if (!rctPortStr) {
     throw new GradleException('RCT_METRO_PORT is not set. Define it in `.env` or `default.env` (parent dir), or export it.')
