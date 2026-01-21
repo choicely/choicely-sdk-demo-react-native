@@ -14,6 +14,8 @@ export const componentMapping = {
   counter: require('./components/Counter'),
   tic_tac_toe: require('./components/TicTacToe'),
   three_js: require('./components/ThreeJsScene'),
+  fps_shooter: require('./components/FpsShooter'),
+  doom_fps: require('./components/DoomFps'),
 }
 
 function RootShell({useSafeAreaProvider, children}) {

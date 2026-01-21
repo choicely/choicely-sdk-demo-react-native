@@ -23,8 +23,19 @@ function normalizeHexColor(value, fallback) {
   return fallback
 }
 
+function buildConfig({backgroundColor, cubeColor, rotationSpeed}) {
+  return {
+    backgroundColor: normalizeHexColor(backgroundColor, '#0b1220'),
+    cubeColor: normalizeHexColor(cubeColor, '#44aaff'),
+    rotationSpeed: clampNumber(rotationSpeed, {min: 0, max: 8, fallback: 0.8}),
+  }
+}
+
 function createThreeHtml({initialConfig}) {
-  const threeCdnUrl = 'https://unpkg.com/three@0.161.0/build/three.min.js'
+  const threeModuleUrls = [
+    'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js',
+    'https://unpkg.com/three@0.161.0/build/three.module.js',
+  ]
   const initialConfigJson = JSON.stringify(initialConfig)
 
   return `<!doctype html>
@@ -56,7 +67,6 @@ function createThreeHtml({initialConfig}) {
   <body>
     <div id="root"></div>
     <div id="badge">three.js demo</div>
-    <script src="${threeCdnUrl}"></script>
     <script>
       (function () {
         var config = ${initialConfigJson};
@@ -93,43 +103,77 @@ function createThreeHtml({initialConfig}) {
 
         window.addEventListener('message', onHostMessage);
         document.addEventListener('message', onHostMessage);
+      })();
+    </script>
 
-        if (!window.THREE) {
-          postToHost({type: 'event/error', payload: {message: 'three.js failed to load (no THREE global)'}});
-          return;
+    <script type="module">
+      const attempted = ${JSON.stringify(threeModuleUrls)};
+      let loadedFrom = null;
+      let THREE = null;
+      let lastError = null;
+
+      async function loadThree() {
+        for (const url of attempted) {
+          try {
+            loadedFrom = url;
+            const mod = await import(url);
+            THREE = mod;
+            break;
+          } catch (e) {
+            lastError = e;
+            loadedFrom = null;
+          }
         }
+        if (!THREE) throw lastError || new Error('Failed to import three')
+        return THREE;
+      }
 
-        var root = document.getElementById('root');
-        var renderer = new THREE.WebGLRenderer({antialias: true, alpha: false});
+      function postToHost(message) {
+        try {
+          const payload = JSON.stringify(message);
+          if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+            window.ReactNativeWebView.postMessage(payload);
+            return;
+          }
+          if (window.parent && window.parent !== window && window.parent.postMessage) {
+            window.parent.postMessage(message, '*');
+          }
+        } catch (e) {}
+      }
+
+      const config = ${initialConfigJson};
+
+      try {
+        const THREE_NS = await loadThree();
+        window.THREE = THREE_NS;
+
+        const root = document.getElementById('root');
+        const renderer = new THREE.WebGLRenderer({antialias: true, alpha: false});
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         root.appendChild(renderer.domElement);
 
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
         camera.position.set(0, 0, 4);
 
-        var ambient = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambient);
-
-        var dir = new THREE.DirectionalLight(0xffffff, 0.8);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        const dir = new THREE.DirectionalLight(0xffffff, 0.8);
         dir.position.set(3, 5, 4);
         scene.add(dir);
 
-        var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshStandardMaterial({color: 0x44aaff});
-        var cube = new THREE.Mesh(geometry, material);
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshStandardMaterial({color: 0x44aaff});
+        const cube = new THREE.Mesh(geometry, material);
         cube.name = 'cube';
         scene.add(cube);
 
-        var raycaster = new THREE.Raycaster();
-        var pointer = new THREE.Vector2();
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
 
         function resize() {
-          var w = root.clientWidth || window.innerWidth || 1;
-          var h = root.clientHeight || window.innerHeight || 1;
-          if (renderer.domElement.width !== w || renderer.domElement.height !== h) {
-            renderer.setSize(w, h, false);
-          }
+          const w = root.clientWidth || window.innerWidth || 1;
+          const h = root.clientHeight || window.innerHeight || 1;
+          renderer.setSize(w, h, false);
           camera.aspect = w / h;
           camera.updateProjectionMatrix();
         }
@@ -140,26 +184,26 @@ function createThreeHtml({initialConfig}) {
         }
 
         function applyConfig() {
-          var bg = typeof config.backgroundColor === 'string' ? config.backgroundColor : '#000000';
+          const bg = typeof config.backgroundColor === 'string' ? config.backgroundColor : '#000000';
           scene.background = new THREE.Color(bg);
 
-          var cubeColor = typeof config.cubeColor === 'string' ? config.cubeColor : '#44aaff';
+          const cubeColor = typeof config.cubeColor === 'string' ? config.cubeColor : '#44aaff';
           cube.material.color = new THREE.Color(cubeColor);
 
-          var speed = Number(config.rotationSpeed);
+          let speed = Number(config.rotationSpeed);
           if (!isFinite(speed)) speed = 0.8;
           config.rotationSpeed = speed;
         }
 
         function onPointerDown(e) {
-          var rect = renderer.domElement.getBoundingClientRect();
-          var x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-          var y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+          const rect = renderer.domElement.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
           pointer.set(x, y);
           raycaster.setFromCamera(pointer, camera);
-          var hits = raycaster.intersectObjects(scene.children, true);
+          const hits = raycaster.intersectObjects(scene.children, true);
           if (hits && hits.length > 0) {
-            var hit = hits[0];
+            const hit = hits[0];
             postToHost({
               type: 'event/pick',
               payload: {
@@ -175,15 +219,18 @@ function createThreeHtml({initialConfig}) {
 
         applyConfig();
         resize();
-        postToHost({type: 'event/ready', payload: {renderer: 'webgl', threeVersion: THREE.REVISION}});
+        postToHost({
+          type: 'event/ready',
+          payload: {renderer: 'webgl', threeVersion: THREE.REVISION, loadedFrom: loadedFrom},
+        });
 
-        var lastTime = performance.now();
+        let lastTime = performance.now();
         function tick(now) {
-          var dt = Math.min(0.05, Math.max(0, (now - lastTime) / 1000));
+          const dt = Math.min(0.05, Math.max(0, (now - lastTime) / 1000));
           lastTime = now;
           resize();
 
-          var speed = Number(config.rotationSpeed);
+          let speed = Number(config.rotationSpeed);
           if (!isFinite(speed)) speed = 0.8;
           cube.rotation.y += dt * speed;
           cube.rotation.x += dt * (speed * 0.6);
@@ -192,7 +239,19 @@ function createThreeHtml({initialConfig}) {
           requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-      })();
+
+        window.__THREE_SCENE__ = {applyConfig: applyConfig, resetCamera: resetCamera};
+      } catch (e) {
+        postToHost({
+          type: 'event/error',
+          payload: {
+            message: 'three.js module import failed in WebView.',
+            attempted: attempted,
+            loadedFrom: loadedFrom,
+            error: String(e && (e.message || e) || e),
+          },
+        });
+      }
     </script>
   </body>
 </html>`
@@ -207,7 +266,8 @@ export default function ThreeJsScene({
   rotationSpeed = '0.8',
 }) {
   const webViewRef = useRef(null)
-  const iframeRef = useRef(null)
+  const canvasHostRef = useRef(null)
+  const webSceneRef = useRef(null)
 
   const [isSceneReady, setIsSceneReady] = useState(false)
   const [statusText, setStatusText] = useState('Loading…')
@@ -218,36 +278,31 @@ export default function ThreeJsScene({
   const [speed, setSpeed] = useState(rotationSpeed)
 
   const initialConfig = useMemo(() => {
-    return {
-      backgroundColor: normalizeHexColor(backgroundColor, '#0b1220'),
-      cubeColor: normalizeHexColor(cubeColor, '#44aaff'),
-      rotationSpeed: clampNumber(rotationSpeed, {min: 0, max: 8, fallback: 0.8}),
-    }
+    return buildConfig({backgroundColor, cubeColor, rotationSpeed})
   }, [backgroundColor, cubeColor, rotationSpeed])
 
   const html = useMemo(() => createThreeHtml({initialConfig}), [initialConfig])
 
-  function sendToScene(message) {
-    if (!message || typeof message.type !== 'string') return
+  function applyConfigToScene() {
+    const nextConfig = buildConfig({backgroundColor: bg, cubeColor: cube, rotationSpeed: speed})
 
     if (Platform.OS === 'web') {
-      const win = iframeRef.current?.contentWindow
-      if (!win) return
-      win.postMessage(message, '*')
+      webSceneRef.current?.applyConfig?.(nextConfig)
       return
     }
 
-    const payload = JSON.stringify(message)
+    const payload = JSON.stringify({type: 'cmd/setConfig', payload: nextConfig})
     webViewRef.current?.postMessage?.(payload)
   }
 
-  function applyConfigToScene() {
-    const nextConfig = {
-      backgroundColor: normalizeHexColor(bg, '#0b1220'),
-      cubeColor: normalizeHexColor(cube, '#44aaff'),
-      rotationSpeed: clampNumber(speed, {min: 0, max: 8, fallback: 0.8}),
+  function resetCamera() {
+    if (Platform.OS === 'web') {
+      webSceneRef.current?.resetCamera?.()
+      return
     }
-    sendToScene({type: 'cmd/setConfig', payload: nextConfig})
+
+    const payload = JSON.stringify({type: 'cmd/resetCamera'})
+    webViewRef.current?.postMessage?.(payload)
   }
 
   useEffect(() => {
@@ -259,14 +314,133 @@ export default function ThreeJsScene({
   useEffect(() => {
     if (Platform.OS !== 'web') return
 
-    function onMessage(event) {
-      const data = event?.data
-      if (!data || typeof data !== 'object' || typeof data.type !== 'string') return
-      handleSceneMessage(data)
-    }
+    const host = canvasHostRef.current
+    if (!host) return
 
-    window.addEventListener('message', onMessage)
-    return () => window.removeEventListener('message', onMessage)
+    let cleanup = null
+
+    ;(async () => {
+      try {
+        const THREE = await import('three')
+
+        const renderer = new THREE.WebGLRenderer({antialias: true, alpha: false})
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
+        renderer.domElement.style.width = '100%'
+        renderer.domElement.style.height = '100%'
+        renderer.domElement.style.display = 'block'
+        host.appendChild(renderer.domElement)
+
+        const scene = new THREE.Scene()
+        const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000)
+        camera.position.set(0, 0, 4)
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8))
+        const dir = new THREE.DirectionalLight(0xffffff, 0.8)
+        dir.position.set(3, 5, 4)
+        scene.add(dir)
+
+        const cubeMesh = new THREE.Mesh(
+          new THREE.BoxGeometry(1, 1, 1),
+          new THREE.MeshStandardMaterial({color: 0x44aaff}),
+        )
+        cubeMesh.name = 'cube'
+        scene.add(cubeMesh)
+
+        const raycaster = new THREE.Raycaster()
+        const pointer = new THREE.Vector2()
+
+        function resize() {
+          const rect = host.getBoundingClientRect()
+          const w = Math.max(1, Math.floor(rect.width))
+          const h = Math.max(1, Math.floor(rect.height))
+          renderer.setSize(w, h, false)
+          camera.aspect = w / h
+          camera.updateProjectionMatrix()
+        }
+
+        function resetCameraImpl() {
+          camera.position.set(0, 0, 4)
+          camera.lookAt(0, 0, 0)
+        }
+
+        const state = {rotationSpeed: initialConfig.rotationSpeed}
+
+        function applyConfig(config) {
+          const bgColor = typeof config.backgroundColor === 'string' ? config.backgroundColor : '#000000'
+          scene.background = new THREE.Color(bgColor)
+
+          const cubeColorValue = typeof config.cubeColor === 'string' ? config.cubeColor : '#44aaff'
+          cubeMesh.material.color = new THREE.Color(cubeColorValue)
+
+          const s = Number(config.rotationSpeed)
+          state.rotationSpeed = Number.isFinite(s) ? s : 0.8
+        }
+
+        function onPointerDown(e) {
+          const rect = renderer.domElement.getBoundingClientRect()
+          const x = ((e.clientX - rect.left) / rect.width) * 2 - 1
+          const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1)
+          pointer.set(x, y)
+          raycaster.setFromCamera(pointer, camera)
+          const hits = raycaster.intersectObjects(scene.children, true)
+          if (hits && hits.length > 0) {
+            const hit = hits[0]
+            const name = hit?.object?.name || 'object'
+            setPickedText(`Picked: ${name}`)
+          }
+        }
+
+        renderer.domElement.addEventListener('pointerdown', onPointerDown)
+
+        let resizeObserver = null
+        if (typeof ResizeObserver !== 'undefined') {
+          resizeObserver = new ResizeObserver(() => resize())
+          resizeObserver.observe(host)
+        } else {
+          window.addEventListener('resize', resize)
+        }
+
+        applyConfig(initialConfig)
+        resize()
+
+        setIsSceneReady(true)
+        setStatusText(`Ready (webgl, three r${THREE.REVISION || 'unknown'})`)
+
+        let raf = 0
+        let lastTime = performance.now()
+        const tick = (now) => {
+          const dt = Math.min(0.05, Math.max(0, (now - lastTime) / 1000))
+          lastTime = now
+          cubeMesh.rotation.y += dt * state.rotationSpeed
+          cubeMesh.rotation.x += dt * (state.rotationSpeed * 0.6)
+          renderer.render(scene, camera)
+          raf = requestAnimationFrame(tick)
+        }
+        raf = requestAnimationFrame(tick)
+
+        webSceneRef.current = {applyConfig, resetCamera: resetCameraImpl}
+
+        cleanup = () => {
+          try {
+            if (raf) cancelAnimationFrame(raf)
+            renderer.domElement.removeEventListener('pointerdown', onPointerDown)
+            if (resizeObserver) resizeObserver.disconnect()
+            else window.removeEventListener('resize', resize)
+            renderer.dispose()
+            if (renderer.domElement && renderer.domElement.parentNode === host) {
+              host.removeChild(renderer.domElement)
+            }
+          } catch (e) {}
+          webSceneRef.current = null
+        }
+      } catch (e) {
+        setStatusText(`Error: ${String(e?.message || e)}`)
+      }
+    })()
+
+    return () => {
+      if (cleanup) cleanup()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -344,7 +518,7 @@ export default function ThreeJsScene({
           <Pressable style={styles.button} onPress={applyConfigToScene}>
             <Text style={styles.buttonText}>Apply</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => sendToScene({type: 'cmd/resetCamera'})}>
+          <Pressable style={styles.button} onPress={resetCamera}>
             <Text style={styles.buttonText}>Reset Camera</Text>
           </Pressable>
         </View>
@@ -357,14 +531,7 @@ export default function ThreeJsScene({
 
       <View style={styles.scene}>
         {Platform.OS === 'web' ? (
-          // react-native-web supports direct DOM elements
-          <iframe
-            ref={iframeRef}
-            title="three-js-scene"
-            sandbox="allow-scripts allow-same-origin"
-            style={styles.iframe}
-            srcDoc={html}
-          />
+          <View ref={canvasHostRef} style={styles.canvasHost} />
         ) : (
           <SceneHost
             ref={webViewRef}
@@ -463,11 +630,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
-  iframe: {
-    borderWidth: 0,
-    width: '100%',
-    height: '100%',
+  canvasHost: {
+    flex: 1,
     backgroundColor: '#000000',
   },
 })
-
