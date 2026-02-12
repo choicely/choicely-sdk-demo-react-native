@@ -11,4 +11,4 @@ export PROJECT_ROOT="$PROJECT_DIR/../rn"
 export ENTRY_FILE="src/index.js"
 export BUNDLE_CONFIG="metro.config.js"
 
-/usr/bin/env bash -c "$WITH_ENVIRONMENT $REACT_NATIVE_XCODE"
+/usr/bin/env bash "$WITH_ENVIRONMENT" "$REACT_NATIVE_XCODE"
