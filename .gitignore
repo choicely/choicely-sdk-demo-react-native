@@ -64,6 +64,7 @@ gradle/*
 # App env folders (as you had)
 app/dev/
 app/prod/
+.claude/
 
 # Keystores (keep debug.keystore)
 *.keystore
